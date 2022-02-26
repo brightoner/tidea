@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- SqlSession setup for MyBatis Database Layer -->
+	<!-- <bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean"> -->
+	<!-- 쿼리 수정 시 즉시 반영 소스 적용 -->
+	<bean id="sqlSession" class="tidea.utils.RefreshableSqlSessionFactoryBean">
+		<property name="dataSource" ref="rasdev.dataSource" />
+		<property name="configLocation" value="classpath:/egovframework/sqlmap/sql-mapper-config.xml" />
+		<property name="mapperLocations" value="classpath:/tidea/**/**/dao/*.xml" />
+	</bean>
+
+	<bean class="egovframework.rte.psl.dataaccess.mapper.MapperConfigurer">
+		<property name="basePackage" value="tidea" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSession" />
+<!-- 		<property name="basePackage" value="egovframework.sqlmap" /> -->
+	</bean>
+
+</beans>

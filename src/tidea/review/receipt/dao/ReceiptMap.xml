@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tidea.review.receipt.dao.ReceiptDao">
+
+<!-- 페이징처리 -->
+	<sql id="pagingTop">
+		select R1.* FROM(
+	</sql>
+
+<!-- 	페이징처리 -->
+	<sql id="pagingBottom">
+		<![CDATA[
+  		) R1 
+  		LIMIT 10 OFFSET #{pageBegin}
+  		]]> 
+	</sql>
+
+
+	<!-- 우선신청접수 리스트 카운트 - 관리자-->
+	<select id="selectReceiptListCount" parameterType="receiptVo" resultType="int">
+		/* ReceiptMap.selectReceiptListCount */
+		SELECT COUNT(*)
+	    FROM  RV_APPLY_TB A
+	    LEFT JOIN RV_PAY_TB B
+	    ON A.USER_ID=B.USER_ID
+	    AND A.APLCT_NO=B.APLCT_NO
+		WHERE 1=1	
+		<if test="aplct_no != null and aplct_no !=''">
+			AND A.APLCT_NO = #{aplct_no}
+		</if>
+<!-- 		<if test="apply_no != null and apply_no !=''"> -->
+<!-- 			AND A.APPLY_NO = #{apply_no} -->
+<!-- 		</if> -->
+		<if test="invt_nm != null and invt_nm !=''">
+			AND A.INVT_NM LIKE CONCAT('%',#{invt_nm},'%')
+		</if>
+		<if test="status != null and status !=''">
+			AND A.STATUS = #{status}
+		</if>
+	</select>
+	
+	
+	<!-- 우선신청접수 리스트 - 관리자 -->
+	<select id="selectReceiptList" parameterType="receiptVo" resultType="java.util.HashMap">
+		/* ReceiptMap.selectReceiptList */
+		<include refid="pagingTop" />
+			SELECT A.APPLY_NO
+			      ,A.APLCT_NO
+			      ,A.APPLY_DT
+			      ,A.INVT_NM
+			      ,( case when (B.PAY_METHOD = '1') then '카드결제'
+			              when (B.PAY_METHOD = '2') then '무통장입금'
+			              when (B.PAY_METHOD = '3') then '계좌이체'
+			              else '미결제'
+			        end) as PAY_METHOD
+			      ,B.PRICE        
+			      ,( case when (A.STATUS = '1') then '결제대기'
+			              when (A.STATUS = '2') then '결제완료'
+			              when (A.STATUS = '3') then '접수완료'
+			                    else '납품완료'
+			        end)STATUS
+			      ,A.USER_ID
+			      ,( case when (A.FB_TYPE = '2') then '이메일'
+			                    else '시스템'
+			        end) FB_TYPE
+			FROM  RV_APPLY_TB A
+			LEFT JOIN RV_PAY_TB B
+			ON A.USER_ID=B.USER_ID
+			AND A.APLCT_NO=B.APLCT_NO
+			WHERE 1=1
+			<if test="aplct_no != null and aplct_no !=''">
+				AND A.APLCT_NO = #{aplct_no}
+			</if>
+<!-- 			<if test="apply_no != null and apply_no !=''"> -->
+<!-- 				AND A.APPLY_NO = #{apply_no} -->
+<!-- 			</if> -->
+			<if test="invt_nm != null and invt_nm !=''">
+				AND A.INVT_NM LIKE CONCAT('%',#{invt_nm},'%')
+			</if>
+			<if test="status != null and status !=''">
+				AND A.STATUS = #{status}
+			</if>
+			ORDER BY A.APPLY_NO DESC LIMIT 10000
+		
+		<include refid="pagingBottom" />
+	</select>
+	
+	<!-- 우선신청접수 상세보기 - 관리자 -->
+	<select id="selectReceiptDetail" parameterType="receiptVo" resultType="java.util.HashMap">
+		/* ReceiptMap.selectReceiptDetail */
+		SELECT A.INVT_NM
+		     , A.APLCT_NO
+		     , A.APLCT_DT
+		     , A.APLCT_NM
+		     , A.MEMO
+		     ,( case when (A.STATUS = '1') then '결제대기'
+		             when (A.STATUS = '2') then '결제완료'
+		             when (A.STATUS = '3') then '접수완료'
+		                    else '납품완료'
+		        end)STATUS
+		    , A.USER_ID
+		    , A.FB_TYPE
+		    , B.ORDER_CD
+		    , B.USER_ID
+		    , B.APLCT_NO
+		    , B.PRICE
+		    , B.ORDER_STAT
+		    , B.ORDER_DT
+		    , B.PAY_METHOD
+		    , B.ACCOUNT_NO
+		    , B.DISCNT_RS
+		FROM RV_APPLY_TB A
+		LEFT JOIN RV_PAY_TB B
+		ON A.USER_ID=B.USER_ID
+		AND A.APLCT_NO=B.APLCT_NO
+		WHERE A.APLCT_NO = #{aplct_no}
+		AND A.USER_ID = #{user_id}
+	</select>
+	
+	<!-- 우선신청접수 시 insert 또는 update 구분 쿼리 -->
+	<select id="saveChoice" parameterType="receiptVo" resultType="int">
+		/*ReceiptMap.saveChoice*/
+		SELECT COUNT(*)
+		FROM RV_APPLY_TB
+		WHERE APLCT_NO	= #{aplct_no}
+		AND   USER_ID	= #{user_id}
+	</select>
+	
+	
+	<!-- 출원번호 중복 체크 (출원번호 PK) -->
+	<select id="duplCheck" parameterType="receiptVo" resultType="int">
+		/* ReceiptMap.duplCheck */
+		SELECT COUNT(*)
+		FROM RV_APPLY_TB
+		WHERE APLCT_NO = #{aplct_no}
+	</select>
+	
+	
+	<!-- 우선신청접수 - 관리자 -->
+	<insert id="insertReceipt" parameterType="receiptVo">
+		/* ReceiptMap.insertReceipt */
+		INSERT INTO RV_APPLY_TB
+		(
+		     APPLY_NO
+		    ,INVT_NM
+		    ,APLCT_NO
+		    ,APLCT_DT
+		    ,APLCT_NM
+		    ,MEMO
+		    ,APPLY_DT
+		    ,USER_ID
+		    ,STATUS
+		) VALUES (
+<!-- 		    (SELECT (MAX(APPLY_NO) + 1) FROM RV_APPLY_TB b) -->
+		    (SELECT IFNULL ((MAX(APPLY_NO) + 1), 1) FROM RV_APPLY_TB b)
+		   ,#{invt_nm}
+		   ,#{aplct_no}
+		   ,#{aplct_dt}
+		   ,#{aplct_nm}
+		   ,#{memo}
+		   ,NOW()
+		   ,#{user_id}
+		   ,#{status}
+	)
+	</insert>
+	
+	<!-- 우선신청접수 수정 - 관리자-->
+	<update id="updateReceipt" parameterType="receiptVo">
+		/*ReceiptMap.updateReceipt*/
+		UPDATE RV_APPLY_TB
+		SET INVT_NM		= #{invt_nm}
+		  , APLCT_NO	= #{aplct_no}
+		  , APLCT_DT	= #{aplct_dt}
+		  , APLCT_NM	= #{aplct_nm}
+		  , MEMO		= #{memo}
+		  , APPLY_DT	= NOW()
+		  , STATUS		= #{status}
+		WHERE APLCT_NO	= #{aplct_no}
+		AND   USER_ID	= #{user_id}
+	</update>
+
+	<!-- 우선신청접수 삭제 - 관리자 -->
+	<delete id="deleteReceipt" parameterType="receiptVo">
+		/*ReceiptMap.deleteReceipt*/
+		DELETE FROM RV_APPLY_TB
+		WHERE APLCT_NO = #{aplct_no}
+		AND   USER_ID  = #{user_id}	
+	</delete>
+
+
+
+<!-- ***** 첨부파일 부분 **** -->
+	<!-- 우선신청접수 시 첨부파일 조회 - 이용자 -->
+	<select id="selectReceiptFileDetail" parameterType="attachFileVo" resultType="java.util.HashMap">
+		/* ReceiptMap.selectReceiptFileDetail */
+		SELECT * FROM RV_ATTCHFILE_TB
+		WHERE APLCT_NO = #{aplct_no}
+		AND GUBUN = '1'
+	</select>
+	
+	<!-- 우선신청접수 시 첨부파일 조회 - 관리자 -->
+	<select id="selectReceiptFileDetail_2" parameterType="attachFileVo" resultType="java.util.HashMap">
+		/* ReceiptMap.selectReceiptFileDetail_2 */
+		SELECT * FROM RV_ATTCHFILE_TB
+		WHERE APLCT_NO = #{aplct_no}
+		AND GUBUN = '2'
+	</select>
+	
+	<!-- 우선신청접수 시 첨부파일 입력 - 관리자 -->
+	<insert id="insertReceiptFile_2" parameterType="attachFileVo">
+		/* ReceiptMap.insertReceiptFile_2 */
+		INSERT INTO RV_ATTCHFILE_TB
+		(	
+		    APLCT_NO
+		  , FILE_NO
+		  , FILE_NM
+		  , FILE_CHNG_NM
+		  , FILE_PATH
+		  , GUBUN
+		) VALUES (
+		    #{aplct_no}
+<!-- 		  , (SELECT (MAX(FILE_NO) + 1) FROM RV_ATTCHFILE_TB b) -->
+		  , (SELECT IFNULL ((MAX(FILE_NO) + 1), 1) FROM RV_ATTCHFILE_TB b)
+		  , #{file_nm}
+		  , #{file_chng_nm}
+		  , #{file_path}
+		  , '2'
+		)
+		</insert>
+	
+	<!-- 우선신청접수 시 첨부파일 수정 - 관리자-->
+	<update id="updateReceiptFile_2" parameterType="attachFileVo">
+		/* ReceiptMap.updateReceiptFile_2 */
+		INSERT INTO RV_ATTCHFILE_TB
+		(	
+		    APLCT_NO
+		  , FILE_NO
+		  , FILE_NM
+		  , FILE_PATH
+		  , FILE_CHNG_NM
+		  , GUBUN
+		) VALUES (
+		    #{aplct_no}
+<!-- 		  , (SELECT (MAX(FILE_NO) + 1) FROM RV_ATTCHFILE_TB b) -->
+		  , (SELECT IFNULL ((MAX(FILE_NO) + 1), 1) FROM RV_ATTCHFILE_TB b)
+		  , #{file_nm}
+		  , #{file_path}
+		  , #{file_chng_nm}
+		  , '2'
+		)
+		ON DUPLICATE KEY UPDATE 
+	      ,APLCT_NO = #{aplct_no}
+	      ,FILE_NM = #{file_nm}
+	</update>
+	
+	<!--  우선신청접수  수정 시 첨부파일 삭제 - 관리자 -->
+	<delete id="delReceiptFile_2" parameterType="attachFileVo">
+		/* ReceiptMap.delReceiptFile_2 */
+		DELETE FROM RV_ATTCHFILE_TB
+		WHERE APLCT_NO = #{aplct_no}
+		AND FILE_NM = #{file_nm}
+		AND GUBUN = '2'
+	</delete>
+	
+	
+	<!-- 우선신청접수 시 첨부파일 삭제 -->
+<!-- 	<delete id="deleteReceiptFile" parameterType="attachFileVo"> -->
+<!-- 		/* ReceiptMap.deleteReceiptFile */ -->
+<!-- 		DELETE FROM RV_ATTCHFILE_TB -->
+<!-- 		WHERE APLCT_NO = #{aplct_no} -->
+<!-- 		AND GUBUN = '2' -->
+<!-- 	</delete> -->
+
+
+
+</mapper>

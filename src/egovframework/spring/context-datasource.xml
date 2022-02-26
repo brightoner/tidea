@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/egovframework/egovProps/globals.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- oracle -->
+	<bean id="rasdev.dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${Globals.DriverClassName}" />
+		<property name="url" value="${Globals.Url}" />
+		<property name="username" value="${RASDEV.UserName}" />
+		<property name="password" value="${RASDEV.Pwd}" />
+		<property name="defaultAutoCommit" value="false" />
+	</bean>
+
+
+
+</beans>

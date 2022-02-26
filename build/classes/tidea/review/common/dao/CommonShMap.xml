@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tidea.review.common.dao.CommonShDao">
+	
+	<resultMap type="java.util.HashMap" id="userMap">
+		<result property="EMP_ID" column="EMP_ID" />
+		<result property="EMP_NM" column="EMP_NM" />
+		<result property="USER_PWD" column="USER_PWD" />
+		<result property="AUTH" column="AUTH" />
+		<result property="HIRE_DEVISION" column="HIRE_DEVISION" />
+		<result property="CHINESE_NM" column="CHINESE_NM" />
+		<result property="ENGLISH_NM" column="ENGLISH_NM" />
+		<result property="BIRTH" column="BIRTH" />
+		<result property="JUMIN_NO" column="JUMIN_NO" />
+		<result property="AGE" column="AGE" />
+		<result property="ENTERING_DATE" column="ENTERING_DATE" />
+		<result property="RETIRE_DATE" column="RETIRE_DATE" />
+		<result property="TENURE" column="TENURE" />
+		<result property="EMAIL" column="EMAIL" />
+		<result property="DEPART" column="DEPART" />
+		<result property="POSITION_USER" column="POSITION_USER" />
+		<result property="PH_NO" column="PH_NO" />
+		<result property="CELL_PH_NO" column="CELL_PH_NO" />
+		<result property="EMERGENCY_NO" column="EMERGENCY_NO" />
+		<result property="FILE_NM" column="FILE_NM" />
+		<result property="PRUF_FILE" column="PRUF_FILE" />
+		<result property="RELIGION" column="RELIGION" />
+		<result property="HOBBY" column="HOBBY" />
+		<result property="SPECIALTY" column="SPECIALTY" />
+		<result property="LIQUOR" column="LIQUOR" />
+		<result property="EMP_STATUS" column="EMP_STATUS" />
+		<result property="KIDNEY" column="KIDNEY" />
+		<result property="WEIGHT" column="WEIGHT" />
+		<result property="BLOOD_TYPE" column="BLOOD_TYPE" />
+		<result property="VISION" column="VISION" />
+		<result property="ETC_BODY" column="ETC_BODY" jdbcType="CLOB" javaType="java.lang.String" />
+		<result property="DIVISION_OBSTACLE" column="DIVISION_OBSTACLE" />
+		<result property="RATING_OBSTACLE" column="RATING_OBSTACLE" />
+		<result property="DIVISION_ARMY" column="DIVISION_ARMY" />
+		<result property="TERM_BGIN" column="TERM_BGIN" />
+		<result property="TERM_END" column="TERM_END" />
+		<result property="CLASSES" column="CLASSES" />
+		<result property="GUNBEON" column="GUNBEON" />
+		<result property="GUNBYEOL" column="GUNBYEOL" />
+		<result property="BYEONGGWA" column="BYEONGGWA" />
+		<result property="REASON_ARMY" column="REASON_ARMY" jdbcType="CLOB" javaType="java.lang.String" />
+		<result property="DIVISION_HOUSING_TYPE" column="DIVISION_HOUSING_TYPE" />
+		<result property="ETC_HOUSING_TYPE" column="ETC_HOUSING_TYPE" jdbcType="CLOB" javaType="java.lang.String" />
+		<result property="CNFIRM_AT" column="CNFIRM_AT"/>
+		<result property="DOMICILE" column="DOMICILE" />
+		<result property="NOW_ADDRESS" column="NOW_ADDRESS" />
+		<result property="RESIDENCE" column="RESIDENCE" />
+		<result property="RGSDE" column="RGSDE" />
+		<result property="UPDDE" column="UPDDE" />
+		<result property="IN_OFFICE" column="IN_OFFICE" />
+		<result property="GENDER" column="GENDER" />
+	</resultMap>
+	
+	<resultMap type="java.util.HashMap" id="carMap">
+		<result property="EMP_ID" column="EMP_ID" />
+		<result property="CAR_NO" column="CAR_NO"/>
+		<result property="PRODUCTION_COMPANY" column="PRODUCTION_COMPANY"/>
+		<result property="YEAR_CAR" column="YEAR_CAR"/>
+		<result property="TYPE_CAR" column="TYPE_CAR"/>
+		<result property="PROPRIETOR" column="PROPRIETOR"/>
+		<result property="PARKING_PERMIT" column="PARKING_PERMIT"/>
+		<result property="ETC_CAR" column="ETC_CAR" jdbcType="CLOB" javaType="java.lang.String" />
+	</resultMap>
+
+	<resultMap type="java.util.HashMap" id="careerMap">
+		<result property="EMP_ID" column="EMP_ID" />
+		<result property="JOB_TITLE" column="JOB_TITLE"/>
+		<result property="DURATION_SERVICE_BGIN" column="DURATION_SERVICE_BGIN"/>
+		<result property="DURATION_SERVICE_END" column="DURATION_SERVICE_END"/>
+		<result property="POSITION_CAREER" column="POSITION_CAREER"/>
+		<result property="REASON_CAREER" column="REASON_CAREER" jdbcType="CLOB" javaType="java.lang.String" />
+		<result property="ETC_CAREER" column="ETC_CAREER" jdbcType="CLOB" javaType="java.lang.String" />
+	</resultMap>
+
+	<resultMap type="java.util.HashMap" id="projectMap">
+		<result property="EMP_ID" column="EMP_ID" />
+		<result property="PARTICIPATION_BUSINESS" column="PARTICIPATION_BUSINESS"/>
+		<result property="ORDER_ORGANIZATION" column="ORDER_ORGANIZATION"/>
+		<result property="INPUT_PERIOD_DATE_FROM" column="INPUT_PERIOD_DATE_FROM"/>
+		<result property="INPUT_PERIOD_DATE_TO" column="INPUT_PERIOD_DATE_TO"/>
+		<result property="FEED_AIR" column="FEED_AIR"/>
+		<result property="BUILD_ENVIRON" column="BUILD_ENVIRON" jdbcType="CLOB" javaType="java.lang.String" />
+	</resultMap>
+
+	<resultMap type="java.util.HashMap" id="tempMap">
+		<result property="EMP_ID" column="EMP_ID" />
+		<result property="COLUMN_NM" column="COLUMN_NM"/>
+		<result property="TEMP_VALUE" column="TEMP_VALUE" jdbcType="CLOB" javaType="java.lang.String" />
+		<result property="TAB_NAME" column="TAB_NAME"/>
+	</resultMap>
+	
+	<resultMap type="java.util.HashMap" id="appointMap">
+		<result property="EMP_ID" column="EMP_ID" />
+		<result property="APPOINT_DATE" column="APPOINT_DATE"/>
+		<result property="APPOINT_CONTENT" column="APPOINT_CONTENT"/>
+		<result property="APPOINT_DIVISION" column="APPOINT_DIVISION"/>
+	</resultMap>
+	
+	<!-- 페이징 처리 상단 -->
+	<sql id="pagingTop">
+		SELECT *
+		FROM
+		(
+		SELECT ROWNUM AS RNUM, A.*
+		FROM
+		(
+	</sql>
+
+	<!-- 페이징 처리 하단 -->
+	<sql id="pagingBottom">
+		) A
+		WHERE ROWNUM &lt;= #{pageEnd}
+		)
+		WHERE RNUM &gt;= #{pageBegin}
+	</sql>
+	
+	<select id="selectCotCdOrgList" parameterType="string" resultType="java.util.HashMap">
+		/* CommonShMap.selectCotCdOrgList */
+		SELECT DIV
+		     , CD
+		     , SYS_DIV
+		     , NM
+		     , NM_ENG
+		     , NM_ABBR
+		FROM SH_COT_CD_ORG
+		WHERE DIV = #{DIV}
+		ORDER BY NM ASC
+	</select>
+
+
+	
+	<!-- 기준년월로부터 현재년도+1 까지 -->
+	<select id="selectYearCombobox" resultType="java.util.HashMap">
+		/* CommonShMap.selectYearCombobox */
+		SELECT (TO_CHAR(SYSDATE, 'YYYY') + 1) - LEVEL + 1 AS YEAR
+		FROM DUAL
+		CONNECT BY LEVEL &lt;= ((TO_CHAR(SYSDATE, 'YYYY') + 2) - 2005)
+		ORDER BY 1 ASC
+	</select>
+	
+	<!-- 항목명 전체 목록 -->
+	<select id="selectAllItemNmList" resultType="java.util.HashMap">
+		/* CommonShMap.selectAllItemNmList */
+		SELECT SEQ
+			 , ITEM_SN
+			 , ITEM_NM
+			 , ETC
+			 , CM
+		FROM ITEMNM_MANAGE_TB
+		ORDER BY SEQ DESC
+	</select>
+	
+	
+	<!-- 승인상태 변경 -->
+	<update id="updateApprovalOrCancelProcess" parameterType="commonVo">
+		/* CommonShMap.updateItemNmMng */
+		UPDATE ${TABLE_NM}
+		SET CNFIRM_AT = #{CNFIRM_AT}
+		WHERE ${KEY_NM} = #{KEY}
+	</update>
+	
+	<!-- 공통코드 조회(리스트박스 용) -->
+	<select id="selectCmmnCdList" parameterType="string" resultType="java.util.HashMap">
+		/* CommonShMap.selectCmmnCdList */
+		SELECT CODE_SE
+			 , DTLCODE
+			 , DTLCODE_NM
+			 , DTLCODE_DC
+			 , ORDR
+			 , USE_AT
+		FROM CMMN_DTL_CD_TB
+		WHERE CODE_SE = #{CODE_SE}
+		  AND USE_AT = 'Y'
+		ORDER BY ORDR ASC
+	</select>
+	
+	
+	<!-- 검색팝업 목록 갯수-->
+	<select id="searchPopupListCount" parameterType="authVo" resultType="int">
+		/* CommonShMap.searchPopupListCount */
+		SELECT COUNT(*)
+		FROM CMMN_DTL_CD_TB A
+		       , CMMN_CD_TB B
+		WHERE A.CODE_SE = B.CODE_SE
+		  AND A.CODE_SE = #{CODE_SE}
+			<if test="SEARCH_CODE_NM != null and SEARCH_CODE_NM != ''">
+				AND DTLCODE_NM LIKE '%' || #{SEARCH_CODE_NM} || '%'
+			</if>
+	</select>
+	
+	<!-- 검색팝업 목록 -->
+	<select id="searchPopupList" parameterType="authVo" resultType="authVo">
+		/* CommonShMap.searchPopupList */
+		SELECT R.*
+        FROM
+        (
+            SELECT ROWNUM AS RNUM, A.*
+            FROM
+            (
+                 SELECT  A.CODE_SE,
+                         B.CODE_NM,
+                         A.DTLCODE,
+                         A.DTLCODE_NM,
+                         A.DTLCODE_ENG_NM,
+                         A.DTLCODE_DC,
+                         A.ORDR,
+                         A.USE_AT
+                     FROM CMMN_DTL_CD_TB A, CMMN_CD_TB B
+                     WHERE A.CODE_SE = B.CODE_SE AND A.CODE_SE = #{CODE_SE}
+                     <if test="SEARCH_CODE_NM != null and SEARCH_CODE_NM != ''">
+						AND DTLCODE_NM LIKE '%' || #{SEARCH_CODE_NM} || '%'
+					 </if>
+                     ORDER BY A.DTLCODE 
+            ) A
+            WHERE ROWNUM &lt;= #{pageEnd}
+        ) R
+       WHERE R.RNUM &gt;= #{pageBegin}
+	</select>
+	
+	<!-- 저장하려는 항목이 승인상태인지 체크 -->
+	<select id="cnfirmAtCheck" parameterType="commonVo" resultType="string">
+		/* CommonShMap.cnfirmAtCheck */
+		SELECT CNFIRM_AT
+		FROM ${TABLE_NM}
+		WHERE ${KEY_NM} = #{KEY}
+	</select>
+	
+	<update id="fileDelete" parameterType="commonVo">
+		/* CommonShMap.fileDelete */
+		UPDATE ${TABLE_NM}
+		   SET FILE_NM = '',
+		   	   PRUF_FILE = 'X'
+		 WHERE ${KEY_NM} = #{KEY}
+		   
+	</update>
+	
+	<update id="fileDeleteBF" parameterType="commonVo">
+		/* CommonShMap.fileDeleteBF */
+		UPDATE ${TABLE_NM}
+		   SET BF_FILE_NM = '',
+		   	   BF_PRUF_FILE = 'X'
+		 WHERE ${KEY_NM} = #{KEY}
+		   
+	</update>
+	
+	<update id="fileDeleteAF" parameterType="commonVo">
+		/* CommonShMap.fileDeleteAF */
+		UPDATE ${TABLE_NM}
+		   SET AF_FILE_NM = '',
+		   	   AF_PRUF_FILE = 'X'
+		 WHERE ${KEY_NM} = #{KEY}
+		   
+	</update>
+	
+	<update id="fileDeleteDGRI" parameterType="commonVo">
+		/* CommonShMap.fileDeleteAF */
+		UPDATE ${TABLE_NM}
+		   SET DGRI_FILE_NM = '',
+		   	   DGRI_PRUF_FILE = 'X'
+		 WHERE ${KEY_NM} = #{KEY}
+		   
+	</update>
+	
+	
+	
+	
+</mapper>

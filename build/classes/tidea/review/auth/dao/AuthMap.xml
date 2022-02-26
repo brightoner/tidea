@@ -1,0 +1,899 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tidea.review.auth.dao.AuthDao">
+
+<!-- 페이징처리 -->
+	<sql id="pagingTop">
+		select R1.* FROM(
+	</sql>
+
+<!-- 	페이징처리 -->
+	<sql id="pagingBottom">
+		<![CDATA[
+  		) R1 
+  		LIMIT 10 OFFSET #{pageBegin}
+  		]]> 
+	</sql>
+
+
+	<!-- 매뉴 리스트 불러오기 -->
+	<select id="selectMenuList" parameterType="authVo" resultType="authVo">
+		/* AuthMap.selectMenuList */
+		SELECT MENU_ID AS menu_id               /* 메뉴 고유ID */ 
+	         , MENU_NM AS menu_nm               /* 메뉴 명 */ 
+	         , MENU_URL AS menu_url               /* 메뉴 URL */ 
+	         , MENU_LEVL AS menu_levl           /* 메뉴레벨 */
+	         , MENU_USE_AUTH AS menu_use_auth       /* 메뉴 사용권한 */ 
+	         , IFNULL(MENU_PRTS_ID,'0') AS menu_prts_id     /* 상위 메뉴 ID */ 
+	         , MENU_USE_YN AS menu_use_yn       /* 메뉴 사용여부 */ 
+	         , MENU_ORD AS menu_ord             /* 메뉴순서 */ 
+	         , ETC AS etc             			/* 메뉴순서 */ 
+		FROM MENU_MANAGE_TB                         /* 메뉴관리 */ 
+	    WHERE 1=1 
+	 	<if test="menu_id != null and menu_id != ''">
+	 		AND MENU_ID = #{menu_id} 
+	 	</if>
+	    ORDER BY MENU_LEVL, MENU_ORD		
+	</select>
+	
+	<!-- 매뉴 등록 -->
+    <insert id="insertMenu" parameterType="authVo">
+    	/* AuthMap.insertMenu */
+		INSERT INTO MENU_MANAGE_TB  /* 메뉴관리 */ 
+		     (
+		       MENU_ID
+		     , MENU_NM
+		     , MENU_URL
+		     , MENU_LEVL 
+		     , MENU_PRTS_ID
+		     , MENU_USE_YN
+		     , MENU_ORD
+		     , ETC
+		    ) 
+		VALUES 
+		    ( 
+		         #{menu_id, jdbcType=VARCHAR}         /* 메뉴 고유id */ 
+		       , #{menu_nm, jdbcType=VARCHAR}         /* 메뉴 명 */ 
+		       , #{menu_url, jdbcType=VARCHAR}	 /* 메뉴URL */
+		       , #{menu_levl, jdbcType=VARCHAR}       /* 메뉴레벨 */ 
+		       , IFNULL(#{menu_prts_id, jdbcType=VARCHAR},'0')    /* 상위 메뉴 id */ 
+		       , #{menu_use_yn, jdbcType=VARCHAR}     /* 메뉴 사용여부 */ 
+		       , #{menu_ord, jdbcType=VARCHAR}        /* 메뉴순서 */ 
+		       , #{etc, jdbcType=VARCHAR}        /* 메뉴순서 */ 
+		    )
+	</insert>
+	
+	<!-- 매뉴 수정 -->
+	<update id="updateMenu" parameterType="authVo">
+		/* AuthMap.updateMenu */
+		UPDATE 
+          	MENU_MANAGE_TB  /* 메뉴관리 */ 
+		SET 
+		    MENU_NM =  #{menu_nm, jdbcType=VARCHAR}    /* 메뉴 명 */ 
+		  , MENU_URL = #{menu_url, jdbcType=VARCHAR}
+		  , MENU_LEVL =  #{menu_levl, jdbcType=VARCHAR}    /* 메뉴레벨 */ 
+		  , MENU_PRTS_ID =  #{menu_prts_id, jdbcType=VARCHAR}    /* 상위 메뉴 ID */ 
+		  , MENU_USE_YN =  #{menu_use_yn, jdbcType=VARCHAR}    /* 메뉴 사용여부 */ 
+		  , MENU_ORD =  #{menu_ord, jdbcType=VARCHAR}    /* 메뉴순서 */ 
+		  , ETC =  #{etc, jdbcType=VARCHAR}    /* 메뉴순서 */ 
+		WHERE 1 = 1 
+		AND MENU_ID = #{menu_id}
+	</update>
+	
+	<!-- 매뉴 삭제 -->
+	<delete id="deleteMenu" parameterType="authVo">
+		/* AuthMap.deleteMenu */
+		DELETE FROM MENU_MANAGE_TB
+		WHERE 1 = 1
+		AND (MENU_PRTS_ID = #{menu_id} OR MENU_ID = #{menu_id})
+	</delete>
+	
+	<!-- 매뉴 사용여부 수정 -->
+	<update id="updateMenuDtl" parameterType="authVo">
+		/* AuthMap.updateMenuDtl */
+		UPDATE 
+	        MENU_MANAGE_TB  /* 메뉴관리 */ 
+	    SET 
+	        MENU_USE_YN =  CASE WHEN #{menu_use_yn, jdbcType=VARCHAR} = 'N' THEN 'N' ELSE MENU_USE_YN END    /* 메뉴 사용여부 */ 
+		WHERE 1 = 1 
+		AND MENU_PRTS_ID = #{menu_id}
+	</update>
+	
+	<select id="selectTopLeftmenuList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		/* AuthMap.selectTopLeftmenuList */
+		SELECT MENU_ID
+	         , MENU_NM
+	         , MENU_URL
+	         , MENU_LEVL
+	         , MENU_PRTS_ID
+	         , MENU_ORD
+	         , MENU_USE_YN
+	         , ETC
+		FROM MENU_MANAGE_TB
+		WHERE 1 = 1
+			AND MENU_USE_YN = 'Y'
+		<if test="MENU_USE_AUTH != null and MENU_USE_AUTH != ''">
+			AND MENU_USE_AUTH LIKE CONCAT('%',#{MENU_USE_AUTH},'%')
+		</if>
+		
+		<if test="MENU_LEVL != null and MENU_LEVL != ''">
+		  AND MENU_LEVL = 0
+		</if>
+		<if test="MENU_PRTS_ID != null and MENU_PRTS_ID != ''">
+		  AND MENU_PRTS_ID = #{MENU_PRTS_ID}
+		</if>
+		<if test="MENU_USE_AUTH != null and MENU_USE_AUTH != ''">
+			<if test="MENU_USE_AUTH != 'AUTH0001' and MENU_USE_AUTH != 'AUTH0002'">	<!-- 슈퍼관리자, 시스템 사용자 일때만 -->
+				AND MENU_ID != 'TOP_9'
+			</if>
+		</if>
+		ORDER BY MENU_ORD ASC
+		
+	</select>
+	
+	<!-- 권한코드 관리화면 목록 카운트 -->
+	<select id="selectAuthCdMngListCount" parameterType="authVo" resultType="int">
+		/* AuthMap.selectAuthCdMngListCount */
+		SELECT COUNT(*)
+		FROM AUTH_CD_MANAGE_TB
+		WHERE 1 = 1
+		<if test="SEARCH_AUTH_NM != null and SEARCH_AUTH_NM != ''">
+			AND AUTH_NM = #{SEARCH_AUTH_NM}
+		</if>
+	</select>
+	
+	<!--권한코드 관리화면 목록 -->
+	<select id="selectAuthCdMngList" parameterType="authVo" resultType="java.util.HashMap">
+		/* AuthMap.selectAuthCdMngList */
+		<include refid="pagingTop" />
+				SELECT AUTH_CD AS KEY1
+					 , AUTH_CD
+				     , AUTH_NM
+				     , ETC
+				     , USE_AT
+				     , WRTER
+					 , DATE_FORMAT(RGSDE, '%Y-%m-%d') AS RGSDE 
+      				 , DATE_FORMAT(UPDDE, '%Y-%m-%d') AS UPDDE 
+				FROM AUTH_CD_MANAGE_TB
+				WHERE 1 = 1
+				<if test="SEARCH_AUTH_NM != null and SEARCH_AUTH_NM != ''">
+					AND AUTH_NM = #{SEARCH_AUTH_NM}
+				</if>
+				ORDER BY AUTH_CD DESC
+			<include refid="pagingBottom" />
+	</select>
+	
+	<!--권한코드 관리화면 상세 -->
+	<select id="selectAuthCdMngDetail" parameterType="authVo" resultType="java.util.HashMap">
+		/* AuthMap.selectAuthCdMngDetail */
+		SELECT AUTH_CD
+		     , AUTH_NM
+		     , ETC
+		     , USE_AT
+		     , WRTER
+			 , RGSDE
+			 , UPDDE
+		FROM AUTH_CD_MANAGE_TB
+		WHERE AUTH_CD = #{KEY}
+<!-- 		WHERE AUTH_CD = #{AUTH_CD} -->
+	</select>
+	
+	<!-- 권한코드 관리화면 신규저장 -->
+	<select id="insertAuthCdMng" parameterType="authVo">
+		/* AuthMap.insertAuthCdMng */
+		INSERT INTO
+			AUTH_CD_MANAGE_TB(
+							   AUTH_CD
+						     , AUTH_NM
+						     , ETC
+						     , USE_AT
+						     , WRTER
+							 , RGSDE
+							 , UPDDE
+				            )
+			VALUES(
+					    #{AUTH_CD}
+				      , #{AUTH_NM}
+				      , #{etc}
+				      , IFNULL(#{USE_AT}, 'N')
+				      , IFNULL(#{WRTER}, 'SYSTEM')
+					  , NOW()
+					  , NULL
+				   )
+	</select>
+	
+	<!-- 권한코드 관리화면 수정 -->
+	<update id="updateAuthCdMng" parameterType="authVo">
+		/* AuthMap.updateAuthCdMng */
+		UPDATE AUTH_CD_MANAGE_TB
+		SET AUTH_CD = #{AUTH_CD}
+		  , AUTH_NM = #{AUTH_NM}
+		  , ETC = #{etc}
+		  , USE_AT = IFNULL(#{USE_AT}, 'N')
+		  , WRTER = IFNULL(#{WRTER}, 'SYSTEM')
+		  , UPDDE = NOW()
+<!-- 		WHERE AUTH_CD = #{KEY} -->
+		WHERE AUTH_CD = #{AUTH_CD}
+	</update>
+	
+	<!-- 권한코드 관리화면 삭제 -->
+	<delete id="deleteAuthCdMng" parameterType="authVo">
+		/* AuthMap.deleteAuthCdMng */
+		DELETE
+		FROM AUTH_CD_MANAGE_TB
+<!-- 		WHERE AUTH_CD = #{KEY} -->
+		WHERE AUTH_CD = #{AUTH_CD}
+	</delete>
+
+
+	<!-- 공통코드 관리화면 목록 -->
+	<select id="selectCmmnCdMngList" parameterType="authVo" resultType="java.util.HashMap">
+		/* AuthMap.selectCmmnCdMngList */
+		<include refid="pagingTop" />
+		SELECT CODE_SE
+			 , CODE_NM
+			 , CODE_DC
+			 , WRTER
+			, DATE_FORMAT(RGSDE, '%Y-%m-%d') AS RGSDE
+            , DATE_FORMAT(UPDDE, '%Y-%m-%d') AS UPDDE
+		FROM CMMN_CD_TB
+	 	WHERE 1 = 1
+		<if test="SEARCH_CODE_NM != null and SEARCH_CODE_NM != ''">
+			AND CODE_NM LIKE CONCAT('%',#{SEARCH_CODE_NM},'%')
+		</if>
+		ORDER BY CODE_SE ASC
+		<include refid="pagingBottom" />
+	</select>
+	
+	<!-- 공통코드 관리화면 목록 카운트 -->
+	<select id="selectCmmnCdMngListCount" parameterType="authVo" resultType="int">
+		/* AuthMap.selectCmmnCdMngListCount */
+		SELECT COUNT(*)
+		FROM CMMN_CD_TB
+		WHERE 1 = 1
+		<if test="SEARCH_CODE_NM != null and SEARCH_CODE_NM != ''">
+			AND CODE_NM LIKE CONCAT('%',#{SEARCH_CODE_NM},'%')
+		</if>
+	</select>
+	
+	<!-- 공통코드 관리화면 상세 -->
+	<select id="selectCmmnCdMngDetail" parameterType="authVo" resultType="java.util.HashMap">
+		/* AuthMap.selectCmmnCdMngDetail */
+		SELECT CODE_SE
+			 , CODE_NM
+			 , CODE_DC
+			 , WRTER
+			 , RGSDE
+			 , UPDDE
+		FROM CMMN_CD_TB
+		WHERE CODE_SE = #{CODE_SE}
+	</select>
+	
+	<!-- 공통코드 관리화면 신규저장 -->
+	<select id="insertCmmnCdMng" parameterType="authVo">
+		/* AuthMap.insertCmmnCdMng */
+		INSERT INTO
+			CMMN_CD_TB(
+						   CODE_SE
+						 , CODE_NM
+						 , CODE_DC
+						 , WRTER
+						 , RGSDE
+						 , UPDDE
+			              )
+			VALUES(
+					  #{CODE_SE}
+					, #{CODE_NM}
+					, #{CODE_DC}
+					, IFNULL(#{WRTER}, 'SYSTEM')
+					, NOW()
+					, NULL
+				   )
+	</select>
+	
+	<!-- 공통코드 관리화면 수정 -->
+	<update id="updateCmmnCdMng" parameterType="authVo">
+		/* AuthMap.updateCmmnCdMng */
+		UPDATE CMMN_CD_TB
+		SET CODE_NM = #{CODE_NM}
+		  , CODE_DC = #{CODE_DC}
+		  , WRTER = IFNULL(#{WRTER}, 'SYSTEM')
+		  , UPDDE = NOW()
+		WHERE CODE_SE = #{CODE_SE}
+	</update>
+	
+	<!-- 공통코드 관리화면 삭제 -->
+	<delete id="deleteCmmnCdMng" parameterType="authVo">
+		/* AuthMap.deleteCmmnCdMng */
+		DELETE
+		FROM CMMN_CD_TB
+		WHERE CODE_SE = #{CODE_SE}
+	</delete>
+	
+	<!-- 공통상세코드 관리화면 상세 목록 -->
+	<select id="selectCmmnDtlCdMngDetailList" parameterType="authVo" resultType="java.util.HashMap">
+		/* AuthMap.selectCmmnDtlCdMngDetailList */
+		SELECT A.CODE_SE
+	         , B.CODE_NM
+	         , A.DTLCODE
+	         , A.DTLCODE_NM
+	         , A.DTLCODE_ENG_NM
+	         , A.DTLCODE_DC
+	         , A.ORDR
+	         , A.USE_AT
+		FROM CMMN_DTL_CD_TB A
+		       , CMMN_CD_TB B
+		WHERE A.CODE_SE = B.CODE_SE
+		  AND A.CODE_SE = #{CODE_SE}
+		ORDER BY A.ORDR ASC, A.DTLCODE
+	</select>
+	
+	<!-- 공통상세코드 관리화면 신규저장 -->
+	<select id="insertCmmnDtlCdMng" parameterType="authVo">
+		/* AuthMap.insertCmmnDtlCdMng */
+		INSERT INTO
+			CMMN_DTL_CD_TB(
+							CODE_SE
+						  , DTLCODE
+						  , DTLCODE_NM
+						  , DTLCODE_ENG_NM
+						  , DTLCODE_DC
+						  , ORDR
+						  , USE_AT
+						  , WRTER
+						  , RGSDE
+						  , UPDDE
+
+			              )
+			VALUES(
+					  #{CODE_SE}
+					, #{DTLCODE}
+					, #{DTLCODE_NM}
+					, #{DTLCODE_ENG_NM}
+					, #{DTLCODE_DC}
+					, #{ORDR}
+					, #{USE_AT}
+					, IFNULL(#{WRTER}, 'SYSTEM')
+					, NOW()
+					, NOW()
+				   )
+	</select>
+	
+	<!-- 공통상세코드 관리화면 삭제 -->
+	<delete id="deleteCmmnDtlCdMng" parameterType="string">
+		/* AuthMap.deleteCmmnDtlCdMng */
+		DELETE
+		FROM CMMN_DTL_CD_TB
+		WHERE CODE_SE = #{CODE_SE}
+	</delete>
+	
+	<!-- 메뉴권한관리 상세 저장 -->
+	<update id="insertAuthDtlMng" parameterType="authVo">
+		UPDATE
+			MENU_MANAGE_TB
+	  	SET
+	  		MENU_USE_AUTH = #{menu_use_auth}
+  		WHERE
+  			MENU_ID = #{menu_id}
+	</update>
+	
+	
+	<select id="selectAuthMenuList" parameterType="authVo" resultType="authVo">
+        SELECT  DISTINCT MENU_ID AS menu_id               /* 메뉴 고유ID */ 
+	          , MENU_NM AS menu_nm               /* 메뉴 명 */ 
+	          , MENU_URL AS menu_url               /* 메뉴 URL */ 
+	          , MENU_LEVL AS menu_levl           /* 메뉴레벨 */ 
+	          , IFNULL(MENU_PRTS_ID,'0') AS menu_prts_id     /* 상위 메뉴 ID */ 
+	          , MENU_USE_YN AS menu_use_yn       /* 메뉴 사용여부 */ 
+	          , MENU_USE_AUTH AS menu_use_auth       /* 메뉴 사용권한 */ 
+	          , MENU_ORD AS menu_ord             /* 메뉴순서 */ 
+	          , ETC AS etc             			/* 메뉴순서 */ 
+         FROM  MENU_MANAGE_TB
+	</select>	
+	
+	<select id="selectMainmenuList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		/* AuthMap.selectMainmenuList */
+		SELECT a.MENU_ID
+		     , MENU_NM
+		     , (SELECT x.MENU_URL FROM (SELECT MENU_ID,MENU_URL, MENU_LEVL , MENU_PRTS_ID , MENU_ORD, MENU_USE_AUTH FROM MENU_MANAGE_TB ORDER BY MENU_ORD ASC) x WHERE x.MENU_PRTS_ID = a.MENU_ID AND x.MENU_USE_AUTH LIKE  '%' || #{MENU_USE_AUTH} || '%'  LIMIT 1) AS MENU_URL
+		     , (SELECT y.MENU_ID FROM (select MENU_ID,MENU_URL, MENU_LEVL , MENU_PRTS_ID , MENU_ORD, MENU_USE_AUTH from MENU_MANAGE_TB ORDER BY MENU_ORD ASC) y WHERE y.MENU_PRTS_ID = a.MENU_ID AND y.MENU_USE_AUTH LIKE  '%' || #{MENU_USE_AUTH} || '%'  LIMIT 1) AS MENU_SUB_ID
+		     , (SELECT z.MENU_PRTS_ID FROM (select MENU_ID,MENU_URL, MENU_LEVL , MENU_PRTS_ID , MENU_ORD, MENU_USE_AUTH from MENU_MANAGE_TB ORDER BY MENU_ORD ASC) z WHERE z.MENU_PRTS_ID = a.MENU_ID AND z.MENU_USE_AUTH LIKE  '%' || #{MENU_USE_AUTH} || '%'  LIMIT 1) AS MENU_PRTS_ID
+		     , MENU_ORD
+		     , MENU_USE_YN
+		FROM MENU_MANAGE_TB a
+		WHERE 1 = 1
+		    AND MENU_USE_YN = 'Y'
+		    AND MENU_USE_AUTH LIKE CONCAT('%',#{MENU_USE_AUTH},'%')
+		    AND MENU_LEVL = 0
+		ORDER BY MENU_ORD ASC
+		
+
+	</select>
+	
+	<!-- 전체 메뉴 목록 -->
+	<select id="selectAllMenuList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		/* AuthMap.selectAllMenuList */
+		SELECT MENU_ID
+	         , MENU_NM
+	         , MENU_URL
+	         , MENU_LEVL
+	         , MENU_PRTS_ID
+	         , MENU_ORD
+	         , MENU_USE_YN
+	         , MENU_USE_AUTH
+	         , ETC
+		FROM MENU_MANAGE_TB
+		WHERE 1 = 1
+		<if test="MENU_URL != null and MENU_URL != ''">
+			AND MENU_URL = #{MENU_URL}
+		</if>
+		<if test="MENU_USE_AUTH != null and MENU_USE_AUTH != ''">
+			AND MENU_USE_AUTH LIKE CONCAT('%',#{MENU_USE_AUTH},'%')
+		</if>
+		<if test="MENU_USE_YN != null and MENU_USE_YN != ''">
+			AND MENU_USE_YN = #{MENU_USE_YN}
+		</if>
+	</select>
+	
+
+<!-- 	<select id="selectCodeNum" resultType="string"> -->
+<!-- 		SELECT DTLCODE -->
+<!-- 		FROM -->
+<!-- 		( -->
+<!-- 		SELECT DTLCODE FROM CMMN_DTL_CD_TB WHERE DTLCODE LIKE '3%' AND CODE_SE = 'CD000018' ORDER BY DTLCODE DESC -->
+<!-- 		) -->
+<!-- 		WHERE ROWNUM =1 -->
+<!-- 	</select> -->
+	
+	
+	
+	
+	
+
+	
+	<select id="selectMenuByAuth" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		/* AuthMap.selectMenuByAuth */
+		SELECT MENU_ID
+	         , MENU_NM
+	         , MENU_URL
+	         , MENU_LEVL
+	         , MENU_PRTS_ID
+	         , MENU_ORD
+	         , MENU_USE_YN
+	         , MENU_USE_AUTH
+	         , ETC
+		FROM MENU_MANAGE_TB
+		WHERE 1 = 1
+		  AND MENU_USE_AUTH LIKE CONCAT('%',#{MENU_USE_AUTH},'%')
+	</select>
+	<select id="selectTopmenuList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		/* AuthMap.selectTopmenuList */
+		SELECT MENU_ID
+	         , MENU_NM
+	         , MENU_URL
+	         , MENU_LEVL
+	         , MENU_PRTS_ID
+	         , MENU_ORD
+	         , MENU_USE_YN
+	         , ETC
+		FROM MENU_MANAGE_TB
+		WHERE 1 = 1
+			AND MENU_USE_YN = 'Y'
+			AND MENU_USE_AUTH LIKE CONCAT('%',#{MENU_USE_AUTH},'%')
+		<if test="MENU_LEVL != null and MENU_LEVL != ''">
+		  AND MENU_LEVL != 0
+		</if>
+		<if test="MENU_PRTS_ID != null and MENU_PRTS_ID != ''">
+		  AND MENU_PRTS_ID = #{MENU_PRTS_ID}
+		</if>
+		<if test="MENU_USE_AUTH != null and MENU_USE_AUTH != ''">
+			<if test="MENU_USE_AUTH != 'AUTH0001'">
+				AND MENU_ID != 'TOP_9'
+			</if>
+		</if>
+		ORDER BY MENU_ORD ASC
+		
+	</select>
+	
+	<select id="chkPwdUsrMng" parameterType="authVo" resultType="int">
+		/*AuthMap.chkPwdUsrMng*/
+			select count(*)
+			from USER_TB
+			where USER_PWD = #{USER_PWD}
+	</select>
+	
+	
+	
+<!-- ************** 사용자 관리 관련 ************************** -->	
+	
+	<!-- 사용자 관리화면 목록 -->
+	<select id="selectUsrMngList" parameterType="authVo" resultType="java.util.HashMap">
+		/* AuthMap.selectUsrMngList */
+		<include refid="pagingTop" />
+				SELECT
+					 B.USER_ID
+					,B.USER_ID AS KEY1
+					,'****' AS USER_PWD
+					,B.USER_NM
+					,(SELECT AUTH_NM FROM AUTH_CD_MANAGE_TB WHERE AUTH_CD = B.AUTH_CD) AS AUTH_NM
+ 					,B.OFFICE_REG_NO 
+				FROM
+				  AUTH_CD_MANAGE_TB A, USER_TB B
+				WHERE
+				  A.AUTH_CD = B.AUTH_CD
+			<if test="SEARCH_USR_NM != null and SEARCH_USR_NM">
+				AND B.USER_NM LIKE CONCAT('%',#{SEARCH_USR_NM},'%')
+			</if>		 
+		<include refid="pagingBottom" />
+	</select>
+	
+	<!-- 사용자 관리화면 목록 카운트 -->
+	<select id="selectUsrMngListCount" parameterType="authVo" resultType="int">
+		/* AuthMap.selectUsrMngListCount */
+			SELECT COUNT(*) 
+			FROM     AUTH_CD_MANAGE_TB A, USER_TB B
+			WHERE A.AUTH_CD = B.AUTH_CD
+		<if test="SEARCH_USR_NM != null and SEARCH_USR_NM">
+	   	   AND B.USER_NM LIKE CONCAT('%',#{SEARCH_USR_NM},'%')
+		</if>	 
+	</select>
+	
+	
+	<!-- 사용자 관리화면 상세 -->
+	<select id="selectUsrMngDetail" parameterType="authVo" resultType="java.util.HashMap">
+		/* AuthMap.selectUsrMngDetail */
+			SELECT B.USER_NM
+			     , B.USER_ID
+			     , B.EMAIL
+			     , B.AUTH_CD
+			     , B.USE_AT 
+			     , A.AUTH_NM
+			     , B.MOBILE
+			     , B.OFFICE_NM
+			     , B.OFFICE_REG_NO
+			FROM AUTH_CD_MANAGE_TB A, USER_TB B
+			WHERE A.AUTH_CD = B.AUTH_CD
+			AND B.USER_ID = #{USER_ID}
+	</select>
+	
+	
+	<!-- 사용자 관리 신규입력시 아이디 중복체크 -->
+	<select id="duplIdCheck" parameterType="authVo" resultType="int">
+		/* AuthMap.duplIdCheck */
+		SELECT COUNT(*) 
+		FROM USER_TB 
+		where USER_ID = #{USER_ID}
+	</select>
+	
+	
+	
+	<!-- 사용자 신규저장 - 회원가입 -->
+	<select id="insertUsrMng" parameterType="authVo">
+		/* AuthMap.insertUsrMng */
+			INSERT INTO
+			  USER_TB(
+			          USER_NM
+			         ,USER_ID
+			         ,USER_PWD
+			         ,EMAIL
+			         ,MOBILE
+			         ,RGSDE
+			         ,LAST_LOGIN_DT
+			         ,PWD_CHANGE_DT
+			         ,AUTH_CD
+			         ,USE_AT
+			         ,OFFICE_NM
+			         ,OFFICE_PHONE
+			         ,OFFICE_REG_NO
+			         ,LOGIN_FAIL_COUNT
+			         ,LOGIN_AT
+			         ,LOGIN_TRY_DT
+			         )
+			VALUES(
+			         #{USER_NM}
+			        ,#{USER_ID}
+			        ,#{USER_PWD}
+			        ,#{EMAIL}
+			        ,#{MOBILE}
+			        ,NOW()
+			        ,NOW()
+			        ,DATE_ADD(NOW(), INTERVAL 3 MONTH)
+			        ,#{AUTH_CD}
+			        ,"Y"
+			        ,#{OFFICE_NM}
+			        ,#{OFFICE_PHONE}
+			        ,#{OFFICE_REG_NO}
+			        ,0
+			        ,NOW()
+			        ,"Y"
+			)
+	</select>
+	<!-- 관리자가 사용자의 사용여부, 권한 수정 -->
+	<update id="updateUsrMng" parameterType="authVo">
+		/* AuthMap.updateUsrMng */
+			UPDATE USER_TB
+			SET     AUTH_CD = #{AUTH_CD}
+			       ,USE_AT = #{USE_AT}
+			WHERE USER_ID = #{USER_ID}  
+	</update>
+	
+	
+	<!-- 사용자가 자신의 회원 정보 수정 -->
+	<update id="updateUserInfo" parameterType="authVo">
+		/* AuthMap.updateUserInfo */
+			UPDATE USER_TB
+			SET 	USER_NM = #{USER_NM}
+			       ,EMAIL = #{EMAIL}
+			       ,MOBILE = #{MOBILE}
+			       ,OFFICE_NM = #{OFFICE_NM}
+			       ,OFFICE_PHONE = #{OFFICE_PHONE}
+			       ,OFFICE_REG_NO = #{OFFICE_REG_NO}
+			WHERE USER_ID = #{USER_ID}  
+	</update> 
+	
+	<!-- 사용자가 회원정보 수정 시 비밀번호 수정 - 이용자 -->
+	<select id="updatePw" parameterType="authVo">
+	/* AuthMap.updatePw */
+		UPDATE USER_TB
+		SET USER_PWD = #{USER_PWD}
+		   ,PWD_CHANGE_DT = DATE_ADD(NOW(), INTERVAL 3 MONTH)
+		WHERE USER_ID = #{USER_ID}
+		
+	</select>
+	
+	<!-- 이용자 회원정보 수정화면 불러오기  -->
+	<select id="selectUserInfoDetail" parameterType="authVo" resultType="java.util.HashMap">
+		/* AuthMap.selectUserInfoDetail */
+			SELECT USER_NM
+			     , USER_ID
+			     , EMAIL
+			     , MOBILE
+			     , OFFICE_NM
+			     , OFFICE_PHONE
+			     , OFFICE_REG_NO
+			FROM USER_TB 
+			WHERE USER_ID = #{USER_ID}
+	</select>
+	
+	
+	<!-- 관리자가 이용자 삭제 -->
+	<delete id="deleteUsrMng" parameterType="authVo">
+		/* AuthMap.deleteUsrMng */
+			DELETE
+			FROM USER_TB
+			WHERE USER_ID = #{USER_ID}
+	</delete>	
+	
+	
+	
+	<!-- 아이디 찾기 조회 -->
+	<select id="findUser_Id" parameterType="authVo" resultType="string">
+		/* AuthMap.findUser_Id */
+		SELECT USER_ID
+		FROM USER_TB
+		WHERE EMAIL = #{EMAIL}
+		AND USER_NM = #{USER_NM}
+	</select>
+	<!-- 아이디 찾기 조회 -->
+	<select id="findUser_Id_count" parameterType="authVo" resultType="int">
+		/* AuthMap.findUser_Id_count */
+		SELECT COUNT(*)
+		FROM USER_TB
+		WHERE EMAIL = #{EMAIL}
+		AND USER_NM = #{USER_NM}
+	</select>
+	
+	
+	<!-- 비밀번호 찾기 조회 카운트-->
+	<select id="findUser_Pw_count" parameterType="authVo" resultType="int">
+	/* AuthMap.findUser_Pw_count */
+		SELECT COUNT(*)
+		FROM USER_TB
+		WHERE EMAIL = #{EMAIL}
+		AND USER_NM = #{USER_NM}
+		AND USER_ID = #{USER_ID}
+	</select>
+	
+	<!-- 임시비밀번호변경  -->
+	<update id="updateTempPw" parameterType="authVo">
+	/* AuthMap.updateTempPw */
+		UPDATE USER_TB
+		SET USER_PWD = #{USER_PWD}
+		WHERE USER_ID = #{USER_ID}
+		AND EMAIL = #{EMAIL}
+	</update>	
+	
+	
+	<!-- 비밀번호 변경 날짜 확인 -->
+	<select id="chkPwChangeDt" parameterType="authVo" resultType="string">
+		/* AuthMap.chkPwChangeDt */
+			SELECT PWD_CHANGE_DT
+			FROM USER_TB
+			WHERE USER_ID = #{USER_ID}
+	</select>
+	
+	
+	
+	<!-- 신청 접수 후 보완자료 첨부 시 이용자 메일주소 가져오기 - 보완완료 메일전송시 사용-->
+	<select id="getEmail"  parameterType="authVo" resultType="string">
+	/* AuthMap.getEmail */
+		SELECT EMAIL 
+		FROM USER_TB 
+		WHERE USER_ID = #{USER_ID}
+	</select>
+	
+	<!-- 이용자 우선심사신청시  이용자 이름  불러오기 - 신청메일 메일전송시 사용 -->
+	<select id="getName"  parameterType="authVo" resultType="string">
+	/* AuthMap.getName */
+		SELECT USER_NM 
+		FROM USER_TB 
+		WHERE USER_ID = #{USER_ID}
+	</select>
+	
+	
+	<!-- 신청 접수 후 보완자료 첨부시 접수자 이메일주소 가져오기 - 보완완료 메일전송시 사용(접수자도 접수된 사실을 알아야하기때문) -->
+	<select id="getRectEmail"  parameterType="authVo" resultType="string">
+	/* AuthMap.getRectEmail */
+		SELECT EMAIL 
+		FROM USER_TB 
+		WHERE USER_ID = 'ras10'
+<!-- 		WHERE AUTH_CD = 'AUTH0003'; -->
+	</select>
+	
+	
+<!-- ******************** 기관코드 관련 ************************************************************* -->
+	
+	<!-- 기관코드 관리화면 목록 -->
+	<select id="selectPrOrgMngList" parameterType="authVo" resultType="java.util.HashMap">
+		/* AuthMap.selectPrOrgMngList */
+		<include refid="pagingTop" />
+			SELECT CODE_SE
+			, CODE_NM
+			, WRTER
+			, CODE_DC
+			, DATE_FORMAT(RGSDE, '%Y-%m-%d') AS RGSDE
+            , DATE_FORMAT(UPDDE, '%Y-%m-%d') AS UPDDE
+		FROM PR_ORG_CD_TB
+	 	WHERE 1 = 1
+		<if test="SEARCH_CODE_NM != null and SEARCH_CODE_NM != ''">
+			AND CODE_NM LIKE CONCAT('%',#{SEARCH_CODE_NM},'%')
+		</if>
+		ORDER BY CODE_SE ASC
+		<include refid="pagingBottom" />
+	</select>
+	
+	
+	<!-- 기관코드 관리화면 목록 카운트 -->
+	<select id="selectPrOrgMngListCount" parameterType="authVo" resultType="int">
+		/* AuthMap.selectPrOrgMngListCount */
+		SELECT COUNT(*)
+		FROM PR_ORG_CD_TB
+		WHERE 1 = 1
+		<if test="SEARCH_CODE_NM != null and SEARCH_CODE_NM != ''">
+			AND CODE_NM LIKE CONCAT('%',#{SEARCH_CODE_NM},'%')
+		</if>
+	</select>	
+	
+	
+	<!-- 기관코드 관리화면 상세 -->
+	<select id="selectPrOrgMngDetail" parameterType="authVo" resultType="java.util.HashMap">
+		/* AuthMap.selectPrOrgMngDetail */
+		SELECT CODE_SE
+			 , CODE_NM
+			 , CODE_DC
+			 , WRTER
+			 , RGSDE
+			 , UPDDE
+		FROM PR_ORG_CD_TB
+		WHERE CODE_SE = #{CODE_SE}
+	</select>	
+	
+	
+	<!-- 기관코드 관리화면 신규저장 -->
+	<select id="insertPrOrgMng" parameterType="authVo">
+		/* AuthMap.insertPrOrgMng */
+		INSERT INTO
+			PR_ORG_CD_TB(
+				   CODE_SE
+				 , CODE_NM
+				 , CODE_DC
+				 , WRTER
+				 , RGSDE
+				 , UPDDE
+	              )
+			VALUES(
+				  #{CODE_SE}
+				, #{CODE_NM}
+				, #{CODE_DC}
+				, IFNULL(#{WRTER}, 'SYSTEM')
+				, NOW()
+				, NULL
+			   )
+	</select>	
+	
+	
+	<!-- 기관코드 관리화면 수정 -->
+	<update id="updatePrOrgMng" parameterType="authVo">
+		/* AuthMap.updatePrOrgMng */
+		UPDATE PR_ORG_CD_TB
+		SET CODE_NM = #{CODE_NM}
+		  , CODE_DC = #{CODE_DC}
+		  , WRTER = IFNULL(#{WRTER}, 'SYSTEM')
+		  , UPDDE = NOW()
+		WHERE CODE_SE = #{CODE_SE}
+	</update>	
+	
+	
+	<!-- 기관코드 관리화면 삭제 -->
+	<delete id="deletePrOrgCdMng" parameterType="authVo">
+		/* AuthMap.deletePrOrgCdMng */
+		DELETE
+		FROM PR_ORG_CD_TB
+		WHERE CODE_SE = #{CODE_SE}
+	</delete>	
+	
+	
+	<!-- 기관상세코드 관리화면 상세 목록 -->
+	<select id="selectPrOrgMngDetailList" parameterType="authVo" resultType="java.util.HashMap">
+		/* AuthMap.selectPrOrgMngDetailList */
+		SELECT A.CODE_SE
+	         , B.CODE_NM
+	         , A.DTLCODE
+	         , A.DTLCODE_NM
+	         , A.USE_AT
+	         , A.SAUPJA_NO
+	         , A.ADDRESS
+		FROM PR_ORG_DTL_CD_TB A
+		       , PR_ORG_CD_TB B
+		WHERE A.CODE_SE = B.CODE_SE
+		  AND A.CODE_SE = #{CODE_SE}
+		ORDER BY A.DTLCODE
+	</select>		
+	
+	
+	<!-- 기관상세코드 관리화면 신규저장 -->
+	<select id="insertPrOrgDtlCdMng" parameterType="authVo">
+		/* AuthMap.insertPrOrgDtlCdMng */
+		INSERT INTO
+			PR_ORG_DTL_CD_TB(
+							CODE_SE
+						  , DTLCODE
+						  , DTLCODE_NM
+						  , USE_AT
+						  , WRTER
+						  , RGSDE
+						  , UPDDE
+						  , SAUPJA_NO
+						  , ADDRESS
+			              )
+			VALUES(
+					  #{CODE_SE}
+					, #{DTLCODE}
+					, #{DTLCODE_NM}
+					, #{USE_AT}
+					, IFNULL(#{WRTER}, 'SYSTEM')
+					, NOW()
+					, NOW()
+					, #{SAUPJA_NO}
+					, #{ADDRESS}
+				   )
+	</select>
+	
+	
+	<!-- 기관상세코드 관리화면 삭제 -->
+	<delete id="deletePrOrgDtlCdMng" parameterType="string">
+		/* AuthMap.deletePrOrgDtlCdMng */
+		DELETE
+		FROM PR_ORG_DTL_CD_TB
+		WHERE CODE_SE = #{CODE_SE}
+	</delete>	
+	
+		
+	
+	
+	
+	
+	
+	
+	
+</mapper>

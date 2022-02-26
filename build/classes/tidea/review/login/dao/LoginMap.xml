@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tidea.review.login.dao.LoginDao">
+
+	<!-- 로그인 아이디가 존재하는 체크 -->
+	<select id="selectLoginUserIdCheck" parameterType="string" resultType="int">
+		/* LoginMap.selectLoginUserIdCheck */
+		SELECT COUNT(*)
+		FROM USER_TB
+		WHERE USER_ID = #{USER_ID}
+		
+	</select>
+	
+	<!-- ************ 20220223 로그인횟수제한 ************************-->
+	<!-- 로그인 패스워드 체크 - 실패 카운트 6미만일때만 패스워드 체크 가능 -->
+	<select id="selectLoginPwCheck" parameterType="java.util.HashMap" resultType="string">
+		/* LoginMap.selectLoginPwCheck */
+		<![CDATA[
+		SELECT IF(USER_PWD = #{USER_PWD},'Y','N') AS PW_CHECK
+		FROM USER_TB
+		WHERE USER_ID = #{USER_ID}
+		]]>
+<!-- 		AND LOGIN_FAIL_COUNT < 4 -->
+	</select>
+	
+	<!-- 비밀번호실패시 로그인 실패 카운트 증가 -->
+	<update id="updateLoginFailCnt" parameterType="authVo">
+		/*LoginMap.updateLoginFailCnt*/
+			<![CDATA[
+			UPDATE USER_TB
+			SET LOGIN_AT = IF(LOGIN_FAIL_COUNT < 4,  'Y', 'N'),
+				LOGIN_FAIL_COUNT = LOGIN_FAIL_COUNT + 1,
+				LOGIN_TRY_DT = NOW()
+			WHERE USER_ID = #{USER_ID}
+			]]>
+	</update>
+	
+	
+	<!-- *************************************************************** -->
+	
+	
+	<!-- 로그인시 사용여부 확인 -->
+	<select id="useAtCheck" parameterType="authVo" resultType="string">
+		/* LoginMap.useAtCheck */
+		SELECT USE_AT
+		FROM USER_TB
+		WHERE USER_ID = #{USER_ID}
+	</select>
+		
+	
+	<!-- 관리자 리턴 URL용 쿼리 -->
+	<select id="selectMngUrl" resultType="java.util.HashMap">
+	 SELECT MENU_URL,MENU_ID 
+	 FROM (
+			SELECT MENU_ID
+				 , MENU_URL
+				 , MENU_LEVL
+				 , MENU_PRTS_ID
+				 , MENU_ORD
+				 , MENU_USE_AUTH
+			FROM MENU_MANAGE_TB 
+			ORDER BY MENU_ORD ASC
+				)A WHERE A.MENU_PRTS_ID = 'TOP_9'   AND A.MENU_URL = '/auth/menuMng.do' 
+	</select>
+	
+	
+	<select id="selectManagerInfo" parameterType="string" resultType="java.util.HashMap">
+		/*LoginMap.selectManagerInfo*/
+		SELECT USER_ID
+		     , USER_NM
+		     , USER_PWD
+		     , AUTH_CD
+		FROM USER_TB
+		WHERE USER_ID=#{USER_ID}
+	</select>
+
+
+<!-- ********************** 20220223 로그인횟수관련 ******************* -->
+	<!--  로그인 쿼리 - (LOGIN_AT='Y' OR (LOGIN_AT='Y' AND 현재시간 - 로그인시도시간 > 10분)) -->
+	<select id="selectEmployeeAuth" parameterType="string" resultType="java.util.HashMap">
+		/*LoginMap.selectEmployeeAuth*/
+<!-- 		SELECT AUTH_CD -->
+<!-- 			 , USER_ID -->
+<!-- 			 , USER_PWD -->
+<!-- 			 , USER_NM -->
+<!-- 		  FROM USER_TB -->
+<!-- 		 WHERE USER_ID = #{USER_ID} -->
+		<![CDATA[
+		SELECT AUTH_CD
+			 , USER_ID
+			 , USER_PWD
+			 , USER_NM
+		FROM USER_TB
+		WHERE USER_ID=#{USER_ID}
+		AND ((LOGIN_AT= 'Y' ) OR ((LOGIN_AT= 'N') AND (TIMESTAMPDIFF(MINUTE, LOGIN_TRY_DT, NOW()) > 10)))
+ 		]]> 
+	</select>
+
+
+	<!-- 로그인횟수제한 - 로그인 성공시 실패카트 초기화, 로그인여부 Y --> 
+	<update id="resetLoginFailCnt" parameterType="authVo">
+	/*LoginMap.resetLoginFailCnt*/
+		UPDATE USER_TB
+		SET LOGIN_FAIL_COUNT = 0
+		   ,LOGIN_AT = 'Y' 
+		   ,LAST_LOGIN_DT = NOW() 
+		WHERE USER_ID = #{USER_ID}
+		AND ((LOGIN_AT= 'Y' ) OR ((LOGIN_AT= 'N') AND (TIMESTAMPDIFF(MINUTE, LOGIN_TRY_DT, NOW()) > 10)))
+	</update>	
+<!-- *************************************************************** -->
+
+
+
+
+</mapper>

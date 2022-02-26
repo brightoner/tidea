@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<!-- 간혼 테그에 오류가 있을수 있다 그건  tiles-config_3_0.dtd 버전 오류일 가능성이 높다. -->
+<tiles-definitions>
+	
+	<definition name="test_layout" template="/WEB-INF/views/layout/test_layout.jsp">
+	    <put-attribute name="meta" value="/WEB-INF/views/layout/menu/test_meta.jsp" />
+	    <put-attribute name="header" value="/WEB-INF/views/include/test_header.jsp" />
+	    <put-attribute name="top_menu" value="/WEB-INF/views/include/test_top_menu.jsp" />
+	    <put-attribute name="left_menu" value="/WEB-INF/views/include/left_menu.jsp" />
+	    <put-attribute name="left_menu_moblie" value="/WEB-INF/views/include/left_menu_moblie.jsp" />
+	    <put-attribute name="feature" value="/WEB-INF/views/layout/menu/test_feature.jsp" />
+	    <!-- <put-attribute name="body" value="" />  -->	    
+	    <put-attribute name="body" value="" />
+	    
+     
+	    <put-attribute name="footer" value="/WEB-INF/views/include/test_footer.jsp" />
+	</definition>
+
+	<!--
+	<definition name="**/*.test" extends="test_layout">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+
+	<definition name="**/*/*.test" extends="test_layout">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+	</definition>
+
+	<definition name="**/*.tiles" extends="test_layout">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+
+	<definition name="**/*/*.tiles" extends="test_layout">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+	</definition>
+	 -->
+ 
+ 	<definition name="**/*.test" extends="test_layout">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+
+	<definition name="**/*/*.test" extends="test_layout">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+	</definition>
+
+	<definition name="**/*.tiles" extends="test_layout">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+
+	<definition name="**/*/*.tiles" extends="test_layout">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+	</definition>
+ 
+ 
+ 
+ 
+ 
+ 
+<!-- 	<definition name="no-tiles" template="/WEB-INF/views/layout/test_user_not_layout.jsp"> -->
+<!-- 		<put-attribute name="meta" value="/WEB-INF/views/layout/menu/new_meta.jsp" /> -->
+<!-- 	    <put-attribute name="header" value="/WEB-INF/views/layout/menu/new_header.jsp" /> -->
+<!-- 		<put-attribute name="noTemplate" value="" /> -->
+<!-- 	</definition> -->
+	
+<!-- 	<definition name="*/*.jsp" extends="no-tiles"> -->
+<!-- 		<put-attribute name="noTemplate" value="/WEB-INF/views/{1}/{2}.jsp" /> -->
+<!-- 	</definition> -->
+<!-- 	<definition name="*/*/*.jsp" extends="no-tiles"> -->
+<!-- 		<put-attribute name="noTemplate" value="/WEB-INF/views/{1}/{2}/{3}.jsp" /> -->
+<!-- 	</definition> -->
+	
+	
+  
+</tiles-definitions>

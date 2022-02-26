@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<settings>
+	    <setting name="cacheEnabled"              value="false"/>
+	    <setting name="defaultExecutorType"      value="SIMPLE"/>
+	    <setting name="defaultStatementTimeout"  value="25000"/>
+	    <setting name="jdbcTypeForNull"  value="VARCHAR"/>
+	  </settings>
+
+	<typeAliases>
+		<!-- egovMap -->
+		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap" />
+		<!-- VO 정의 -->
+		<typeAlias alias="commonVo" type="tidea.review.common.vo.CommonVo"/>
+		<typeAlias alias="authVo" type="tidea.review.auth.vo.AuthVo"/>
+		<typeAlias alias="sampleVo" type="tidea.review.sample.vo.SampleVo"/>
+		<typeAlias alias="applyVo" type="tidea.review.apply.vo.ApplyVo"/>
+		<typeAlias alias="receiptVo" type="tidea.review.receipt.vo.ReceiptVo"/>
+		<typeAlias alias="attachFileVo" type="tidea.review.apply.vo.AttachFileVo"/>
+		<typeAlias alias="emailVo" type="tidea.review.email.vo.EmailVo"/>
+	</typeAliases>
+</configuration>

@@ -1,0 +1,205 @@
+package tidea.review.login.controller;
+
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import tidea.review.auth.vo.AuthVo;
+import tidea.review.login.service.LoginService;
+
+@Controller
+public class LoginController {
+	
+	@Resource(name = "loginService")
+	private LoginService loginService;
+	
+
+	
+	@RequestMapping(value="/admin/superAdmin.do")
+	public String superAdmin(HttpServletRequest request,Model model) throws Exception{
+		//request.getSession().invalidate();
+		return "redirect:/login/login.do";
+			
+	}
+	
+	/**
+	 * <pre>
+	 * @Method Name  : login
+	 * @Method 설명 : 관리자 분기처리 메소드 
+	 * </pre>
+	 * @작성일   : 2019. 2. 19.
+	 * @작성자   : HBJ
+	 * @변경이력  :
+	 */
+	@RequestMapping(value="/branch/branch.do")
+	public String branch(HttpServletRequest request,Model model) throws Exception{
+		@SuppressWarnings("unchecked")
+		Map<String, Object> ssLoginInfo = (Map<String, Object>) request.getSession().getAttribute("SS_LOGIN_INFO");
+		if(null != ssLoginInfo){
+			System.err.println(ssLoginInfo.size());
+			if(StringUtils.equals(String.valueOf(ssLoginInfo.get("AUTH")), "AUTH0001")){
+				Map<String,Object> mngInfo = loginService.selectMngUrl();
+				return "redirect:"+mngInfo.get("MENU_URL")+"?ACTIVE_TOP_MENU=TOP_9&ACTIVE_SUB_MENU="+mngInfo.get("MENU_ID");
+			}
+		}
+		request.getSession().invalidate();
+		return "redirect:/login/login.do";
+			
+	}
+	
+	
+	
+	/**
+	 * <pre>
+	 * @Method Name  : login
+	 * @Method 설명 : 로그인화면 
+	 * </pre>
+	 * @작성일   : 2019. 1. 11.
+	 * @작성자   : CMK
+	 * @변경이력  :
+	 */
+	@RequestMapping(value="/login/login.do")
+	public String login(HttpServletRequest request, Model model) throws Exception {
+		String id = request.getParameter("id");
+		if(null == id || StringUtils.equals("", id)){
+			return "/login/login";
+		}
+		byte[] decryptByte = Base64.decodeBase64(id.getBytes());
+		String decryptId = new String(decryptByte);
+		model.addAttribute("id", id);
+		model.addAttribute("decryptid", decryptId);
+		return "/login/login";
+	}
+	
+	@RequestMapping(value="/login/join.do")
+	public String join(HttpServletRequest request, Model model) throws Exception {
+		
+		return "/login/join.tiles";
+	}
+	
+	/**
+	 * <pre>
+	 * @Method Name  : goLogin
+	 * @Method 설명 : 로그인 처리 
+	 * </pre>
+	 * @작성일   : 2019. 1. 29.
+	 * @작성자   : YTK
+	 * @변경이력  :
+	 * 
+	 * 
+	 * 
+	 */
+	@RequestMapping(value="/login/goLogin.do")
+	public String goLogin(HttpServletRequest request, Model model, AuthVo authVo) throws Exception {
+		
+		String id = request.getParameter("id") == null ? "" : request.getParameter("id");
+		if(!StringUtils.equalsIgnoreCase("", id)){
+			byte[] decryptByte = Base64.decodeBase64(id.getBytes());
+			String decryptId = new String(decryptByte);
+			request.setAttribute("USER_ID", decryptId);
+			request.setAttribute("USER_PWD", "X");
+		}
+		
+		String loginErrorCode = loginService.goLogin(request, model, authVo);
+		System.out.println(loginErrorCode);
+		// 아이디와 패스워드가 모두 일치하는 경우
+		/* if(StringUtils.equals("LOGIN_OK", loginErrorCode)){
+			System.out.println("============ 사 용 자 =============");
+			System.out.println(StringUtils.equals("MNGLOGIN_OK", loginErrorCode));
+			System.out.println(StringUtils.equals("MNGLOGIN_OK", loginErrorCode));
+			return "redirect:/sample/samplemain.do";*/
+		
+		if(loginErrorCode.equals("LOGIN_OK")){
+			System.out.println("============ 사 용 자 =============");
+			System.out.println(loginErrorCode.equals("LOGIN_OK"));
+			
+			return "redirect:/sample/samplemain.do";
+		}else if(StringUtils.equals("MNGLOGIN_OK", loginErrorCode)){
+			System.out.println("============ 관 리 자 =============");
+			System.out.println(StringUtils.equals("MNGLOGIN_OK", loginErrorCode));
+			
+			Map<String,Object> mngInfo = loginService.selectMngUrl();
+			System.out.println(mngInfo);
+			System.out.println(request.getSession().getAttribute("SS_LOGIN_INFO"));
+			return "redirect:"+mngInfo.get("MENU_URL")+"?ACTIVE_TOP_MENU=TOP_9&ACTIVE_SUB_MENU="+mngInfo.get("MENU_ID");
+		}
+		
+		//**********************접수자 특정 ip 관리***************************
+		else if(loginErrorCode.equals("loginErrorCode")) {
+			System.out.println("******** loginErrorCode : " + loginErrorCode);
+			System.out.println("============= 접수자, 슈퍼관리자 ip에러 =================");
+			model.addAttribute("loginErrorCode", loginErrorCode);
+		}
+		//***************************************************************
+		
+		// 아이디가 틀린 경우
+		else{
+			model.addAttribute("loginErrorCode", loginErrorCode);
+		}
+		
+		return "/login/login";
+	}
+	
+
+	/**
+	 * 로그인 처리시 사용여부 확인 ajax
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param authVo
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/login/useAtCheck.do")
+	public String useAtCheck(HttpServletRequest request,  HttpServletResponse response, Model model, AuthVo authVo) throws Exception {
+		
+		String user_id = request.getParameter("USER_ID");
+		authVo.setUSER_ID(user_id);
+		String user_pwd = request.getParameter("USER_PWD");
+		authVo.setUSER_PWD(user_pwd);
+		
+		String  result = loginService.useAtCheck(authVo);
+		
+		if(result == "Y" || result.equals("Y")){
+			model.addAttribute("useAtCheck", "OK");
+			return "jsonView";
+		}else {
+			model.addAttribute("useAtCheck", "Error");
+			return "jsonView";
+		}
+	}
+	
+	
+	
+	/**
+	 * <pre>
+	 * @Method Name  : goLogin
+	 * @Method 설명 : 로그아웃 처리 
+	 * </pre>
+	 * @작성일   : 2019. 1. 29.
+	 * @작성자   : YTK
+	 * @변경이력  :
+	 */
+	@RequestMapping(value="/login/goLogout.do")
+	public String goLogout(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		
+		
+		// 모든 세션 초기화
+		request.getSession().invalidate();
+		
+			return "/login/login";
+	}
+	
+	
+	
+	
+	
+}

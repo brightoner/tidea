@@ -1,0 +1,38 @@
+
+/* **************************************** *
+ * RESPONSIVE
+ * **************************************** */
+ 
+ @media screen and (max-width: 1715px) {
+  .drop_ul a{
+  	padding:0;
+  }
+}
+ @media screen and (max-width: 1500px) {
+  .drop_ul a{
+  	font-size:11px;
+  }
+}
+ @media screen and (max-width: 1400px) {
+  .drop_ul a{
+  	font-size:10.5px;
+  }
+   .left_menu_list a{
+  	padding-left:5px;
+  	font-size:13px;
+  }
+}
+@media screen and (max-width: 1280px) {
+  body {
+   min-width:1263px;
+  }
+  .left_menu{
+  	width:170.5px;
+  }
+  header{
+  	min-width:1263px;
+  }
+  .drop_ul li{
+  	padding:0 5px;
+  }
+}

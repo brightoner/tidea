@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+<!-- 	<bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy"> -->
+<!-- 		<property name="properties"> -->
+<!-- 	        <map> -->
+<!-- 	        	<entry key="pageUnit" value="10"/> -->
+<!-- 	        	<entry key="pageSize" value="10"/> -->
+<!-- 	        	ip, port, id, pw 추가  -->
+<!-- 	        	<entry key="api.server_location" 	value="${cnct.api.server_location}"/> -->
+<!-- 	        	<entry key="api.server_port" 		value="${cnct.api.server_port}"/> -->
+<!-- 	        	<entry key="api.server_id" 			value="${cnct.api.server_id}"/> -->
+<!-- 	        	<entry key="api.server_pwd" 		value="${cnct.api.server_pwd}"/> -->
+<!-- 	        	jar path 추가  -->
+<!-- 	        	<entry key="api.server_jarpath" 	value="${cnct.api.server_jarpath}"/> -->
+<!-- 	        </map> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+</beans>	

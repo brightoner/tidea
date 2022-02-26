@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tidea.review.sample.dao.SampleDao">
+
+	<select id="selectSampleList" parameterType="sampleVo" resultType="java.util.HashMap">
+		/* SampleMap.selectSampleList */
+		SELECT *
+		FROM
+		(
+			SELECT ROWNUM AS RNUM, A.*
+			FROM
+			(
+				SELECT SN
+					 , COL1
+					 , COL2
+					 , COL3
+				FROM TEST_TB
+			 	WHERE 1 = 1
+				<if test="SEARCH_COL1 != null and SEARCH_COL1 != ''">
+					AND COL1 LIKE '%' || #{SEARCH_COL1} || '%'
+				</if>
+				<if test="SEARCH_COL2 != null and SEARCH_COL2 != ''">
+					AND COL2 LIKE '%' || #{SEARCH_COL2} || '%'
+				</if>
+				<if test="SEARCH_COL3 != null and SEARCH_COL3 != ''">
+					AND COL3 LIKE '%' || #{SEARCH_COL3} || '%'
+				</if>
+				ORDER BY SN DESC
+			) A
+			WHERE ROWNUM &lt;= #{pageEnd}
+		) 
+		WHERE RNUM &gt;= #{pageBegin}
+	</select>
+	
+	<select id="selectSampleListCount" parameterType="sampleVo" resultType="int">
+		/* SampleMap.selectSampleListCount */
+		SELECT COUNT(*)
+		FROM TEST_TB
+		WHERE 1 = 1
+		<if test="SEARCH_COL1 != null and SEARCH_COL1 != ''">
+			AND COL1 LIKE '%' || #{SEARCH_COL1} || '%'
+		</if>
+		<if test="SEARCH_COL2 != null and SEARCH_COL2 != ''">
+			AND COL2 LIKE '%' || #{SEARCH_COL2} || '%'
+		</if>
+		<if test="SEARCH_COL3 != null and SEARCH_COL3 != ''">
+			AND COL3 LIKE '%' || #{SEARCH_COL3} || '%'
+		</if>
+	</select>
+	
+	<select id="selectSampleDetail" parameterType="sampleVo" resultType="java.util.HashMap">
+		/* SampleMap.selectSampleDetail */
+		SELECT *
+		FROM TEST_TB
+		WHERE SN = #{SN}
+	</select>
+	
+	<insert id="insertSample" parameterType="sampleVo">
+		/* SampleMap.insertSample */
+		INSERT INTO TEST_TB(SN, COL1, COL2, COL3) VALUES((SELECT NVL(MAX(SN) + 1, 1) FROM TEST_TB), #{COL1}, #{COL2}, #{COL3})
+	</insert>
+	
+	<update id="updateSample" parameterType="sampleVo">
+		/* SampleMap.updateSample */
+		UPDATE TEST_TB
+		SET COL1 = #{COL1}
+		  , COL2 = #{COL2}
+		  , COL3 = #{COL3}
+		WHERE SN = #{SN}
+	</update>
+	
+	<delete id="deleteSample" parameterType="sampleVo">
+		/* SampleMap.deleteSample */
+		DELETE TEST_TB
+		WHERE SN = #{SN}
+	</delete>
+</mapper>

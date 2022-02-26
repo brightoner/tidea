@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+
+   <tlib-version>1.0</tlib-version>
+   <jsp-version>1.2</jsp-version>
+   <short-name>pagelink</short-name>
+
+   <tag>
+
+      <name>pageList</name>
+      <tag-class>acoms5.kisti.taglib.PagingTag</tag-class>
+
+      <attribute>
+         <name>currentPageDisplayPattern</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+      <attribute>
+         <name>firstPageDisplayPattern</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+      <attribute>
+         <name>groupSize</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+      <attribute>
+         <name>lastPageDisplayPattern</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+      <attribute>
+         <name>lastPageNo</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+      <attribute>
+         <name>linkedPageDisplayPattern</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+      <attribute>
+         <name>linkPattern</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+      <attribute>
+         <name>nextGroupDisplayPattern</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+      <attribute>
+         <name>pageKey</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+      <attribute>
+         <name>pageNo</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+      <attribute>
+         <name>prevGroupDisplayPattern</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+      <attribute>
+         <name>stylePrefix</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+      <attribute>
+         <name>pageDivDisplayPattern</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+
+      </attribute>
+
+   </tag>
+
+</taglib>

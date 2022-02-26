@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tidea.review.email.dao.EmailDao">
+
+	<!-- 신청접수, 보완완료 메일 발송 이메일 가져오기 - 티디아기관메일 -->
+	<select id="getTideaEmail" parameterType="emailVo" resultType="java.util.HashMap">
+	/* EmailMap.getTideaEmail */
+		SELECT EMAIL_ADDR
+			  ,PASSWORD
+			  ,APPLY_TITLE 
+			  ,APPLY_CONTENT
+			  ,RECEIPT_TITLE
+			  ,RECEIPT_CONTENT
+		FROM TIDEA_EMAIL_TB
+	</select>
+	
+	<!-- 신청접수, 보완완료 메일 발송 이메일 수정 - 티디아기관메일 -->
+	<update id="updateTideaEmail" parameterType="emailVo">
+	/* EmailMap.updateTideaEmail */
+		UPDATE TIDEA_EMAIL_TB
+		SET 	EMAIL_ADDR = #{email_addr}
+		       ,PASSWORD = #{password}
+		       ,APPLY_TITLE = #{apply_title}
+		       ,APPLY_CONTENT = #{apply_content}
+		       ,RECEIPT_TITLE = #{receipt_title}
+		       ,RECEIPT_CONTENT = #{receipt_content}
+<!-- 		WHERE EMAIL_ADDR = #{email_addr}   -->
+	</update> 
+	
+
+</mapper>

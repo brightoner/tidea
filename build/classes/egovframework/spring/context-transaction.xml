@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+	<!-- 트랜잭션 어노테이션 방식 : 트랜잭션이 필요한 서비스에 @Transactional를 추가시킨다. -->
+<!-- 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
+<!-- 		<property name="dataSource" ref="egov.dataSource" /> -->
+<!-- 	</bean> -->
+<!-- 	<tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager"/> -->
+
+	  <!-- 트랜잭션 pointcut 설정 -->
+<!-- 	  <aop:config> -->
+<!-- 	  	<aop:pointcut id="requiredTx" expression="execution(* acoms5.kisti..*Service.*(..))"/> -->
+<!-- 	  	<aop:pointcut id="requiredTx" expression="execution(* acoms5.kisti..impl.*Impl.*(..))"/> -->
+<!-- 	  	<aop:pointcut id="requiredTx" expression="execution(* acoms5.kisti..*.*(..))"/> -->
+<!-- 	  	<aop:advisor advice-ref="txadvice" pointcut-ref="requiredTx"/> -->
+<!-- 	    <aop:advisor advice-ref="txadvice" pointcut="execution(* acoms5.kisti..impl.*Impl.*(..))" /> -->
+<!--  	  </aop:config> -->
+ 	  
+<!--  	  <aop:config proxy-target-class="true"> -->
+<!--  	  	<aop:pointcut id="controllerOperation" expression="execution(* acoms5.kisti..web.*Controller.*(..))" /> -->
+<!--  	  </aop:config> -->
+ 	  
+  	  <!-- 트랜잭션 advice 지정 -->
+<!-- 	  <tx:advice id="txadvice" transaction-manager="transactionManager"> -->
+<!-- 	    <tx:attributes> -->
+<!-- 	      <tx:method name="*" rollback-for="Exception"/> -->
+<!-- 	      <tx:method name="select*" rollback-for="Exception"/> -->
+<!-- 	      <tx:method name="update*" rollback-for="Exception"/> -->
+<!-- 	    </tx:attributes> -->
+<!-- 	  </tx:advice> -->
+	<!-- <bean id= "applicationContextProvider" class = "acoms5.kisti.process.ApplicationContextProvider"></bean> -->
+
+	<!-- 트랜잭션 관리자를 설정한다.  -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	  <property name="dataSource" ref="rasdev.dataSource"/>
+	</bean>
+	
+	<!-- 트랜잭션 Advice를 설정한다. -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="Exception" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 트랜잭션 Pointcut를 설정한다.-->
+	<aop:config proxy-target-class="true">
+<!-- 		<aop:pointcut id="requiredTx" expression="execution(* acoms5.kisti..*Service.*(..))"/> -->
+<!-- 		<aop:pointcut id="requiredTx" expression="execution(* tidea.impl.*Impl.*(..))" /> -->
+		<aop:pointcut id="requiredTx" expression="execution(* tidea..service.*Impl.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="requiredTx" />
+	</aop:config>
+	
+</beans>

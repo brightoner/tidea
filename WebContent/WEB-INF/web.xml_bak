@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+	
+	<display-name>student_history</display-name>
+	
+	<session-config>
+		<session-timeout>180</session-timeout>
+	</session-config>
+	
+	<!-- 클라이언트의 요청을 서블릿이 받기전에 필터에 작성된 내용을 수행한다. Encoding 설정 필터를 사용해서 캐릭터셋을 UTF-8, Euc-kr 등으로 설정 -->
+<!-- 	<filter> -->
+<!-- 		<filter-name>encodingFilter</filter-name> -->
+<!-- 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class> -->
+<!-- 		<init-param> -->
+<!-- 			<param-name>encoding</param-name> -->
+<!-- 			<param-value>utf-8</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<init-param> -->
+<!-- 			<param-name>forceEncoding</param-name> -->
+<!-- 			<param-value>true</param-value> -->
+<!-- 		</init-param> -->
+<!-- 	</filter> -->
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>encodingFilter</filter-name> -->
+<!-- 		<url-pattern>/*</url-pattern> -->
+<!-- 	</filter-mapping> -->
+<filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+	
+	
+	<!-- sitemesh -->
+<!-- 	<context-param> -->
+<!-- 		<param-name>sitemesh.configfile</param-name> -->
+<!-- 		<param-value>/WEB-INF/config/egovframework/sitemesh/sitemesh.xml</param-value> -->
+<!-- 	</context-param> -->
+<!-- 	<filter> -->
+<!-- 		<filter-name>sitemesh</filter-name> -->
+<!-- 		<filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class> -->
+<!-- 	</filter> -->
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>sitemesh</filter-name> -->
+<!-- 		<url-pattern>/*</url-pattern> -->
+<!-- 	</filter-mapping> -->
+	
+	<!-- Spring Framework를 사용하기 위해선 web.xml에 스프링 설정 파일을 명시해 주어야 하는데 이 설정 파일을 읽어 들이기 위해서 ContextLoaderListener 가 필요한데 이 리스너가 동작해야 설정파일들을 읽어 드리고 필요한 객체들을 등록한다. -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:egovframework/spring/context-*.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<!-- 클라이언트가 해당 어플리케이션에 접근하면 접근한 URL 요청을 DispatcherServlet 이 가로챈다.
+		요청을 중간에 가로 채는 것은 web.xml 에 등록 된 DispatcherServlet에 url-pattern 에 정의해 놓은대로 가로 채기 때문
+		servlet, servlet-mapping 의 name 이 일치하여야 하며servlet-mapping 이 선언 되어야 적용된다. -->
+	<servlet>
+		<servlet-name>action</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/egovframework/springmvc/dispatcher-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>action</servlet-name>
+		<url-pattern>*.do</url-pattern>
+<!-- 		<url-pattern>/ad50</url-pattern> -->
+<!-- 		<url-pattern>/acomssuper</url-pattern> -->
+	</servlet-mapping>
+	
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error/404.jsp</location>
+	</error-page>
+ 	<error-page>
+		<error-code>500</error-code>
+		<location>/error/500.jsp</location>
+	</error-page> 
+	
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+<!-- 		<welcome-file>/WEB-INF/jsp/index.jsp</welcome-file> -->
+	</welcome-file-list>
+</web-app>

@@ -1,0 +1,72 @@
+/* 테이블 선택시 css*/
+tbody .on{ padding:1px  1px 1px 1px;  background: #d7ebf1; }
+
+/* 코드관리 트리css  */
+#paging{text-align:center;}
+a.paging-item,a.paging-side{margin:0 .25em;}
+a.paging-item.selected{font-weight:bold;}
+
+/*공통버튼*/
+input[name=save_btn] { padding: 5px 7px; width:auto; height:24px;  border: 0; text-align:center; font-size:12px; font-weight:bold; color:#fff; background-color:#2ab3ed; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+button[name=save_btn] { padding: 5px 7px; width:auto; height:24px;  border: 0;  text-align:center; font-size:12px; font-weight:bold; color:#fff; background-color:#2ab3ed; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+input[name=del_btn] { padding: 5px 7px; width:auto; height:24px;  border: 0;  text-align:center; font-size:12px; font-weight:bold; color:#fff; background-color: #393939/*#f16661*/; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+button[name=del_btn] { padding: 5px 7px; width:auto; height:24px;  border: 0;  text-align:center; font-size:12px; font-weight:bold; color:#fff; background-color: #393939/*#f16661*/; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+input[name=search_btn] { padding: 5px 7px; width:auto; height:24px;  border: 0;  text-align:center; font-size:12px; font-weight:bold; color:#fff; background-color: #393939/*#2828CD*/; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+a[name=search_btn] { padding: 5px 7px; width:auto; height:24px;  border: 0;  text-align:center; font-size:12px; font-weight:bold; color:#fff; background-color: #393939/*#2828CD*/; border-radius:3px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+button[name=search_btn] { padding: 5px 7px; width:auto; height:24px;  border: 0;  text-align:center; font-size:12px; font-weight:bold; color:#fff; background-color: #393939/*#2828CD*/; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+input[name=download_btn] { padding: 5px 7px; width:auto; height:24px;  border: 0;  text-align:center; font-size:12px; font-weight:bold; color:#fff; background-color: #26b5a9/*#2828CD*/; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+button[name=download_btn] { padding: 5px 7px; width:auto; height:24px;  border: 0;  text-align:center; font-size:12px; font-weight:bold; color:#fff; background-color: #26b5a9/*#2828CD*/; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+input[name=func_btn] { padding: 5px 7px; width:auto; height:24px;  border: 0; text-align:center; font-size:12px; font-weight:bold; color:#fff; background-color:#bcbcbc; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+button[name=func_btn] { padding: 5px 7px; width:auto; height:24px;  border: 0;  text-align:center; font-size:12px; font-weight:bold; color:#fff; background-color:#bcbcbc; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+input[name=exceldown_btn] { padding: 5px 7px 5px 30px; width:auto; height:27px;  border: 0;  text-align:center; font-size:12px; font-weight:bold; color:#fff; background: #1f6a46 url('../img/sub/excel_ico.png') no-repeat 4px 4px; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+button[name=exceldown_btn] { padding: 5px 7px 5px 30px; width:auto; height:27px;  border: 0;  text-align:center; font-size:12px; font-weight:bold; color:#fff; background: #1f6a46 url('../img/sub/excel_ico.png') no-repeat 4px 4px; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+
+
+div.table-c-wrap { overflow: hidden; width: 100%; }
+table.table-c { clear: both; margin: 0 0 10px 1px; width: 100%; border-top:solid 1px; border-bottom: solid 1px #4daf91; border-right: solid 1px #4daf91;margin-top: 3px; }
+
+table.table-c tr.first th, table.table-c tr.first td { /*border-top: none; */  }
+table.table-c tfoot tr.first th, table.table-c tfoot tr.first td { border-top: solid 1px #dcdbdc; }
+table.table-c th,
+table.table-c td { padding: 5px 10px; border-top: solid 1px #c8d1d6; border-right: solid 1px #c8d1d6; text-align: left; line-height:1.4; border:solid 1px #d6dadf; color:#555;}
+table.left td,
+table.table-c .left { text-align: left; padding-left: 10px; }
+table.table-c .right { text-align: right; padding-right: 10px; }
+table.table-c .center { padding-left: 0; }
+table.table-c thead th { font-size: 15px; border-top: none; border-bottom: 1px solid #b8d1c9; border-right-color: #b8d1c9; background-color:  #fbfbfb; color: #333; font-weight: bold; }
+table.table-c tbody th { background-color: #eaeaea; color:#393938;  font-weight:bold; font-szie:13px;  line-height:20px; text-align:left; padding-left: 20px;}
+table.table-c tbody th span { display:block;padding: 0px 0px 0px 42px; background: url('../img/common/th_ico.gif') 20px 3px no-repeat;  color:#393938;   line-height:20px;}
+
+table.table-c .last-child { border-right: none; }
+table.table-c .line { border-right: solid 1px #dcdbdc; }
+table.table-c tfoot th,  table.table-c tfoot td,
+table.table-c .tfoot th, table.table-c .tfoot td { background-color: #efefef; color: #ee4c3a; font-weight: bold; }
+table.table-c .bg  { background-color: #efefef; color: #7a6e6d; font-weight: normal; }
+table.table-c .bg1  { background-color: #fcffff; color: #7a6e6d; font-weight: normal; }
+table.table-c .bg2  { background-color: #fbfbfb; color:#007a80; font-size:14px; }
+table.table-c .bgn { background: none; }
+
+
+
+/*LSI CSS 수정*/
+table.table-b tbody tr:hover { background: #d7ebf1; }
+
+.admin_button { margin-left: 20px; }
+.admin_button input[type=button] { padding: 5px 7px; width:auto; height:24px;  border: 0;  text-align:center;
+													font-size:12px; font-weight:bold; color:#fff; border-radius:1px; font-family: 'Nanum Gothic', '나눔고딕', NanumGothic,'돋움', '돋움체', dotum, AppleGothic, Sans-Serif; cursor: pointer; }
+.admin_button #err_prc { background-color: #393939; }
+.admin_button #procSC { background-color: #2ab3ed; }
+
+#modifiytd span { line-height: 18px; display: block; margin: 0 0 5px; }
+#modifiytd span button { height: 18px; padding: 0 7px; }
+
+/* 페이지네이션 */
+.paginate { text-align: center;  padding-top: 20px; height: 18px; }
+.paging-item { display: inline-block; background: #ccd1d7; width: 18px;  height: 18px; line-height: 18px; color:#fff; }
+.paging-item.on { background: #0599df; color: #fff; font-size: 11px; }
+
+
+/*검색창*/
+.search_area{ margin: 20px 0 0; background-color:#eee; height: 30px; line-height: 30px; padding: 10px 20px; text-align: center;  }
+.search_area .search_label{ display: inline-block;  height: 30px;  line-height: 30px; font-weight: 600; margin: 0 10px 0 30px; vertical-align: middle; }
+.search_area a[name=search_btn] { display: inline-block;  padding: 0 15px; line-height: 21px; height: 21px; border-radius: 0; }

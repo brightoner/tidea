@@ -1,0 +1,43 @@
+### UbiGateway Configuration ###
+# Basic Info
+osCharset=KSC5601
+baseCharset=US7ASCII
+requestCharset=
+isDeflater=false
+isUnicode=true
+isBase64=false
+utfData=true
+colDim=^t
+rowDim=^n
+info=true
+admin=YWRtaW4=
+adminImgUri=/work/service/patis/ubireport/image
+# Db Info
+connType=direct
+dbVendor=
+dbDriver=oracle.jdbc.driver.OracleDriver
+dbUrl=jdbc:oracle:thin:@192.168.1.15:1521:CYCDB
+dbId=STUDENTHISTORY
+dbPw=1111
+# Path Info
+licensePath=
+logPath=
+debug=true
+isDebug=true
+isDetailDebug=true
+xslPath=
+cachePath=
+# Log Info
+timeZone=GMT+9
+rowSize=0
+backupStyle=date
+backupPattern=yyyy-MM-dd
+backupSize=10
+debug=true
+# Drm Info
+drmLoadType=nonCache
+drmConfigFilePath=
+# UbiDaemon Info
+ubidaemonIp=localhost
+ubidaemonPort=16996
+ubidaemonUrfType=normal
