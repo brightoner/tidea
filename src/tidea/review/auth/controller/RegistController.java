@@ -115,6 +115,12 @@ public class RegistController {
 	}
 	
 	
+	//회원가입 -> 이용약관
+	@RequestMapping(value = "/regist/agreement.do")
+	public String agreement() {
+		return "/regist/agreement.tiles";
+	}
+
 	//회원가입
 	@RequestMapping(value = "/regist/regist.do")
 	public String regist() {

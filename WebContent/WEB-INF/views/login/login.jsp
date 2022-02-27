@@ -79,9 +79,12 @@
 	}
 	
 	
-	//회원가입
+	//이용약관 페이지 이동
 	function fn_regist(){
-		$('#form').attr('action', '/regist/regist.do');
+// 		$('#form').attr('action', '/regist/regist.do');
+// 		$('#form').submit();
+		//이용약관 페이지 이동
+		$('#form').attr('action', '/regist/agreement.do');
 		$('#form').submit();
 	}
 	//아이디 비밀번호 찾기

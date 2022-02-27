@@ -16,6 +16,22 @@
 		form.action = "/login/login.do";
 		goSubmit(form);
 	}	
+	
+	//회원가입
+	function fn_regist(){
+		// 신규등록정보  체크여부 확인
+		if(!$('#agree1').is(':checked')){
+			alert('신규등록정보를 체크 하세요.');
+			return;
+		}
+		// 개인정보처리방침  체크여부 확인
+		if(!$('#agree2').is(':checked')){
+			alert('개인정보처리방침을 체크 하세요.');
+			return;
+		}
+		form.action = "/regist/regist.do";
+		goSubmit(form);
+	}
 
 </script>
 <title>티디아 우선심사 시스템</title>
@@ -338,7 +354,7 @@
 			<!-- 입력 및 상세영역 END -->
 			<!-- 상단버튼 영역 -->
 			<div id="buttonDivBox" class="button_box">
-				<button type="button" id="" onclick=""><span></span><c:out value="다음" /></button><!-- 저장하고 다음으로 넘어가기 버튼 -->
+				<button type="button" id="regist_button" onclick="javascript:fn_regist();"><span></span><c:out value="다음" /></button><!-- 저장하고 다음으로 넘어가기 버튼 -->
 			</div>
 			<!-- 상단버튼 영역 END -->
 		</div>
