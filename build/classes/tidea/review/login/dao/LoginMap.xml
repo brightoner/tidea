@@ -79,12 +79,6 @@
 	<!--  로그인 쿼리 - (LOGIN_AT='Y' OR (LOGIN_AT='Y' AND 현재시간 - 로그인시도시간 > 10분)) -->
 	<select id="selectEmployeeAuth" parameterType="string" resultType="java.util.HashMap">
 		/*LoginMap.selectEmployeeAuth*/
-<!-- 		SELECT AUTH_CD -->
-<!-- 			 , USER_ID -->
-<!-- 			 , USER_PWD -->
-<!-- 			 , USER_NM -->
-<!-- 		  FROM USER_TB -->
-<!-- 		 WHERE USER_ID = #{USER_ID} -->
 		<![CDATA[
 		SELECT AUTH_CD
 			 , USER_ID

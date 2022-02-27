@@ -109,6 +109,8 @@
 						<value>/regist/idFind.do</value>
 						<value>/regist/passFind.do</value>
 						<value>/regist/updatePw2.do</value>
+						<value>/regist/agreement.do</value>
+						<value>/regist/guide.do</value>
 					</set>
 				</property>
 				<property name="ajaxCompoURL">

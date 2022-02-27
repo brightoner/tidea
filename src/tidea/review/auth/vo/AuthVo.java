@@ -61,6 +61,7 @@ public class AuthVo extends CommonVo {
 	private String SAUPJA_NO;			// 사업기관 번호
 	private String ADDRESS;				// 사업기관 주소
 	private String OFFICE_REG_NO;		// 사업자등록번호
+	private String OFFICE_OWNER_NM;		// 회사 대표 이름
 
 	
 	/** 사용자 관리 VO */
@@ -94,9 +95,9 @@ public class AuthVo extends CommonVo {
 			String sEARCH_AUTH_NM, String sEARCH_CODE_NM, String cMMN_CD_ID, String cODE_SE, String cODE_NM,
 			String cODE_DC, String cMMN_DTL_CD_ID, String dTLCODE, String dTLCODE_NM, String dTLCODE_ENG_NM,
 			String dTLCODE_DC, String oRDR, String uSE_AT, String sAUPJA_NO, String aDDRESS, String oFFICE_REG_NO,
-			String rGSDE, String uSER_NM, String uSER_ID, String uSER_PWD, String eMAIL, String lAST_LOGIN_DT,
-			String mOBILE, String oFFICE_NM, String oFFICE_PHONE, String pWD_CHANGE_DT, String sEARCH_USR_ID,
-			String sEARCH_USR_NM) {
+			String oFFICE_OWNER_NM, String rGSDE, String uSER_NM, String uSER_ID, String uSER_PWD, String eMAIL,
+			String lAST_LOGIN_DT, String mOBILE, String oFFICE_NM, String oFFICE_PHONE, String pWD_CHANGE_DT,
+			String sEARCH_USR_ID, String sEARCH_USR_NM) {
 		super();
 		this.menu_id = menu_id;
 		this.menu_nm = menu_nm;
@@ -142,6 +143,7 @@ public class AuthVo extends CommonVo {
 		SAUPJA_NO = sAUPJA_NO;
 		ADDRESS = aDDRESS;
 		OFFICE_REG_NO = oFFICE_REG_NO;
+		OFFICE_OWNER_NM = oFFICE_OWNER_NM;
 		RGSDE = rGSDE;
 		USER_NM = uSER_NM;
 		USER_ID = uSER_ID;
@@ -155,10 +157,6 @@ public class AuthVo extends CommonVo {
 		SEARCH_USR_ID = sEARCH_USR_ID;
 		SEARCH_USR_NM = sEARCH_USR_NM;
 	}
-
-
-
-
 
 	@Override
 	public String toString() {
@@ -175,10 +173,11 @@ public class AuthVo extends CommonVo {
 				+ ", CMMN_DTL_CD_ID=" + CMMN_DTL_CD_ID + ", DTLCODE=" + DTLCODE + ", DTLCODE_NM=" + DTLCODE_NM
 				+ ", DTLCODE_ENG_NM=" + DTLCODE_ENG_NM + ", DTLCODE_DC=" + DTLCODE_DC + ", ORDR=" + ORDR + ", USE_AT="
 				+ USE_AT + ", SAUPJA_NO=" + SAUPJA_NO + ", ADDRESS=" + ADDRESS + ", OFFICE_REG_NO=" + OFFICE_REG_NO
-				+ ", RGSDE=" + RGSDE + ", USER_NM=" + USER_NM + ", USER_ID=" + USER_ID + ", USER_PWD=" + USER_PWD
-				+ ", EMAIL=" + EMAIL + ", LAST_LOGIN_DT=" + LAST_LOGIN_DT + ", MOBILE=" + MOBILE + ", OFFICE_NM="
-				+ OFFICE_NM + ", OFFICE_PHONE=" + OFFICE_PHONE + ", PWD_CHANGE_DT=" + PWD_CHANGE_DT + ", SEARCH_USR_ID="
-				+ SEARCH_USR_ID + ", SEARCH_USR_NM=" + SEARCH_USR_NM + "]";
+				+ ", OFFICE_OWNER_NM=" + OFFICE_OWNER_NM + ", RGSDE=" + RGSDE + ", USER_NM=" + USER_NM + ", USER_ID="
+				+ USER_ID + ", USER_PWD=" + USER_PWD + ", EMAIL=" + EMAIL + ", LAST_LOGIN_DT=" + LAST_LOGIN_DT
+				+ ", MOBILE=" + MOBILE + ", OFFICE_NM=" + OFFICE_NM + ", OFFICE_PHONE=" + OFFICE_PHONE
+				+ ", PWD_CHANGE_DT=" + PWD_CHANGE_DT + ", SEARCH_USR_ID=" + SEARCH_USR_ID + ", SEARCH_USR_NM="
+				+ SEARCH_USR_NM + "]";
 	}
 
 	public String getMenu_id() {
@@ -548,6 +547,14 @@ public class AuthVo extends CommonVo {
 
 	public void setOFFICE_REG_NO(String oFFICE_REG_NO) {
 		OFFICE_REG_NO = oFFICE_REG_NO;
+	}
+
+	public String getOFFICE_OWNER_NM() {
+		return OFFICE_OWNER_NM;
+	}
+
+	public void setOFFICE_OWNER_NM(String oFFICE_OWNER_NM) {
+		OFFICE_OWNER_NM = oFFICE_OWNER_NM;
 	}
 
 

@@ -430,16 +430,16 @@ public class ReceiptController {
 //        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         
         // daum 메일  사용시
-//      prop.put("mail.smtp.host", "smtp.daum.net");	
-//      prop.put("mail.smtp.port", "465");
-//      prop.put("mail.smtp.ssl.enable", "true");
-//      prop.put("mail.smtp.auth", "true");
+      prop.put("mail.smtp.host", "smtp.daum.net");	
+      prop.put("mail.smtp.port", "465");
+      prop.put("mail.smtp.ssl.enable", "true");
+      prop.put("mail.smtp.auth", "true");
         
 		// 카페24 메일 사용시
-		prop.put("mail.smtp.host", "smtp.cafe24.com");	
-		prop.put("mail.smtp.port", 465);
-		prop.put("mail.smtp.ssl.enable", "true");
-		prop.put("mail.smtp.auth", "true");
+//		prop.put("mail.smtp.host", "smtp.cafe24.com");	
+//		prop.put("mail.smtp.port", 465);
+//		prop.put("mail.smtp.ssl.enable", "true");
+//		prop.put("mail.smtp.auth", "true");
         
         Session session = Session.getDefaultInstance(prop, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {

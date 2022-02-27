@@ -67,6 +67,7 @@ public class LoginServiceImpl implements LoginService {
 				
 				rUserMap = loginDao.selectEmployeeAuth(userId); // 유저정보 조회
 				System.out.println("&&&&&&&&& rUserMap : " + rUserMap);
+				System.out.println("&&&&&&&&& rUserMap.get('USER_ID') : " + rUserMap.get("USER_ID"));
 				
 				//********************회원사용유무처리여부***************************
 				/*

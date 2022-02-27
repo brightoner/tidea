@@ -551,6 +551,7 @@
 			     , B.MOBILE
 			     , B.OFFICE_NM
 			     , B.OFFICE_REG_NO
+			     , B.OFFICE_OWNER_NM
 			FROM AUTH_CD_MANAGE_TB A, USER_TB B
 			WHERE A.AUTH_CD = B.AUTH_CD
 			AND B.USER_ID = #{USER_ID}
@@ -583,6 +584,7 @@
 			         ,AUTH_CD
 			         ,USE_AT
 			         ,OFFICE_NM
+			         ,OFFICE_OWNER_NM
 			         ,OFFICE_PHONE
 			         ,OFFICE_REG_NO
 			         ,LOGIN_FAIL_COUNT
@@ -601,11 +603,12 @@
 			        ,#{AUTH_CD}
 			        ,"Y"
 			        ,#{OFFICE_NM}
+			        ,#{OFFICE_OWNER_NM}
 			        ,#{OFFICE_PHONE}
 			        ,#{OFFICE_REG_NO}
 			        ,0
-			        ,NOW()
 			        ,"Y"
+			        ,NOW()
 			)
 	</select>
 	<!-- 관리자가 사용자의 사용여부, 권한 수정 -->
@@ -626,6 +629,7 @@
 			       ,EMAIL = #{EMAIL}
 			       ,MOBILE = #{MOBILE}
 			       ,OFFICE_NM = #{OFFICE_NM}
+			       ,OFFICE_OWNER_NM = #{OFFICE_OWNER_NM}
 			       ,OFFICE_PHONE = #{OFFICE_PHONE}
 			       ,OFFICE_REG_NO = #{OFFICE_REG_NO}
 			WHERE USER_ID = #{USER_ID}  
@@ -649,6 +653,7 @@
 			     , EMAIL
 			     , MOBILE
 			     , OFFICE_NM
+			     , OFFICE_OWNER_NM
 			     , OFFICE_PHONE
 			     , OFFICE_REG_NO
 			FROM USER_TB 

@@ -19,7 +19,7 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<link rel="stylesheet" href="/resources/demos/style.css">
+<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -116,9 +116,7 @@
 			<div class="navi absolute">
 				<span><a href=""><img width="15" class="home_icon" src="/resources/images/home.png"></a></span>>
 				<span><a href=""><c:out value="${SS_ACTIVE_TOP_MENU_NM }" /></a></span> > 
-<%-- 				<span><a href=""><c:out value="회원정보 수정" /></a></span> >  --%>
 				<span><a href=""><c:out value="${SS_ACTIVE_SUB_MENU_NM }" /></a></span>
-<%-- 				<span><a href=""><c:out value="회원정보 수정" /></a></span> --%>
 			</div>
 		</div>
 		
@@ -153,7 +151,7 @@
 						</div>
 						
 						<div id="inputNdetail_1_2" class="col clear">
-							<p class="left">비밀번호확인</p>
+							<p class="left">><span style="color:#C00000;"><strong>*</strong></span>비밀번호확인</p>
 							<div class="right">
 								<input type="password" id="USER_PWD_CFM" name="USER_PWD_CFM" value="" maxlength="30" style="ime-mode:active">
 							</div>

@@ -95,7 +95,7 @@ public class RegistController {
 		String EMAIL = request.getParameter("INSER_USER_EMAIL");
 		vo.setEMAIL(EMAIL);
 		
-		String AUTH_CD = "AUTH0004";
+		String AUTH_CD = "AUTH0004";	// 신규등록시 권한은 일반사용자
 		vo.setAUTH_CD(AUTH_CD);
 		
 		String OFFICE_NM = request.getParameter("OFFICE_NM");
@@ -354,16 +354,16 @@ public class RegistController {
 //        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         
         // daum 메일  사용시
-//      prop.put("mail.smtp.host", "smtp.daum.net");	
-//      prop.put("mail.smtp.port", "465");
-//      prop.put("mail.smtp.ssl.enable", "true");
-//      prop.put("mail.smtp.auth", "true");
+      prop.put("mail.smtp.host", "smtp.daum.net");	
+      prop.put("mail.smtp.port", "465");
+      prop.put("mail.smtp.ssl.enable", "true");
+      prop.put("mail.smtp.auth", "true");
         
      // 카페24 메일 사용시
-     		prop.put("mail.smtp.host", "smtp.cafe24.com");	
-     		prop.put("mail.smtp.port", 465);
-     		prop.put("mail.smtp.ssl.enable", "true");
-     		prop.put("mail.smtp.auth", "true");
+//     		prop.put("mail.smtp.host", "smtp.cafe24.com");	
+//     		prop.put("mail.smtp.port", 465);
+//     		prop.put("mail.smtp.ssl.enable", "true");
+//     		prop.put("mail.smtp.auth", "true");
         
         Session session = Session.getDefaultInstance(prop, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
