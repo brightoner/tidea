@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import tidea.review.apply.vo.AttachFileVo;
 import tidea.review.auth.vo.AuthVo;
+import tidea.review.auth.vo.BiznofileVo;
 
 @Mapper("authDao")
 public interface AuthDao {
@@ -226,8 +228,44 @@ public List<AuthVo> selectMenuList(AuthVo authVo) throws Exception;
 	
 	
 	
-	
-	
+// ************* 사업자등록증파일 관련*******************************************************	
+		/**
+		 * 회원정보에서 사업자등록증파일 select
+		 * @param biznofileVo
+		 * @return
+		 * @throws Exception
+		 */
+		public List<Map<String, Object>> selectBizNoFile(BiznofileVo biznofileVo) throws Exception;
+		
+		/**
+		 * 회원가입시 사업자등록증파일 insert
+		 * @param biznofileVo
+		 * @throws Exception
+		 */
+		public void insertBizNoFile(BiznofileVo biznofileVo) throws Exception;
+
+		/**
+		 * 회원정보에서  사업자등록증파일 수정 
+		 * @param biznofileVo
+		 * @throws Exception
+		 */
+		public void updateBizNoFile(BiznofileVo biznofileVo) throws Exception; 
+
+		/**
+		 * 회원정보 등록 시 사업자등록증파일 삭제
+		 * @param biznofileVo
+		 * @throws Exception
+		 */
+		public void deleteBizNoFile(BiznofileVo biznofileVo) throws Exception;
+		
+		/**
+		 * 회원정보  수정 시 사업자등록증파일 삭제
+		 * @param biznofileVo
+		 * @throws Exception
+		 */
+		public void delBizNoFile(BiznofileVo biznofileVo) throws Exception;
+		
+//**************************************************************************	
 	
 	
 	

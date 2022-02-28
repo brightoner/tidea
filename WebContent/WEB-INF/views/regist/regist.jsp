@@ -23,6 +23,31 @@
 		
 		// 컴포넌트 호출
 		fn_searchCompoSetting();
+		
+		
+		
+		//파일등록
+		$("#addFile").on("click", function() {
+			var attachlength = $(".attachlb").length;
+			var filelength = $(".uploadFile").length;
+			if($(".uploadFile").length + attachlength > 0) {	// 사업자 등록증 1개만 받는다
+				return;
+			}
+			var newfile = $("<input/>", {"type" : "file", "class" : "uploadFile", "name" : "uploadFile", "accept" : ".hwp,.doc,.docx,.pdf"});
+			$(this).parent().append(newfile);
+		});
+		
+		
+		 //파일 압력 칸 삭제
+		 $("#delFile").on("click", function(){
+			 $(".uploadFile:last").remove();
+		 });
+		 
+		 //불러온 파일 삭제
+		 $("a[name='delete']").on("click", function(){
+			 $(this).parent().remove();
+		 });
+		
 	});
 	
 	
@@ -30,23 +55,6 @@
 	function fn_searchCompoSetting(){
 		fn_compoInputbox('M', 'S', 'search_2_2', 'SEARCH_USR_NM', 'SEARCH_USR_NM', '', '성명', '', '30');
 	}
-	
-	
-	// 입력 및 상세영역 설정
-// 	function fn_inputNdetailCompoSetting(){
-// 			fn_compoInputbox('M', 'I', 'inputNdetail_1_1', 'INSERT_USER_ID', 'INSERT_USER_ID', '', 'ID', '', '30');
-// 			fn_compoInputboxPasswordByBasic('M', 'I', 'inputNdetail_2_1', 'USER_PWD', 'USER_PWD', '', '비밀번호', '', '30');
-// 			fn_compoInputboxPassword ('M', 'I', 'inputNdetail_2_2', 'USER_PWD_CFM', 'USER_PWD_CFM', '', '비밀번호 확인', '', '30');
-// 			fn_compoInputbox('M', 'I', 'inputNdetail_3_1', 'USER_NM', 'USER_NM', '', '이름', '', '30');
-// 			fn_compoInputbox('M', 'I', 'inputNdetail_3_2', 'BIRTH', 'BIRTH', '', '생년월일', '', '30');
-// 			fn_compoInputbox('M', 'I', 'inputNdetail_4_1', 'INSER_USER_EMAIL', 'INSER_USER_EMAIL', '', '이메일', '', '30');
-// 			fn_compoInputbox('M', 'I', 'inputNdetail_4_2', 'MOBILE', 'MOBILE', '', '휴대전화', '', '30');
-// 			fn_compoInputbox('M', 'I', 'inputNdetail_5_1', 'OFFICE_NM', 'OFFICE_NM', '', '기업명', '', '30');
-// 			fn_compoInputbox('M', 'I', 'inputNdetail_5_2', 'OFFICE_PHONE', 'OFFICE_PHONE', '', '기업전화번호', '', '30');
-// 			fn_compoInputbox('M', 'I', 'inputNdetail_6_1', 'DEPT', 'DEPT', '', '부서', '', '30');
-// 			fn_compoInputbox('M', 'I', 'inputNdetail_6_2', 'JOB', 'JOB', '', '직책', '', '30');
-// 	}
-	
 	
 	// 아이디중복확인, , 필수값 체크, 정규식 체크 - 형식 : 영문, 숫자, _, - 만 가능. 5~20글자 
 	function fn_idChek(){
@@ -90,6 +98,13 @@
 	// 저장 버튼
 	function fn_save(){
 
+		var idVal = $("#INSERT_USER_ID").val(); 
+		if(idVal == null || idVal ==''){
+			alert("아이디를 입력해 주세요.");
+			$('#USER_PWD').focus();
+			return;
+		}
+		
 		// 비밀번호 필수값 체크, 정규식 체크	- 영문, 숫자, 특수문자를 조합한 9~20자리
 		var pwVal = $("#USER_PWD").val(); 
 		var pwReg = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{9,20}$/; // 검증에 사용할 정규식 변수 regExp에 저장 
@@ -143,6 +158,20 @@
 			$('#MOBILE').val('');
 			$('#MOBILE').focus();
 			return;
+		}
+		
+		
+		// 첨부파일확장자 제한
+		var file_len = $(".uploadFile").length;
+		for(var i = 0; i < file_len; i ++){
+			var filename = $("input[name=uploadFile]:eq(" + i + ")").val();
+			var ext = filename.substring(filename.lastIndexOf(".")+1,filename.length);
+			if(ext != "hwp" && ext != "pdf" && ext != "doc" && ext != "docx"){
+				alert("hwp, pdf, doc, docx 파일만 가능합니다.");
+// 				$('.uploadFile').val('');	// 모든 첨부파일이 지워져서 주석처리
+				$('.uploadFile').focus();
+				return false;
+			}
 		}
 		
 		form.action = "/regist/insertUsrMng.do";
@@ -275,16 +304,24 @@
 								<input type="text" id="OFFICE_OWNER_NM" name="OFFICE_OWNER_NM" value="" maxlength="30" style="ime-mode:active" placeholder="한글 2~5자리"> 
 							</div>
 						</div>
-						
-						<!-- 사업자등록증 부분 해야함!!!!!!!!!!!!! -->
-<!-- 						<div id="inputNdetail_6_2" class="col clear"> -->
-<!-- 							<p class="left">사업자 등록증</p> -->
-<!-- 							<div class="right"> -->
-<!-- 								<input type="button" id="addFile" value="추가"> -->
-<!-- 								<input type="button" id="delFile" value="삭제"> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 					</div>
+					<div id="inputNdetail_7_1" class="col clear file"> 
+							<p class="left">사업자 등록증</p>
+							<div class="right">
+								<input type="button" id="addFile" value="추가">
+								<input type="button" id="delFile" value="삭제">
+								<c:forEach items="${fileInfo}" var="attachFileVo">
+									<label class="attachlb">${attachFileVo.file_nm} 
+										<input type="text" name="FILE_NM" id="FILE_NM" value="${attachFileVo.file_nm}">
+										<input type="hidden" name="FILE_CHNG_NM" id="FILE_CHNG_NM" value="${attachFileVo.file_chng_nm}">
+										<input type="hidden" name="FILE_NO" id="FILE_NO">
+										<!-- 삭제버튼  -->
+										<a href="#this" name="delete" class="btn">삭제하기</a>
+									</label>
+									<br>
+								</c:forEach>
+							</div>
+						</div>
 				</div>
 				<p class="note" style="margin: 10px 0 5px; color: #777; font-size: 0.75rem; line-height: 1.5;">[참고] 전자세금계산서, 현금영수증 발행을 위한 분은 기업명, 사업자 등록번호, 대표자 성함, 사업자 등록증을 입력해주시기 바랍니다.<br/>
 상기 정보는 회원정보 수정에서 추후 입력 가능합니다.</p>
@@ -299,69 +336,6 @@
 		</div>
 	</form>
 	<script type="text/javascript">
-	
-	//구분 라디오버튼 3개
-	function fn_compoRadioGB(mpGubun, searchInputGb, divId, tagId, tagName, requiredYn, label, userGb){
-		var chk1 = '';
-		var chk2 = '';
-		var chk3 = '';
-		var chktrue = ' checked="true" ';
-		if(mpGubun == 'M'){
-			$('#' + divId).attr('class', 'col clear');
-			var tagStr = '<p class="left">';
-			if(requiredYn == 'Y'){
-				tagStr += requiredSpan;
-			}
-				tagStr += label;
-				tagStr += '</p>';
-				tagStr += '<div class="right">';
-					tagStr += '<div class="yorn" style="color:#FFF; font-size: 12px;"> ';
-						if (userGb == 'GM_INSA_M') {
-							chk2 = chktrue;
-						} else if (userGb == 'SUPER_MNGR') {
-							chk3 = chktrue;
-						} else {
-							chk1 = chktrue;
-						}
-						tagStr += '<input type="radio" id="USR_GB" name="USR_GB" value="STDNT" '+chk1+' > <span>학생</span>';
-						tagStr += '<input type="radio" id="USR_GB" name="USR_GB" value="HR" '+chk2+' > <span>인사</span>';
-						tagStr += '<input type="radio" id="USR_GB" name="USR_GB" value="SUPER_MNGR" '+chk3+' > <span>관리자</span>';
-					tagStr += '</div>';
-				tagStr += '</div>';
-				
-			$('#' + divId).html(tagStr);
-			
-		}else if(mpGubun == 'P'){
-			
-		}
-	}
-	
-	// 패스워드 입력 컴포넌트
-	function fn_compoPwdbox(mpGubun, searchInputGb, divId, tagId, tagName, requiredYn, label, width, length){
-		
-		if(mpGubun == 'M'){
-			if(width == undefined || width == ''){
-				$('#' + divId).attr('class', 'col clear');
-			}else{
-				$('#' + divId).attr('class', 'col col1'); // 3칸전용
-			}
-			var tagStr = '<p class="left">';
-			if(requiredYn == 'Y'){
-				tagStr += requiredSpan;
-			}
-				tagStr += label;
-				tagStr += '</p>';
-				tagStr += '<div class="right">';
-					tagStr += '<input type="password" id="'+tagId+'" name="'+tagName+'" value="" maxlength="'+length+'"/> ';
-				tagStr += '</div>';
-				
-			$('#' + divId).html(tagStr);
-			
-		}else if(mpGubun == 'P'){
-			
-		}
-		
-	}
 	
 	
 

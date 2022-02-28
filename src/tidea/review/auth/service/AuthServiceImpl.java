@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 
 import tidea.review.auth.dao.AuthDao;
 import tidea.review.auth.vo.AuthVo;
+import tidea.review.auth.vo.BiznofileVo;
 import tidea.utils.ComponentUtil;
 import tidea.utils.PagingUtil;
 
@@ -619,7 +620,63 @@ public class AuthServiceImpl implements AuthService {
 		return authDao.getName(authVo);
 	}
 
+	
+	
+	
+// ************* 사업자등록증파일 관련*******************************************************	
+	/**
+	 * 회원정보에서 사업자등록증파일 select
+	 * @param biznofileVo
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public List<Map<String, Object>> selectBizNoFile(BiznofileVo biznofileVo) throws Exception {
+		List<Map<String, Object>> detailMap_2 = authDao.selectBizNoFile(biznofileVo);
+		return detailMap_2;
+	}
 
+	/**
+	 * 회원가입시 사업자등록증파일 insert
+	 * @param biznofileVo
+	 * @throws Exception
+	 */
+	@Override
+	public void insertBizNoFile(BiznofileVo biznofileVo) throws Exception {
+		authDao.insertBizNoFile(biznofileVo);
+	}
+
+	/**
+	 * 회원정보에서  사업자등록증파일 수정 
+	 * @param biznofileVo
+	 * @throws Exception
+	 */
+	@Override
+	public void updateBizNoFile(BiznofileVo biznofileVo) throws Exception {
+		authDao.updateBizNoFile(biznofileVo);
+	}
+
+	/**
+	 * 회원정보 등록 시 사업자등록증파일 삭제
+	 * @param biznofileVo
+	 * @throws Exception
+	 */
+	@Override
+	public void deleteBizNoFile(BiznofileVo biznofileVo) throws Exception {
+		authDao.deleteBizNoFile(biznofileVo);
+	}
+
+	/**
+	 * 회원정보  수정 시 사업자등록증파일 삭제
+	 * @param biznofileVo
+	 * @throws Exception
+	 */
+	@Override
+	public void delBizNoFile(BiznofileVo biznofileVo) throws Exception {
+		authDao.delBizNoFile(biznofileVo);
+	}
+
+//*********************************************************************************
 	
 	
 

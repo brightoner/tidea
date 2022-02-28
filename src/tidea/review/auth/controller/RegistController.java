@@ -1,5 +1,8 @@
 package tidea.review.auth.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -17,14 +20,19 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import tidea.review.apply.vo.AttachFileVo;
 import tidea.review.auth.service.AuthService;
 import tidea.review.auth.vo.AuthVo;
+import tidea.review.auth.vo.BiznofileVo;
 import tidea.review.common.service.CommonShService;
 import tidea.review.email.service.EmailService;
 import tidea.review.email.vo.EmailVo;
 import tidea.review.login.service.LoginService;
 import tidea.utils.EncryptUtil;
+import tidea.utils.FileUploadUtil;
 
 @Controller
 public class RegistController {
@@ -75,7 +83,7 @@ public class RegistController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/regist/insertUsrMng.do")
-	public String insertUsrMng(HttpServletRequest request, Model model, AuthVo vo) throws Exception {
+	public String insertUsrMng(@RequestParam("uploadFile") List<MultipartFile> uploadFile, HttpServletRequest request, Model model, AuthVo vo, BiznofileVo biznofileVo, String type) throws Exception {
 		
 		String USER_ID = request.getParameter("INSERT_USER_ID");
 		vo.setUSER_ID(USER_ID);
@@ -109,6 +117,44 @@ public class RegistController {
 		
 		
 		authService.insertUsrMng(vo);
+		
+		
+		//*** 첨부파일 시작
+		//FileUploadUtil 객체생성
+		FileUploadUtil fileUploadUtil = new FileUploadUtil();
+		
+		for(int i = 0; i < uploadFile.size(); i++) {
+			
+			//파일명 앞에 yyyyMMdd_HHmmss 형식으로 붙여 파일명 중복을 방지 
+			Date dt = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+			String yyyyMMddHHmm = sdf.format(dt);
+			String yyyyMMdd = yyyyMMddHHmm.substring(0,8);
+			String HHmm = yyyyMMddHHmm.substring(8,12);
+			
+			
+			String file_nm = uploadFile.get(i).getOriginalFilename();	//file_nm은 원래 이름
+			biznofileVo.setFile_nm(file_nm);
+			
+			// 파일업로드 결과 값을 path로 받아온다(이미 fileUpload() 메소드에서 해당 경로에 업로드는 끝났음 )
+			String file_chng_nm = yyyyMMdd + "_" + HHmm + "_" + file_nm;
+			biznofileVo.setFile_chng_nm(file_chng_nm);
+			
+			String path = fileUploadUtil.fileUpload(request, uploadFile, type);
+			System.out.println("*********** path : " + path);
+			
+			String file_path = path + "\\biz_no\\";	// 로컬
+//			String file_path = path + "/office_reg_no/";	// 운영
+			System.out.println("*********** file_path : " + file_path);
+			
+			biznofileVo.setFile_path(file_path);
+		
+			biznofileVo.setUser_id(USER_ID);
+			
+			authService.insertBizNoFile(biznofileVo);
+		
+		}
+		//*** 첨부파일 끝
 		
 		return "redirect:/login/login.do";
 		

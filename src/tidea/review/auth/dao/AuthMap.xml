@@ -896,6 +896,79 @@
 		
 	
 	
+	<!-- ********************* 사업자등록증 파일 부분 ************************************** -->
+	<!-- 회원정보에서 사업자등록증파일 select -->
+	<select id="selectBizNoFile" parameterType="biznofileVo" resultType="java.util.HashMap">
+		/* ApplyMap.selectBizNoFile */
+		SELECT * FROM RV_BIZNOFILE_TB
+		WHERE USER_ID = #{user_id}
+		AND GUBUN = '1'
+	</select>
+	
+	<!-- 회원가입시 사업자등록증파일 insert -->
+	<insert id="insertBizNoFile" parameterType="biznofileVo">
+		/* ApplyMap.insertBizNoFile */
+		INSERT INTO RV_BIZNOFILE_TB
+		(	
+		    USER_ID
+		  , FILE_NO
+		  , FILE_NM
+		  , FILE_CHNG_NM
+		  , FILE_PATH
+		  , GUBUN
+		) VALUES (
+		    #{user_id}
+		  , (SELECT IFNULL ((MAX(FILE_NO) + 1), 1) FROM RV_BIZNOFILE_TB b)
+		  , #{file_nm}
+		  , #{file_chng_nm}
+		  , #{file_path}
+		  , '1'
+		)
+		</insert>
+	
+	<!-- 회원정보에서  사업자등록증파일 수정 -->
+	<update id="updateBizNoFile" parameterType="biznofileVo">
+		/* ApplyMap.updateBizNoFile */
+		INSERT INTO RV_BIZNOFILE_TB
+		(	
+		    USER_ID
+		  , FILE_NO
+		  , FILE_NM
+		  , FILE_CHNG_NM
+		  , FILE_PATH
+		  , GUBUN
+		) VALUES (
+		    #{user_id}
+		  , (SELECT IFNULL ((MAX(FILE_NO) + 1), 1) FROM RV_BIZNOFILE_TB b)
+		  , #{file_nm}
+		  , #{file_chng_nm}
+		  , #{file_path}
+		  , '1'
+		)
+		ON DUPLICATE KEY UPDATE 
+	      ,USER_ID = #{user_id}
+	      ,FILE_NM = #{file_nm}
+	</update>
+	
+	<!--  회원정보  수정 시 사업자등록증파일 삭제 -->
+	<delete id="delBizNoFile" parameterType="biznofileVo">
+		/* ApplyMap.delBizNoFile */
+		DELETE FROM RV_BIZNOFILE_TB
+		WHERE USER_ID = #{user_id}
+		AND FILE_NM = #{file_nm}
+		AND GUBUN = '1'
+	</delete>
+	
+	
+	<!-- 회원정보 등록 시 사업자등록증파일 삭제 -->
+	<delete id="deleteBizNoFile" parameterType="biznofileVo">
+		/* ApplyMap.deleteBizNoFile */
+		DELETE FROM RV_BIZNOFILE_TB
+		WHERE USER_ID = #{user_id}
+		AND GUBUN = '1'
+	</delete>
+	
+	<!-- ******************************************************************** -->
 	
 	
 	
