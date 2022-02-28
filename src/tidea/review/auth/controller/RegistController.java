@@ -127,6 +127,14 @@ public class RegistController {
 		return "/regist/regist.tiles";
 	}
 	
+	
+	// 이용안내
+	@RequestMapping(value = "/regist/guide.do")
+	public String guide() {
+		return "/regist/guide.tiles";
+	}
+	
+	
 	//아이디,페스워드 찾기
 	@RequestMapping(value = "/regist/idPwFind.do")
 	public String idPwFind() {
