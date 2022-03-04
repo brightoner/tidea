@@ -277,15 +277,6 @@
 								<input type="text" id="APLCT_NM" name="APLCT_NM" value="${apply.APLCT_NM}" maxlength="30" style="ime-mode:active">
 							</div>
 						</div>
-						<!-- 
-						<div id="inputNdetail_3_2" class="col clear">
-							<p class="left">납품방식</p>
-							<div class="right">
-								<input type='radio'  name='FB_TYPE' value='1' <c:if test="${apply.FB_TYPE eq '1'}">checked</c:if>/>티디아 우선심사 홈페이지
-								<input type='radio'  name='FB_TYPE' value='2' <c:if test="${apply.FB_TYPE eq '2'}">checked</c:if>/>이메일
-							</div>
-						</div>
-						 -->
 					</div>
 					
 					<!-- 4라인 -->

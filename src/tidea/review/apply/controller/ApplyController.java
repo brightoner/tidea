@@ -170,9 +170,6 @@ public class ApplyController {
 		String memo = request.getParameter("MEMO");
 		applyVo.setMemo(memo);
 		
-		String fb_type = request.getParameter("FB_TYPE");
-		applyVo.setFb_type(fb_type);
-		
 		String user_nm = authService.getName(authVo);		// 신청자 이름
 		authVo.setUSER_ID(user_id);							// 메일 전송시 사용
 		
@@ -237,7 +234,7 @@ public class ApplyController {
 //		String paramUrl = "?searchYn=Y";
 //		// 신규등록 후 조회화면 1페이지로  설정
 //		paramUrl += "&curPage=" + 1;
-//		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,FB_TYPE,PAY_METHOD,PRICE,STATUS";
+//		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
 //		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO";
 //		System.out.println("********** paramUrl : " + paramUrl);
 	
@@ -271,16 +268,13 @@ public class ApplyController {
 		String pay_method = request.getParameter("pay_method");
 		applyVo.setPay_method(pay_method);
 		
-		String discnt_rs = request.getParameter("discnt_rs");
-		applyVo.setDiscnt_rs(discnt_rs);
-		
 		applyService.insertPayment(applyVo);
 		applyService.updateStatus(applyVo);
 		
 		String paramUrl = "?searchYn=Y";
 		// 신규등록 후 조회화면 1페이지로  설정
 		paramUrl += "&curPage=" + 1;
-		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,FB_TYPE,PAY_METHOD,PRICE,STATUS";
+		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
 		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO";
 	
 		return "redirect:/apply/applyMng.do" + paramUrl;	
@@ -324,7 +318,7 @@ public class ApplyController {
 		String paramUrl = "?searchYn=Y";
 		// 신규등록 후 조회화면 1페이지로  설정
 		paramUrl += "&curPage=" + 1;
-		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,FB_TYPE,PAY_METHOD,PRICE,STATUS";
+		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
 		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO";
 	
 		return "redirect:/apply/applyMng.do" + paramUrl;
@@ -366,9 +360,6 @@ public class ApplyController {
 		
 		String memo = request.getParameter("MEMO");
 		applyVo.setMemo(memo);
-		
-		String fb_type = request.getParameter("FB_TYPE");
-		applyVo.setFb_type(fb_type);
 		
 		applyService.updateApply(applyVo);
 		
@@ -413,7 +404,7 @@ public class ApplyController {
 		String paramUrl = "?searchYn=Y";
 		// 신규등록 후 조회화면 1페이지로  설정
 		paramUrl += "&curPage=" + 1;
-		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,FB_TYPE,PAY_METHOD,PRICE,STATUS";
+		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
 		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO";
 	
 		return "redirect:/apply/applyMng.do" + paramUrl;

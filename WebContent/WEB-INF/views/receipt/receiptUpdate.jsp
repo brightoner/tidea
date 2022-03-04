@@ -281,14 +281,6 @@
 								<textarea id="MEMO" name="MEMO" cols="50" rows="20" readonly="readonly">${receipt.MEMO}</textarea>
 							</div>
 						</div>
-<!-- 						<div id="inputNdetail_4_2" class="col clear"> -->
-<!-- 							<p class="left">납품방식</p> -->
-<!-- 							<div class="right"> -->
-<%-- 								<input type='radio'  name='FB_TYPE' value='1' <c:if test="${receipt.FB_TYPE eq '1'}">checked</c:if> onclick="return(false);"/>티디아 우선심사 홈페이지 --%>
-<%-- 								<input type='radio'  name='FB_TYPE' value='2' <c:if test="${receipt.FB_TYPE eq '2'}">checked</c:if> onclick="return(false);"/>이메일 --%>
-									<input type="hidden" name="FB_TYPE" value="1"> <!-- 납품방식은 모두 홈페이지로 -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 					</div>
 					
 					<!-- 5라인 -->
@@ -350,27 +342,10 @@
 						</div>
 					</div>
 					
-					<div id="inputNdetail_7_2" class="col clear">
-						<p class="left">할인사유</p>
-						<div class="right">
-							<input type='radio' name='DISCNT_RS' value='1'  <c:if test="${receipt.DISCNT_RS eq '1'}">checked</c:if> onclick="return(false);"/>없음
-						    <input type='radio' name='DISCNT_RS' value='2'  <c:if test="${receipt.DISCNT_RS eq '2'}">checked</c:if> onclick="return(false);"/>유공자
-						    <input type='radio' name='DISCNT_RS' value='3'  <c:if test="${receipt.DISCNT_RS eq '3'}">checked</c:if> onclick="return(false);"/>장애인
-						    <input type='radio' name='DISCNT_RS' value='4'  <c:if test="${receipt.DISCNT_RS eq '4'}">checked</c:if> onclick="return(false);"/>학생
-						</div>
-				    </div>
 				</div>
 				
 				<!-- 8라인 -->
 				<div class="row clear">
-					<div id="inputNdetail_8_1" class="col clear">
-						<p class="left">결제상태</p>
-						<div class="right">
-							<input type='radio' name='ORDER_STAT' value='1'  <c:if test="${receipt.ORDER_STAT eq '1'}">checked</c:if> onclick="return(false);"/>결제완료
-						    <input type='radio' name='ORDER_STAT' value='2'  <c:if test="${receipt.ORDER_STAT eq '2'}">checked</c:if> onclick="return(false);"/>미결제
-						</div>
-					</div>
-					
 					<div id="inputNdetail_8_2" class="col clear">
 						<p class="left">결제일</p>
 						<div class="right">

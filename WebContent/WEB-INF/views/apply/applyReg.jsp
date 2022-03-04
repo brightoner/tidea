@@ -135,6 +135,15 @@
 	}
 	
 	
+	$(document).on("click", "input[name=pay_method]", function(){
+		var pay_kind =$('[name="pay_method"]:checked').val();
+		if(pay_kind == "1"){
+			alert("카드결제준 준비중입니다. 다른 결제수단을 선택해 주세요!");
+			return false;
+		}
+	});
+	
+	
 	//JQUERY달력 (datepicker)
 	$(document).ready(function () {
 	    $.datepicker.setDefaults($.datepicker.regional['ko']); 
@@ -239,71 +248,69 @@
 					<!-- 1라인 -->
 					<div class="row clear">
 						<div id="inputNdetail_1_1" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>우선심사 분야</p>
+							<div class="right" >
+								<input type='radio' name='review_field' value='1' />특허
+								<input type='radio' name='review_field' value='2' />실용신안
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="inputNdetail_box">
+					<!-- 2라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_2_1" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>기술 분야</p>
+							<div class="right" >
+								<input type='radio' name='tech_field' value='1' />전기/전자
+							</div>
+						</div>
+					</div>
+				</div>	
+					
+				<div class="inputNdetail_box">
+					<!-- 3라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_3_1" class="col clear">
 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>발명의 명칭</p>
 							<div class="right">
 								<input type="text" id="INVT_NM" name="INVT_NM" value="${apply.INVT_NM}">
 							</div>
 						</div>						
 					</div>
-					
-					<!-- 2라인 -->
+					<!-- 4라인 -->
 					<div class="row clear">
-						<div id="inputNdetail_2_1" class="col clear">
-							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원인</p>
-							<div class="right">
-								<input type="text" id="APLCT_NM" name="APLCT_NM" maxlength="30" style="ime-mode:active" value="${apply.APLCT_NM}">
-							</div>
-						</div>
-						<div id="inputNdetail_2_2" class="col clear">
-							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원일</p>
-							<div class="right">
-								<input type="text" id="APLCT_DT" name="APLCT_DT" value="${apply.APLCT_DT}" placeholder="YYYY-MM-DD">
-							</div>
-						</div>
-					</div>
-					
-					
-					<!-- 3라인 -->
-					<div class="row clear">
-						<div id="inputNdetail_3_1" class="col clear">
-							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>신청일</p>
-							<div class="right">
-								<input type="text" id="APPLY_DT" name="APPLY_DT" maxlength="30" style="ime-mode:active" value="<%=today%>" readonly="readonly">
-							</div>
-						</div>
-						<div id="inputNdetail_3_2" class="col clear">
+						<div id="inputNdetail_4_1" class="col clear">
 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원번호</p>
 							<div class="right">
 								<input type="text" id="APLCT_NO" name="APLCT_NO" maxlength="30" style="ime-mode:active">
 							</div>
 						</div>
 					</div>
-					
-					<!-- 4라인 -->
-					<div class="row clear">
-						<div id="inputNdetail_4_1" class="col clear">
-							<p class="left">신청내용</p>
-							<div class="right">
-								<textarea id="MEMO" name="MEMO" cols="50" rows="20">${apply.MEMO}</textarea>
-							</div>
-						</div>
-<!-- 						<div id="inputNdetail_4_2" class="col clear"> -->
-<!-- 							<p class="left">납품방식</p> -->
-<!-- 							<div class="right"> -->
-<!-- 								<input type='radio' name='FB_TYPE' value='1' checked/>티디아 우선심사 홈페이지 -->
-<!-- 								<input type='radio' name='FB_TYPE' value='2' />이메일 -->
-								<input type="hidden" name="FB_TYPE" value="1"> <!-- 모든납품방식이 1로 들어가게 -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-					</div>
-					
 					<!-- 5라인 -->
 					<div class="row clear">
-						<div id="inputNdetail_5_1" class="col clear file"> 
-							<p class="left">첨부파일</p>
+						<div id="inputNdetail_5_1" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원일</p>
 							<div class="right">
-<!-- 								<input type="button" id="addFile" value="추가" onclick="attach.add()"> -->
-<!-- 								<input type="button" id="delFile" value="삭제" onclick="attach.del()"> -->
+								<input type="text" id="APLCT_DT" name="APLCT_DT" value="${apply.APLCT_DT}" placeholder="YYYY-MM-DD">
+							</div>
+						</div>
+					</div>
+					<!-- 6라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_6_1" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원인</p>
+							<div class="right">
+								<input type="text" id="APLCT_NM" name="APLCT_NM" maxlength="30" style="ime-mode:active" value="${apply.APLCT_NM}">
+							</div>
+						</div>
+					</div>
+					<!-- 7라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_7_1" class="col clear file"> 
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>첨부파일</p>
+							<div class="right">
 								<input type="button" id="addFile" value="추가">
 								<input type="button" id="delFile" value="삭제">
 								<c:forEach items="${fileInfo}" var="attachFileVo">
@@ -319,11 +326,53 @@
 							</div>
 						</div>
 					</div>
+				</div>	
+				
+				<div class="inputNdetail_box">
+					<!-- 8라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_8_1" class="col clear">
+							<p class="left">신청내용</p>
+							<div class="right">
+								<textarea id="MEMO" name="MEMO" cols="50" rows="20">${apply.MEMO}</textarea>
+							</div>
+						</div>
+					</div>
+				</div>	
+					
+				<div class="inputNdetail_box">	
+					<!-- 9라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_9_1" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>결제방식</p>
+							<div class="right" >
+								<input type='radio' name='pay_method' value='1' />카드결제
+								<input type='radio' name='pay_method' value='2' checked/>무통장입금
+								<input type='radio' name='pay_method' value='3' />계좌이체
+							</div>
+						</div>
+					</div>	
+				</div>	
+					
+				<div class="inputNdetail_box">	
+					<!-- 10라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_10_1" class="col clear">
+							<p class="left">증빙서류</p>
+							<div class="right" >
+								<input type='checkbox' name='tax_invoice' value='Y' />전자세금계산서 발행
+							</div>
+							<div class="right" >
+								<input type='checkbox' name='cash_receipt' value='Y' />현금영수증 발행
+							</div>
+						</div>
+					</div>
+				</div>
 						
 				</div>
-			</div>
 			<!-- 입력 및 상세영역 END -->
 		</div>
+		<input type="hidden" id="APPLY_DT" name="APPLY_DT" value="<%=today%>">
 	</form>
 </body>
 </html>

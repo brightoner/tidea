@@ -51,8 +51,8 @@
 	}
 	
 	// 그리드 설정
-	var cols = ['APPLY_NO', 'APLCT_NO', 'APPLY_DT', 'INVT_NM', 'ESTIMATE', 'FB_TYPE', 'PAY_METHOD', 'PRICE', 'STATUS']; //예) var cols = ['COL1', 'COL2', 'COL3'];
-	var colsNm = ['신청번호', '출원번호', '신청일', '발명의명칭', '견적서', '납품방식', '결제방식', '결제금액', '진행상태']; //예) var colsNm = ['컬럼한글명1', '컬럼한글명2', '컬럼한글명3'];
+	var cols = ['APPLY_NO', 'APLCT_NO', 'APPLY_DT', 'INVT_NM', 'ESTIMATE', 'PAY_METHOD', 'PRICE', 'STATUS']; //예) var cols = ['COL1', 'COL2', 'COL3'];
+	var colsNm = ['신청번호', '출원번호', '신청일', '발명의명칭', '견적서', '결제방식', '결제금액', '진행상태']; //예) var colsNm = ['컬럼한글명1', '컬럼한글명2', '컬럼한글명3'];
 	var key = ['APPLY_NO', 'APLCT_NO','INVT_NM','STATUS']; //예) var key = ['SN', 'HAKBEON'];
 	function fn_gridCompoSetting(){
 		fn_compoGrid('M', 'grid', cols, colsNm, key);

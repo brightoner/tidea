@@ -199,7 +199,7 @@ public class ReceiptController {
 		String paramUrl = "?searchYn=Y";
 		// 신규등록 후 조회화면 1페이지로  설정
 		paramUrl += "&curPage=" + 1;
-		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,USER_ID,APPLY_DT,INVT_NM,ESTIMATE,FB_TYPE,PAY_METHOD,PRICE,STATUS";
+		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,USER_ID,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
 		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO,USER_ID,INVT_NM,STATUS";
 	
 		return "redirect:/receipt/receiptMng.do" + paramUrl;
@@ -233,7 +233,7 @@ public class ReceiptController {
 		String paramUrl = "?searchYn=Y";
 		// 신규등록 후 조회화면 1페이지로  설정
 		paramUrl += "&curPage=" + 1;
-		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,USER_ID,APPLY_DT,INVT_NM,ESTIMATE,FB_TYPE,PAY_METHOD,PRICE,STATUS";
+		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,USER_ID,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
 		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO,USER_ID,INVT_NM,STATUS";
 	
 		return "redirect:/receipt/receiptMng.do" + paramUrl;
@@ -340,7 +340,7 @@ public class ReceiptController {
 		String paramUrl = "?searchYn=Y";
 		// 신규등록 후 조회화면 1페이지로  설정
 		paramUrl += "&curPage=" + 1;
-		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,USER_ID,APPLY_DT,INVT_NM,ESTIMATE,FB_TYPE,PAY_METHOD,PRICE,STATUS";
+		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,USER_ID,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
 		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO,USER_ID,INVT_NM,STATUS";
 	
 		return "redirect:/receipt/receiptMng.do" + paramUrl;

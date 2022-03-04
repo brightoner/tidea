@@ -20,7 +20,6 @@ public class ReceiptVo extends CommonVo{
 		private String user_nm;		// 사용자이름
 		private int price;			// 실제비용
 		private int expct_cost;		// 예상견적
-		private String order_stat;	// 결제상태(1:결제완료 2:미결제)
 		private String order_dt;	// 결제일
 		private String confirm_dt;	// 결제승인일
 		private String account_no;	// 계좌번호
@@ -132,14 +131,6 @@ public class ReceiptVo extends CommonVo{
 
 		public void setPrice(int price) {
 			this.price = price;
-		}
-
-		public String getOrder_stat() {
-			return order_stat;
-		}
-
-		public void setOrder_stat(String order_stat) {
-			this.order_stat = order_stat;
 		}
 
 		public String getOrder_dt() {

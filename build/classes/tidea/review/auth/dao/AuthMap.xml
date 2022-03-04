@@ -552,6 +552,7 @@
 			     , B.OFFICE_NM
 			     , B.OFFICE_REG_NO
 			     , B.OFFICE_OWNER_NM
+			     , B.ANNUAL_USER
 			FROM AUTH_CD_MANAGE_TB A, USER_TB B
 			WHERE A.AUTH_CD = B.AUTH_CD
 			AND B.USER_ID = #{USER_ID}
@@ -590,6 +591,7 @@
 			         ,LOGIN_FAIL_COUNT
 			         ,LOGIN_AT
 			         ,LOGIN_TRY_DT
+			         ,ANNUAL_USER
 			         )
 			VALUES(
 			         #{USER_NM}
@@ -609,6 +611,7 @@
 			        ,0
 			        ,"Y"
 			        ,NOW()
+			        ,#{ANNUAL_USER}
 			)
 	</select>
 	<!-- 관리자가 사용자의 사용여부, 권한 수정 -->

@@ -75,6 +75,10 @@ public class AuthVo extends CommonVo {
 	private String OFFICE_NM;			// 기업명
 	private String OFFICE_PHONE;		// 회사전화번호
 	private String PWD_CHANGE_DT;		// 비밀번호변경일
+	private String LOGIN_FAIL_COUNT;	// 로그인 시도 횟수
+	private String LOGIN_AT;			// 로그인가능여부 (가능:Y 불가능:N)
+	private String LOGIN_TRY_DT;		// 로그인시도 시간
+	private String ANNUAL_USER;			// 연간회원
 	
 	
 	/** 관리자 검색조건 */
@@ -87,98 +91,6 @@ public class AuthVo extends CommonVo {
 		
 	}
 	
-	public AuthVo(String menu_id, String menu_nm, int menu_levl, String menu_prts_id, String menu_use_yn,
-			String menu_use_auth, String menu_use_authChk, int menu_ord, String top_menu_yn, String left_menu_yn,
-			String del_yn, String menu_rol_list, String rol_save_yn, String menu_url, String save_type, String tagName,
-			String help_ko, String help_eng, String etc, String lvl, String url, String menuNm, String menuOrd,
-			List<AuthVo> subList, boolean selYn, String aUTH_CD, String aUTH_NM, String sEARCH_AUTH_CD,
-			String sEARCH_AUTH_NM, String sEARCH_CODE_NM, String cMMN_CD_ID, String cODE_SE, String cODE_NM,
-			String cODE_DC, String cMMN_DTL_CD_ID, String dTLCODE, String dTLCODE_NM, String dTLCODE_ENG_NM,
-			String dTLCODE_DC, String oRDR, String uSE_AT, String sAUPJA_NO, String aDDRESS, String oFFICE_REG_NO,
-			String oFFICE_OWNER_NM, String rGSDE, String uSER_NM, String uSER_ID, String uSER_PWD, String eMAIL,
-			String lAST_LOGIN_DT, String mOBILE, String oFFICE_NM, String oFFICE_PHONE, String pWD_CHANGE_DT,
-			String sEARCH_USR_ID, String sEARCH_USR_NM) {
-		super();
-		this.menu_id = menu_id;
-		this.menu_nm = menu_nm;
-		this.menu_levl = menu_levl;
-		this.menu_prts_id = menu_prts_id;
-		this.menu_use_yn = menu_use_yn;
-		this.menu_use_auth = menu_use_auth;
-		this.menu_use_authChk = menu_use_authChk;
-		this.menu_ord = menu_ord;
-		this.top_menu_yn = top_menu_yn;
-		this.left_menu_yn = left_menu_yn;
-		this.del_yn = del_yn;
-		this.menu_rol_list = menu_rol_list;
-		this.rol_save_yn = rol_save_yn;
-		this.menu_url = menu_url;
-		Save_type = save_type;
-		this.tagName = tagName;
-		this.help_ko = help_ko;
-		this.help_eng = help_eng;
-		this.etc = etc;
-		this.lvl = lvl;
-		this.url = url;
-		this.menuNm = menuNm;
-		this.menuOrd = menuOrd;
-		this.subList = subList;
-		this.selYn = selYn;
-		AUTH_CD = aUTH_CD;
-		AUTH_NM = aUTH_NM;
-		SEARCH_AUTH_CD = sEARCH_AUTH_CD;
-		SEARCH_AUTH_NM = sEARCH_AUTH_NM;
-		SEARCH_CODE_NM = sEARCH_CODE_NM;
-		CMMN_CD_ID = cMMN_CD_ID;
-		CODE_SE = cODE_SE;
-		CODE_NM = cODE_NM;
-		CODE_DC = cODE_DC;
-		CMMN_DTL_CD_ID = cMMN_DTL_CD_ID;
-		DTLCODE = dTLCODE;
-		DTLCODE_NM = dTLCODE_NM;
-		DTLCODE_ENG_NM = dTLCODE_ENG_NM;
-		DTLCODE_DC = dTLCODE_DC;
-		ORDR = oRDR;
-		USE_AT = uSE_AT;
-		SAUPJA_NO = sAUPJA_NO;
-		ADDRESS = aDDRESS;
-		OFFICE_REG_NO = oFFICE_REG_NO;
-		OFFICE_OWNER_NM = oFFICE_OWNER_NM;
-		RGSDE = rGSDE;
-		USER_NM = uSER_NM;
-		USER_ID = uSER_ID;
-		USER_PWD = uSER_PWD;
-		EMAIL = eMAIL;
-		LAST_LOGIN_DT = lAST_LOGIN_DT;
-		MOBILE = mOBILE;
-		OFFICE_NM = oFFICE_NM;
-		OFFICE_PHONE = oFFICE_PHONE;
-		PWD_CHANGE_DT = pWD_CHANGE_DT;
-		SEARCH_USR_ID = sEARCH_USR_ID;
-		SEARCH_USR_NM = sEARCH_USR_NM;
-	}
-
-	@Override
-	public String toString() {
-		return "AuthVo [menu_id=" + menu_id + ", menu_nm=" + menu_nm + ", menu_levl=" + menu_levl + ", menu_prts_id="
-				+ menu_prts_id + ", menu_use_yn=" + menu_use_yn + ", menu_use_auth=" + menu_use_auth
-				+ ", menu_use_authChk=" + menu_use_authChk + ", menu_ord=" + menu_ord + ", top_menu_yn=" + top_menu_yn
-				+ ", left_menu_yn=" + left_menu_yn + ", del_yn=" + del_yn + ", menu_rol_list=" + menu_rol_list
-				+ ", rol_save_yn=" + rol_save_yn + ", menu_url=" + menu_url + ", Save_type=" + Save_type + ", tagName="
-				+ tagName + ", help_ko=" + help_ko + ", help_eng=" + help_eng + ", etc=" + etc + ", lvl=" + lvl
-				+ ", url=" + url + ", menuNm=" + menuNm + ", menuOrd=" + menuOrd + ", subList=" + subList + ", selYn="
-				+ selYn + ", AUTH_CD=" + AUTH_CD + ", AUTH_NM=" + AUTH_NM + ", SEARCH_AUTH_CD=" + SEARCH_AUTH_CD
-				+ ", SEARCH_AUTH_NM=" + SEARCH_AUTH_NM + ", SEARCH_CODE_NM=" + SEARCH_CODE_NM + ", CMMN_CD_ID="
-				+ CMMN_CD_ID + ", CODE_SE=" + CODE_SE + ", CODE_NM=" + CODE_NM + ", CODE_DC=" + CODE_DC
-				+ ", CMMN_DTL_CD_ID=" + CMMN_DTL_CD_ID + ", DTLCODE=" + DTLCODE + ", DTLCODE_NM=" + DTLCODE_NM
-				+ ", DTLCODE_ENG_NM=" + DTLCODE_ENG_NM + ", DTLCODE_DC=" + DTLCODE_DC + ", ORDR=" + ORDR + ", USE_AT="
-				+ USE_AT + ", SAUPJA_NO=" + SAUPJA_NO + ", ADDRESS=" + ADDRESS + ", OFFICE_REG_NO=" + OFFICE_REG_NO
-				+ ", OFFICE_OWNER_NM=" + OFFICE_OWNER_NM + ", RGSDE=" + RGSDE + ", USER_NM=" + USER_NM + ", USER_ID="
-				+ USER_ID + ", USER_PWD=" + USER_PWD + ", EMAIL=" + EMAIL + ", LAST_LOGIN_DT=" + LAST_LOGIN_DT
-				+ ", MOBILE=" + MOBILE + ", OFFICE_NM=" + OFFICE_NM + ", OFFICE_PHONE=" + OFFICE_PHONE
-				+ ", PWD_CHANGE_DT=" + PWD_CHANGE_DT + ", SEARCH_USR_ID=" + SEARCH_USR_ID + ", SEARCH_USR_NM="
-				+ SEARCH_USR_NM + "]";
-	}
 
 	public String getMenu_id() {
 		return menu_id;
@@ -555,6 +467,46 @@ public class AuthVo extends CommonVo {
 
 	public void setOFFICE_OWNER_NM(String oFFICE_OWNER_NM) {
 		OFFICE_OWNER_NM = oFFICE_OWNER_NM;
+	}
+
+
+	public String getLOGIN_FAIL_COUNT() {
+		return LOGIN_FAIL_COUNT;
+	}
+
+
+	public void setLOGIN_FAIL_COUNT(String lOGIN_FAIL_COUNT) {
+		LOGIN_FAIL_COUNT = lOGIN_FAIL_COUNT;
+	}
+
+
+	public String getLOGIN_AT() {
+		return LOGIN_AT;
+	}
+
+
+	public void setLOGIN_AT(String lOGIN_AT) {
+		LOGIN_AT = lOGIN_AT;
+	}
+
+
+	public String getLOGIN_TRY_DT() {
+		return LOGIN_TRY_DT;
+	}
+
+
+	public void setLOGIN_TRY_DT(String lOGIN_TRY_DT) {
+		LOGIN_TRY_DT = lOGIN_TRY_DT;
+	}
+
+
+	public String getANNUAL_USER() {
+		return ANNUAL_USER;
+	}
+
+
+	public void setANNUAL_USER(String aNNUAL_USER) {
+		ANNUAL_USER = aNNUAL_USER;
 	}
 
 

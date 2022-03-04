@@ -137,7 +137,7 @@ public class FileUploadUtil {
 	//  업로드한 파일의 경로가 도메인 별로 달라야 했기 때문에 도메인의 형을 비교하여 파일 저장 정로를 다르게 지정함
 	    public String getSaveLocation(HttpServletRequest request, String type) {
 	        
-	    	String uploadPath = "D:\\workspace_tidea_system\\tidea\\WebContent\\files\\";		// 로컬 경로
+	    	String uploadPath = "D:\\workspace_tidea_system_dev\\tidea\\WebContent\\files\\";		// 로컬 경로
 //	    	String uploadPath = "/home/tomcat7_system/webapps/tidea_system/files/";				// 운영 경로
 	     
 	    	return uploadPath;
@@ -148,7 +148,7 @@ public class FileUploadUtil {
 	    public String getSaveRealLocation(HttpServletRequest request, String type) {
 	        
 	    	// 로컬 경로
-	    	String uploadPath = "D:\\workspace_tidea_system\\tidea\\WebContent\\files\\";		// 로컬 경로
+	    	String uploadPath = "D:\\workspace_tidea_system_dev\\tidea\\WebContent\\files\\";		// 로컬 경로
 //	    	String uploadPath = "/home/tomcat7_system/webapps/tidea_system/files/";				// 운영 경로
 	        
 	        return uploadPath;
@@ -159,6 +159,80 @@ public class FileUploadUtil {
 	    	String location = path + fileName;
 	    	return location;
 	    }
+	    
+	    
+	    
+	    
+	    
+//*********************************************************************************************************************************
+public String fileUpload1(HttpServletRequest request, List<MultipartFile> uploadFile, String type) {
+	        
+	        OutputStream out = null;
+	        PrintWriter printWriter = null;
+	        
+	        for(MultipartFile files : uploadFile) {
+	        	
+	        	try {
+		            fileName = files.getOriginalFilename();
+		            byte[] bytes = files.getBytes();
+		            path = getSaveLocation1(request, type);
+		            File file = new File(path);
+		            
+	//	          파일명이 중복으로 존재할 경우
+		            if (fileName != null && !fileName.equals("")) {
+		                if (file.exists()) {
+		                	
+		             //파일명 앞에 yyyyMMdd_HHmmss 형식으로 붙여 파일명 중복을 방지
+		                	Date dt = new Date();
+		                	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+		            		String yyyyMMddHHmm = sdf.format(dt);
+		            		String yyyyMMdd = yyyyMMddHHmm.substring(0,8);
+		            		String HHmm = yyyyMMddHHmm.substring(8,12);
+	
+		            		fileName = yyyyMMdd + "_" + HHmm + "_" + fileName;
+		            		
+		            		file = new File(path + fileName);
+		                }
+		            }
+		            
+		            out = new FileOutputStream(file);
+		            out.write(bytes);
+		            
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        } finally {
+		            try {
+		                if (out != null) {
+		                    out.close();
+		                }
+		                if (printWriter != null) {
+		                    printWriter.close();
+		                }
+		            } catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		        }
+	        	
+	        	System.out.println();
+	        	
+	        }// for문
+	        
+	        return path;
+	    }
+	    
+	    
+//  업로드 파일 저장 경로 얻는 메소드
+//  업로드한 파일의 경로가 도메인 별로 달라야 했기 때문에 도메인의 형을 비교하여 파일 저장 정로를 다르게 지정함
+    public String getSaveLocation1(HttpServletRequest request, String type) {
+        
+    	String uploadPath = "D:\\workspace_tidea_system_dev\\tidea\\WebContent\\files\\biz_no\\";		// 로컬 경로
+//    	String uploadPath = "/home/tomcat7_system/webapps/tidea_system/biz_no/";				// 운영 경로
+     
+    	return uploadPath;
+    }
+	    
+	    
+	    
 	    
 
 }

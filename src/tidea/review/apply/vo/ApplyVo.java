@@ -7,24 +7,25 @@ public class ApplyVo extends CommonVo{
 	//심사신청정보
 		private int apply_no;		// 신청번호
 		private String invt_nm;		// 발명의 명칭
-		private String aplct_no;		// 출원번호
+		private String aplct_no;	// 출원번호
 		private String aplct_dt;	// 출원일자
 		private String aplct_nm;	// 출원인
 		private String memo;		// 신청내용
 		private String apply_dt;	// 신청일 
 		private String status;		// 상태
-		private String fb_type;		// 신청서 feedback 방법(1: 시스템 2:이메일)
+		private String review_field;// 우선심사분야(1:특허 2:실용신안)
+		private String tech_field;	// 기술분야(1:전기/전자)
+		private String tax_invoice;	// 세금계산서 발행여부 (Y:발행 N:미발행)
+		private String cash_receipt;// 현금영수증발행여부 (Y:발행 N:미발행)
 		
 		
 		//결제정보
-		private int order_cd;	// 결제번호
+		private int order_cd;		// 결제번호
 		private String user_id;		// 아이디
-		private String price;			// 실제비용
-		private String order_stat;	// 결제상태(1:결제완료 2:미결제)
+		private String price;		// 실제비용
 		private String order_dt;	// 결제일
 		private String account_no;	// 계좌번호
 		private String pay_method;	// 결제방식(1:카드결제 2:무통장입금 3:계좌이체)
-		private String discnt_rs;	// 할인사유(1:없음 2: 유공자 3:학생 4:장애인)
 		
 		
 		
@@ -92,15 +93,6 @@ public class ApplyVo extends CommonVo{
 			this.status = status;
 		}
 
-		public String getFb_type() {
-			return fb_type;
-		}
-
-		public void setFb_type(String fb_type) {
-			this.fb_type = fb_type;
-		}
-
-		
 		public int getOrder_cd() {
 			return order_cd;
 		}
@@ -126,13 +118,6 @@ public class ApplyVo extends CommonVo{
 			this.price = price;
 		}
 
-		public String getOrder_stat() {
-			return order_stat;
-		}
-
-		public void setOrder_stat(String order_stat) {
-			this.order_stat = order_stat;
-		}
 
 		public String getOrder_dt() {
 			return order_dt;
@@ -158,15 +143,37 @@ public class ApplyVo extends CommonVo{
 			this.pay_method = pay_method;
 		}
 
-		public String getDiscnt_rs() {
-			return discnt_rs;
+		public String getReview_field() {
+			return review_field;
 		}
 
-		public void setDiscnt_rs(String discnt_rs) {
-			this.discnt_rs = discnt_rs;
+		public void setReview_field(String review_field) {
+			this.review_field = review_field;
 		}
-	
-		
-	
+
+		public String getTech_field() {
+			return tech_field;
+		}
+
+		public void setTech_field(String tech_field) {
+			this.tech_field = tech_field;
+		}
+
+		public String getTax_invoice() {
+			return tax_invoice;
+		}
+
+		public void setTax_invoice(String tax_invoice) {
+			this.tax_invoice = tax_invoice;
+		}
+
+		public String getCash_receipt() {
+			return cash_receipt;
+		}
+
+		public void setCash_receipt(String cash_receipt) {
+			this.cash_receipt = cash_receipt;
+		}
+
 	
 }

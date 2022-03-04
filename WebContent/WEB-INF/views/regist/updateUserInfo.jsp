@@ -37,6 +37,47 @@
 		// 검색조건 유지
 		if('${param.searchYn}' != 'Y'){return}
 		$('#ANNOUNCE_NO').val('${param.ANNOUNCE_NO}');
+		
+		
+		//파일등록(파일 추가 삭제)
+		$("#addFile").on("click", function() {
+			var attachlength = $(".attachlb").length;
+			var filelength = $(".uploadFile").length;
+			
+			if($(".uploadFile").length + attachlength > 0) {
+				return;
+			}
+			var newfile = $("<input/>", {"type" : "file", "class" : "uploadFile", "name" : "uploadFile", "accept" : ".pdf,.jpg,.jpeg"});
+			$(this).parent().append(newfile);
+		});
+		
+		
+		 //파일 입력 칸 삭제(파일 추가 삭제)
+		 $("#delFile").on("click", function(){
+			 $(".uploadFile:last").remove();
+		 });
+		 
+		 
+		 //불러온 파일 삭제(입력되어있던 첨부파일 삭제)
+// 		 $("#delete").on("click", function(){
+			 
+// 			//파일 삭제 클릭시 첨부파일에서 삭제하는 ajax		<== 잠시주석
+// 			$.ajax({
+// 				url : '/regist/fileDel.do',
+// 				data : {FILE_NO:no_value},   //전송파라미터
+// 				type : 'POST',
+// 				dataType : 'json',
+// 				success : function() {
+// 					return true;
+// 				},
+// 				error : function() { // Ajax 전송 에러 발생시 실행
+// 					alert('오류가 발생했습니다.\n관리자에게 문의 바랍니다.','e');
+// 				}
+// 			});
+			 
+// 			 $(this).parent().remove();
+// 		 });
+		
 	});
 	
 	// 검색영역 설정
@@ -89,6 +130,19 @@
 			return;
 		}
 		
+		// 첨부파일확장자 제한
+		var file_len = $(".uploadFile").length;
+		for(var i = 0; i < file_len; i ++){
+			var filename = $("input[name=uploadFile]:eq(" + i + ")").val();
+			var ext = filename.substring(filename.lastIndexOf(".")+1,filename.length);
+			if(ext != "jpg" && ext != "pdf" && ext != "jpeg"){
+				alert("pdf, jpg, jpeg 파일만 가능합니다.");
+// 				$('.uploadFile').val('');	// 모든 첨부파일이 지워져서 주석처리
+				$('.uploadFile').focus();
+				return false;
+			}
+		}
+		
 		//"저장하시겠습니까?" 메시지
 		var result = confirm(gb_saveMsg);
 		if(result){
@@ -116,7 +170,6 @@
 	sf = new SimpleDateFormat("yyyy-MM-dd");
 	today = sf.format(now);
 %>
-
 	<form name="form" method="post" enctype="multipart/form-data" accept-charset="UTF-8" class="user_mode">
 		<!-- KEY 컴포넌트가 없는 경우 hidden 생성 -->
 		<input type="hidden" name="KEY" />
@@ -204,13 +257,22 @@
 								<input type="text" id="OFFICE_OWNER_NM" name="OFFICE_OWNER_NM" value="${UserInfo.OFFICE_OWNER_NM}" maxlength="30" style="ime-mode:active" placeholder="한글 2~5자리"> 
 							</div>
 						</div>
-						<div id="inputNdetail_6_2" class="col clear">
-							<p class="left">사업자 등록증</p>
-							<div class="right">
-								<input type="button" id="addFile" value="추가">
-								<input type="button" id="delFile" value="삭제">
-							</div>
-						</div>
+<!-- 						<div id="inputNdetail_6_2" class="col clear"> -->
+<!-- 							<p class="left">사업자 등록증</p> -->
+<!-- 							<div class="right"> -->
+<!-- 								<input type="button" id="addFile" value="추가" onclick="attach.add()"> -->
+<!-- 								<input type="button" id="delFile" value="삭제" onclick="attach.del()"> -->
+<!-- 								<label class="attachlb">  -->
+<%-- 									<a href="../biz_no/${fileInfo.FILE_CHNG_NM}" name="FILEINFO_NAME" id="FILEINFO_NAME" download="${fileInfo.FILE_NM}" target="_blank"> --%>
+<%-- 										<input type="text" name="FILE_NM" id="FILE_NM" value="${fileInfo.FILE_NM}"> --%>
+<%-- 										<input type="hidden" name="FILE_CHNG_NM" id="FILE_CHNG_NM" value="${biznofileVo.file_chng_nm}"> --%>
+<!-- 									</a> -->
+<!-- 									삭제버튼  -->
+<!-- 									<a href="#this" id="delete" name="delete" class="btn">삭제하기</a> -->
+<!-- 								</label> -->
+<!-- 								<br> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
 					</div>
 				</div>
 			</div>

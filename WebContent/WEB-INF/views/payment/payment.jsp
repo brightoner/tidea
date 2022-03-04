@@ -20,33 +20,33 @@
 <script type="text/javascript">
 
 	// 할인사유 라디오 버튼 클릭시 총액 계산
-	$(document).on("click","input[name=discnt_rs]",function(){
-	    var discount=$('[name="discnt_rs"]:checked').val();
-		console.log("discount : " + discount);
-	    var no_dis = 660000;
-	    console.log("no_dis : " + no_dis);
-	    var dis_0 = 1;
-		var dis_2 = 0.1;
-		var dis_3 = 0.15;
-		var dis_4 = 0.05;
-	    if(discount == 1){
-	        var a = 660000;
-	        var aa = a.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-	        $('input[name=price]').attr('value',aa);
-		}else if (discount == 2){
-			var b = 660000 - (660000 * dis_2);
-			var bb = b.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-			$('input[name=price]').attr('value',bb);
-		}else if (discount == 3){
-			var c = 660000 - (660000 * dis_3);
-			var cc = c.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-			$('input[name=price]').attr('value',cc);
-		}else if(discount == 4){
-			var d = 660000 - (660000 * dis_4);
-			var dd = d.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-			$('input[name=price]').attr('value',dd);
-	    }
-	});
+// 	$(document).on("click","input[name=discnt_rs]",function(){
+// 	    var discount=$('[name="discnt_rs"]:checked').val();
+// 		console.log("discount : " + discount);
+// 	    var no_dis = 660000;
+// 	    console.log("no_dis : " + no_dis);
+// 	    var dis_0 = 1;
+// 		var dis_2 = 0.1;
+// 		var dis_3 = 0.15;
+// 		var dis_4 = 0.05;
+// 	    if(discount == 1){
+// 	        var a = 660000;
+// 	        var aa = a.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+// 	        $('input[name=price]').attr('value',aa);
+// 		}else if (discount == 2){
+// 			var b = 660000 - (660000 * dis_2);
+// 			var bb = b.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+// 			$('input[name=price]').attr('value',bb);
+// 		}else if (discount == 3){
+// 			var c = 660000 - (660000 * dis_3);
+// 			var cc = c.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+// 			$('input[name=price]').attr('value',cc);
+// 		}else if(discount == 4){
+// 			var d = 660000 - (660000 * dis_4);
+// 			var dd = d.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+// 			$('input[name=price]').attr('value',dd);
+// 	    }
+// 	});
 
 	// 신용카드결제 클릭시 alert
 	$(document).on("click", "input[name=pay_method]", function(){
@@ -140,17 +140,17 @@
 				
 					
 					<!-- 3라인 -->
-					<div class="row clear">
-						<div id="inputNdetail_3_1" class="col clear">
-							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>할인사유</p>
-							<div class="right" >
-								<input type='radio' name='discnt_rs' value='1' checked/>없음
-							    <input type='radio' name='discnt_rs' value='2' />유공자
-							    <input type='radio' name='discnt_rs' value='3' />장애인
-							    <input type='radio' name='discnt_rs' value='4' />학생
-							</div>
-						</div>
-					</div>
+<!-- 					<div class="row clear"> -->
+<!-- 						<div id="inputNdetail_3_1" class="col clear"> -->
+<!-- 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>할인사유</p> -->
+<!-- 							<div class="right" > -->
+<!-- 								<input type='radio' name='discnt_rs' value='1' checked/>없음 -->
+<!-- 							    <input type='radio' name='discnt_rs' value='2' />유공자 -->
+<!-- 							    <input type='radio' name='discnt_rs' value='3' />장애인 -->
+<!-- 							    <input type='radio' name='discnt_rs' value='4' />학생 -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
 					
 					
 					<!-- 4라인 -->

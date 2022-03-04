@@ -59,9 +59,6 @@
 		                    else '납품완료'
 		        end)STATUS
 		      ,A.USER_ID
-		      ,( case when (A.FB_TYPE = '2') then '이메일'
-		                    else '시스템'
-		        end) FB_TYPE
 		FROM  RV_APPLY_TB A
 		LEFT JOIN RV_PAY_TB B
 		ON A.USER_ID=B.USER_ID
@@ -90,7 +87,6 @@
 			     , APLCT_DT
 			     , APLCT_NM
 			     , MEMO
-			     , FB_TYPE
 			FROM RV_APPLY_TB
 			WHERE APLCT_NO = #{aplct_no}
 			AND USER_ID = #{user_id}
@@ -129,7 +125,6 @@
 		    ,APPLY_DT
 		    ,USER_ID
 		    ,STATUS
-		    ,FB_TYPE
 		) VALUES (
 <!-- 		    (SELECT (MAX(APPLY_NO) + 1) FROM RV_APPLY_TB b) -->
 		     (SELECT IFNULL ((MAX(APPLY_NO) + 1), 1) FROM RV_APPLY_TB b)
@@ -141,7 +136,6 @@
 		   ,NOW()
 		   ,#{user_id}
 		   ,'1'
-		   ,#{fb_type}
 	)
 	</insert>
 	
@@ -155,7 +149,6 @@
 		  , APLCT_NM	= #{aplct_nm}
 		  , MEMO		= #{memo}
 		  , APPLY_DT	= NOW()
-		  , FB_TYPE		= #{fb_type}
 		WHERE APLCT_NO	= #{aplct_no}
 		AND   USER_ID	= #{user_id}
 	</update>
@@ -266,20 +259,16 @@
 		       ,USER_ID
 		       ,APLCT_NO
 		       ,PRICE
-		       ,ORDER_STAT
 		       ,ORDER_DT
 		       ,PAY_METHOD
-		       ,DISCNT_RS
 		) VALUES (
 <!-- 		        (SELECT (MAX(ORDER_CD) + 1) FROM RV_PAY_TB b) -->
 		        (SELECT IFNULL ((MAX(ORDER_CD) + 1), 1) FROM RV_PAY_TB b)
 		       ,#{user_id}
 		       ,#{aplct_no}
 		       ,#{price}
-		       ,'1'
 		       ,NOW()
 		       ,#{pay_method}
-		       ,#{discnt_rs}
 		)														
 	</insert>
 

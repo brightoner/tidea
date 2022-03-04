@@ -31,6 +31,7 @@ import tidea.review.common.service.CommonShService;
 import tidea.review.email.service.EmailService;
 import tidea.review.email.vo.EmailVo;
 import tidea.review.login.service.LoginService;
+import tidea.review.receipt.vo.ReceiptVo;
 import tidea.utils.EncryptUtil;
 import tidea.utils.FileUploadUtil;
 
@@ -140,11 +141,10 @@ public class RegistController {
 			String file_chng_nm = yyyyMMdd + "_" + HHmm + "_" + file_nm;
 			biznofileVo.setFile_chng_nm(file_chng_nm);
 			
-			String path = fileUploadUtil.fileUpload(request, uploadFile, type);
+			String path = fileUploadUtil.fileUpload1(request, uploadFile, type);
 			System.out.println("*********** path : " + path);
 			
-			String file_path = path + "\\biz_no\\";	// 로컬
-//			String file_path = path + "/office_reg_no/";	// 운영
+			String file_path = path;	
 			System.out.println("*********** file_path : " + file_path);
 			
 			biznofileVo.setFile_path(file_path);
@@ -261,7 +261,7 @@ public class RegistController {
 	}
 		
 	/**
-	 * 회원정보  (마이페이지)
+	 * 회원정보 상세보기 (마이페이지)
 	 * @param request
 	 * @param model
 	 * @param vo
@@ -269,7 +269,7 @@ public class RegistController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/regist/userInfo.do")
-	public String userInfo(HttpServletRequest request, Model model, AuthVo vo) throws Exception{
+	public String userInfo(HttpServletRequest request, Model model, AuthVo vo, BiznofileVo biznofileVo) throws Exception{
 		
 		// login session으로 user_id 받기 
 		@SuppressWarnings("unchecked")
@@ -280,6 +280,14 @@ public class RegistController {
 		Map<String, Object> UserInfo = authService.selectUserInfoDetail(vo);
 		
 		model.addAttribute("UserInfo", UserInfo);
+		
+		
+		//첨부파일관련
+		
+		biznofileVo.setUser_id(user_id);
+		
+		List<Map<String, Object>> fileInfo = authService.selectBizNoFile(biznofileVo);
+		model.addAttribute("fileInfo",fileInfo);
 		
 		return "/regist/updateUserInfo.tiles";
 	}
@@ -294,7 +302,7 @@ public class RegistController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/regist/updateUserInfo.do")
-	public String updateUserInfo(HttpServletRequest request, Model model, AuthVo vo) throws Exception{
+	public String updateUserInfo(@RequestParam("uploadFile") List<MultipartFile> uploadFile, HttpServletRequest request, Model model, AuthVo vo, BiznofileVo biznofileVo, String type) throws Exception{
 		
 		@SuppressWarnings("unchecked")
 		Map<String, Object> ssLoginInfo = (Map<String, Object>) request.getSession().getAttribute("SS_LOGIN_INFO");
@@ -321,7 +329,66 @@ public class RegistController {
 		
 		authService.updateUserInfo(vo);
 		
+		//*** 첨부파일 시작
+		//FileUploadUtil 객체생성
+		FileUploadUtil fileUploadUtil = new FileUploadUtil();
+		
+		for(int i = 0; i < uploadFile.size(); i++) {
+			
+			//파일명 앞에 yyyyMMdd_HHmmss 형식으로 붙여 파일명 중복을 방지 
+			Date dt = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+			String yyyyMMddHHmm = sdf.format(dt);
+			String yyyyMMdd = yyyyMMddHHmm.substring(0,8);
+			String HHmm = yyyyMMddHHmm.substring(8,12);
+			
+			
+			String file_nm = uploadFile.get(i).getOriginalFilename();	//file_nm은 원래 이름
+			biznofileVo.setFile_nm(file_nm);
+			
+			// 파일업로드 결과 값을 path로 받아온다(이미 fileUpload() 메소드에서 해당 경로에 업로드는 끝났음 )
+			String file_chng_nm = yyyyMMdd + "_" + HHmm + "_" + file_nm;
+			biznofileVo.setFile_chng_nm(file_chng_nm);
+			
+			String path = fileUploadUtil.fileUpload1(request, uploadFile, type);
+			System.out.println("*********** path : " + path);
+			
+			String file_path = path;	
+			System.out.println("*********** file_path : " + file_path);
+			
+			biznofileVo.setFile_path(file_path);
+		
+			biznofileVo.setUser_id(user_id);
+			
+			authService.insertBizNoFile(biznofileVo);
+		
+		}
+		//*** 첨부파일 끝
+		
 		return "redirect:/login/login.do";
+	}
+	
+	
+	/**
+	 * 우선심사신청 수정화면에서 : 첨부파일 삭제버튼 클릭 --> 첨부파일 삭제
+	 * @param request
+	 * @param model
+	 * @param attachFileVo
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/regist/fileDel.do")
+	public String fileDel(HttpServletRequest request, Model model, BiznofileVo biznofileVo) throws Exception {
+		
+		
+		@SuppressWarnings("unchecked")
+		Map<String, Object> ssLoginInfo = (Map<String, Object>) request.getSession().getAttribute("SS_LOGIN_INFO");
+		String user_id = ssLoginInfo == null ? "" : String.valueOf(ssLoginInfo.get("USER_ID"));
+		biznofileVo.setUser_id(user_id);
+		
+		authService.delBizNoFile(biznofileVo);
+		
+		return "jsonView";
 	}
 	
 	
@@ -393,6 +460,9 @@ public class RegistController {
 	}
 	
 		
+	
+	
+	
 		
 	//SMTP 메일보내기
 //	public static void gmailSend(String mail, String title, String content) {

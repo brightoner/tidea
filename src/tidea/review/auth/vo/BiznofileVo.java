@@ -2,7 +2,7 @@ package tidea.review.auth.vo;
 
 public class BiznofileVo {
 
-	private String file_no;			// 파일번호
+	private int file_no;			// 파일번호
 	private String user_id;			// 아이디
 	private String file_nm;			// 파일이름
 	private String file_chng_nm;	// 변환된 파일이름
@@ -15,7 +15,7 @@ public class BiznofileVo {
 	}
 
 
-	public BiznofileVo(String file_no, String user_id, String file_nm, String file_chng_nm, String file_path,
+	public BiznofileVo(int file_no, String user_id, String file_nm, String file_chng_nm, String file_path,
 			String gubun) {
 		super();
 		this.file_no = file_no;
@@ -34,12 +34,12 @@ public class BiznofileVo {
 	}
 
 
-	public String getFile_no() {
+	public int getFile_no() {
 		return file_no;
 	}
 
 
-	public void setFile_no(String file_no) {
+	public void setFile_no(int file_no) {
 		this.file_no = file_no;
 	}
 

@@ -33,7 +33,7 @@
 			if($(".uploadFile").length + attachlength > 0) {	// 사업자 등록증 1개만 받는다
 				return;
 			}
-			var newfile = $("<input/>", {"type" : "file", "class" : "uploadFile", "name" : "uploadFile", "accept" : ".hwp,.doc,.docx,.pdf"});
+			var newfile = $("<input/>", {"type" : "file", "class" : "uploadFile", "name" : "uploadFile", "accept" : ".pdf,.jpg,.jpeg"});
 			$(this).parent().append(newfile);
 		});
 		
@@ -166,8 +166,8 @@
 		for(var i = 0; i < file_len; i ++){
 			var filename = $("input[name=uploadFile]:eq(" + i + ")").val();
 			var ext = filename.substring(filename.lastIndexOf(".")+1,filename.length);
-			if(ext != "hwp" && ext != "pdf" && ext != "doc" && ext != "docx"){
-				alert("hwp, pdf, doc, docx 파일만 가능합니다.");
+			if(ext != "jpg" && ext != "pdf" && ext != "jpeg"){
+				alert("pdf, jpg, jpeg 파일만 가능합니다.");
 // 				$('.uploadFile').val('');	// 모든 첨부파일이 지워져서 주석처리
 				$('.uploadFile').focus();
 				return false;
@@ -207,7 +207,7 @@
 <title>티디아 우선심사 시스템</title>
 </head>
 <body>
-	<form name="form" method="post" class="regist user_mode">
+	<form name="form" method="post" class="regist user_mode" enctype="multipart/form-data" accept-charset="UTF-8">
 		<!-- KEY 컴포넌트가 없는 경우 hidden 생성 -->
 		
 		<!-- 컴포넌트 사용을 위한 include jsp -->
