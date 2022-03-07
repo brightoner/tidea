@@ -80,8 +80,8 @@
 		for(var i = 0; i < file_len; i ++){
 			var filename = $("input[name=uploadFile]:eq(" + i + ")").val();
 			var ext = filename.substring(filename.lastIndexOf(".")+1,filename.length);
-			if(ext != "hwp" && ext != "pdf" && ext != "doc" && ext != "docx"){
-				alert("hwp, pdf, doc, docx 파일만 가능합니다.");
+			if(ext != "zip" && ext != "7Z" && ext != "7z" && ext != "RAR" && ext != "rar" && ext != "ALZ" && ext != "alz"){
+				alert("zip, 7Z, RAR, ALZ 파일만 가능합니다.");
 // 				$('.uploadFile').val('');	// 모든 첨부파일이 지워져서 주석처리
 				$('.uploadFile').focus();
 				return false;
@@ -131,7 +131,7 @@
 				alert("첨부파일은 20개까지입니다.");
 				return;
 			}
-			var newfile = $("<input/>", {"type" : "file", "class" : "uploadFile", "name" : "uploadFile", "accept" : ".hwp,.doc,.docx,.pdf"});
+			var newfile = $("<input/>", {"type" : "file", "class" : "uploadFile", "name" : "uploadFile", "accept" : ".zip,.7Z,.7z,.RAR,.rar,.ALZ,.alz"});
 			$(this).parent().append(newfile);
 		});
 		

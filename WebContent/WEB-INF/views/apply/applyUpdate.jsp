@@ -83,8 +83,8 @@
 		for(var i = 0; i < file_len; i ++){
 			var filename = $("input[name=uploadFile]:eq(" + i + ")").val();
 			var ext = filename.substring(filename.lastIndexOf(".")+1,filename.length);
-			if(ext != "hwp" && ext != "pdf" && ext != "doc" && ext != "docx"){
-				alert("hwp, pdf, doc, docx 파일만 가능합니다.");
+			if(ext != "pdf" && ext != "HLT" && ext != "HLZ" && ext != "hlt" && ext != "hlz"){
+				alert("pdf, HLT, HLZ 파일만 가능합니다.");
 // 				$('.uploadFile').val('');	// 모든 첨부파일이 지워져서 주석처리
 				$('.uploadFile').focus();
 				return false;
@@ -145,7 +145,7 @@
 				return;
 			}
 // 			var newfile = $("<input/>", {"type" : "file", "class" : "uploadFile", "name" : "uploadFile"});
-			var newfile = $("<input/>", {"type" : "file", "class" : "uploadFile", "name" : "uploadFile", "accept" : ".hwp,.doc,.docx,.pdf"});
+			var newfile = $("<input/>", {"type" : "file", "class" : "uploadFile", "name" : "uploadFile", "accept" : ".pdf,.HLT,.HTZ,.hlt,.hlz"});
 			$(this).parent().append(newfile);
 		});
 		
