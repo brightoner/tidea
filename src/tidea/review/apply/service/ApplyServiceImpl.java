@@ -113,6 +113,17 @@ public class ApplyServiceImpl implements ApplyService{
 	public void updateApply(ApplyVo applyVo) throws Exception {
 		applyDao.updateApply(applyVo);
 	}
+	
+	
+	/**
+	 * 보완 파일클릭 시 다운로드 시간 등록 - 이용자
+	 * @param applyVo
+	 * @throws Exception
+	 */
+	@Override
+	public void updateDownDt(ApplyVo applyVo) throws Exception {
+		applyDao.updateDownDt(applyVo);
+	}
 
 
 	/**
@@ -205,7 +216,6 @@ public class ApplyServiceImpl implements ApplyService{
 	public int duplCheck(ApplyVo applyVo) throws Exception {
 		return applyDao.duplCheck(applyVo);
 	}
-
 
 
 

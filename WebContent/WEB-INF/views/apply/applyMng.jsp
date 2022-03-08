@@ -51,8 +51,10 @@
 	}
 	
 	// 그리드 설정
-	var cols = ['APPLY_NO', 'APLCT_NO', 'APPLY_DT', 'INVT_NM', 'ESTIMATE', 'PAY_METHOD', 'PRICE', 'STATUS']; //예) var cols = ['COL1', 'COL2', 'COL3'];
-	var colsNm = ['신청번호', '출원번호', '신청일', '발명의명칭', '견적서', '결제방식', '결제금액', '진행상태']; //예) var colsNm = ['컬럼한글명1', '컬럼한글명2', '컬럼한글명3'];
+// 	var cols = ['APPLY_NO', 'APLCT_NO', 'APPLY_DT', 'INVT_NM', 'ESTIMATE', 'PAY_METHOD', 'PRICE', 'STATUS']; //예) var cols = ['COL1', 'COL2', 'COL3'];
+// 	var colsNm = ['접수번호', '출원번호', '신청일', '발명의명칭', '견적서', '결제방식', '결제금액', '진행상태']; //예) var colsNm = ['컬럼한글명1', '컬럼한글명2', '컬럼한글명3'];
+	var cols = ['APPLY_NO', 'RECEIPT_DT', 'APLCT_NO', 'INVT_NM', 'STATUS', 'PAY_METHOD', 'FILE', 'FILE_DOWN_DT']; //예) var cols = ['COL1', 'COL2', 'COL3'];
+	var colsNm = ['접수번호', '접수일', '출원번호', '발명의명칭', '진행상태', '결제방식', '납품파일', '다운로드일자']; //예) var colsNm = ['컬럼한글명1', '컬럼한글명2', '컬럼한글명3'];
 	var key = ['APPLY_NO', 'APLCT_NO','INVT_NM','STATUS']; //예) var key = ['SN', 'HAKBEON'];
 	function fn_gridCompoSetting(){
 		fn_compoGrid('M', 'grid', cols, colsNm, key);
@@ -62,7 +64,7 @@
 	
 	// 입력 및 상세영역 설정
  	function fn_inputNdetailCompoSetting(){
- 		fn_compoInputbox('M', 'I', 'inputNdetail_1_1', 'APPLY_NO', 'APPLY_NO', 'Y', '신청번호');
+ 		fn_compoInputbox('M', 'I', 'inputNdetail_1_1', 'APPLY_NO', 'APPLY_NO', 'Y', '접수번호');
  
  	}
 	
@@ -111,7 +113,8 @@
 			var str_no = String(no);
 			var last_no = str_no.substr(str_no.length-1 ,1);
 			var APPLY_NO = $('#' + trId).find('input[name^=APPLY_NO]').val();
-	        var APLCT_NO = tdArr[1];
+// 	        var APLCT_NO = tdArr[1];
+	        var APLCT_NO = $('#' + trId).find('input[name^=APLCT_NO]').val();
 
 			document.form.action = "/apply/applyDetail.do?APLCT_NO=" +  APLCT_NO + "&APPLY_NO=" + APPLY_NO;
        		document.form.submit();
@@ -161,10 +164,9 @@
 				<label>진행상태</label>
 				<select style="width:250px;" id="STATUS">
 					<option value="">전체</option>
-					<option value="1">결제대기</option>
-					<option value="2">결제완료</option>
-					<option value="3">접수완료</option>
-					<option value="4">납품완료</option>
+					<option value="1">신청완료</option>
+					<option value="2">접수완료</option>
+					<option value="3">납품완료</option>
 				</select>
 					
 			</div>

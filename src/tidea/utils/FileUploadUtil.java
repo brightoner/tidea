@@ -137,7 +137,7 @@ public class FileUploadUtil {
 	//  업로드한 파일의 경로가 도메인 별로 달라야 했기 때문에 도메인의 형을 비교하여 파일 저장 정로를 다르게 지정함
 	    public String getSaveLocation(HttpServletRequest request, String type) {
 	        
-	    	String uploadPath = "D:\\workspace_tidea_system_dev\\tidea\\WebContent\\files\\";		// 로컬 경로
+	    	String uploadPath = "D:\\workspace_tidea_system_dev\\tidea_dev\\WebContent\\files\\";		// 로컬 경로
 //	    	String uploadPath = "/home/tomcat7_system/webapps/tidea_system/files/";				// 운영 경로
 	     
 	    	return uploadPath;
@@ -148,7 +148,7 @@ public class FileUploadUtil {
 	    public String getSaveRealLocation(HttpServletRequest request, String type) {
 	        
 	    	// 로컬 경로
-	    	String uploadPath = "D:\\workspace_tidea_system_dev\\tidea\\WebContent\\files\\";		// 로컬 경로
+	    	String uploadPath = "D:\\workspace_tidea_system_dev\\tidea_dev\\WebContent\\files\\";		// 로컬 경로
 //	    	String uploadPath = "/home/tomcat7_system/webapps/tidea_system/files/";				// 운영 경로
 	        
 	        return uploadPath;
@@ -225,7 +225,7 @@ public String fileUpload1(HttpServletRequest request, List<MultipartFile> upload
 //  업로드한 파일의 경로가 도메인 별로 달라야 했기 때문에 도메인의 형을 비교하여 파일 저장 정로를 다르게 지정함
     public String getSaveLocation1(HttpServletRequest request, String type) {
         
-    	String uploadPath = "D:\\workspace_tidea_system_dev\\tidea\\WebContent\\files\\biz_no\\";		// 로컬 경로
+    	String uploadPath = "D:\\workspace_tidea_system_dev\\tidea_dev\\WebContent\\biz_no\\";		// 로컬 경로
 //    	String uploadPath = "/home/tomcat7_system/webapps/tidea_system/biz_no/";				// 운영 경로
      
     	return uploadPath;

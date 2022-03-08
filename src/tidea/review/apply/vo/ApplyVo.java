@@ -12,19 +12,20 @@ public class ApplyVo extends CommonVo{
 		private String aplct_nm;	// 출원인
 		private String memo;		// 신청내용
 		private String apply_dt;	// 신청일 
-		private String status;		// 상태
+		private String status;		// 상태(1:신청완료 2:접수완료 3:납품완료)
 		private String review_field;// 우선심사분야(1:특허 2:실용신안)
-		private String tech_field;	// 기술분야(1:전기/전자)
+		private String tech_field;	// 기술분야(1:기계 2:전기/전자 3:화학/바이오)
 		private String tax_invoice;	// 세금계산서 발행여부 (Y:발행 N:미발행)
 		private String cash_receipt;// 현금영수증발행여부 (Y:발행 N:미발행)
-		
+		private String receipt_dt;	// 접수일
+		private String file_down_dt;// 보완파일다운로드일자
+		private String supply_dt;	// 납품일
 		
 		//결제정보
 		private int order_cd;		// 결제번호
 		private String user_id;		// 아이디
 		private String price;		// 실제비용
 		private String order_dt;	// 결제일
-		private String account_no;	// 계좌번호
 		private String pay_method;	// 결제방식(1:카드결제 2:무통장입금 3:계좌이체)
 		
 		
@@ -127,14 +128,6 @@ public class ApplyVo extends CommonVo{
 			this.order_dt = order_dt;
 		}
 
-		public String getAccount_no() {
-			return account_no;
-		}
-
-		public void setAccount_no(String account_no) {
-			this.account_no = account_no;
-		}
-
 		public String getPay_method() {
 			return pay_method;
 		}
@@ -175,5 +168,30 @@ public class ApplyVo extends CommonVo{
 			this.cash_receipt = cash_receipt;
 		}
 
-	
+		public String getReceipt_dt() {
+			return receipt_dt;
+		}
+
+		public void setReceipt_dt(String receipt_dt) {
+			this.receipt_dt = receipt_dt;
+		}
+
+		public String getFile_down_dt() {
+			return file_down_dt;
+		}
+
+		public void setFile_down_dt(String file_down_dt) {
+			this.file_down_dt = file_down_dt;
+		}
+
+		public String getSupply_dt() {
+			return supply_dt;
+		}
+
+		public void setSupply_dt(String supply_dt) {
+			this.supply_dt = supply_dt;
+		}
+
+		
+		
 }

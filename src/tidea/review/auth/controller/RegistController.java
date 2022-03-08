@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import tidea.review.apply.vo.AttachFileVo;
 import tidea.review.auth.service.AuthService;
 import tidea.review.auth.vo.AuthVo;
 import tidea.review.auth.vo.BiznofileVo;
@@ -31,7 +30,6 @@ import tidea.review.common.service.CommonShService;
 import tidea.review.email.service.EmailService;
 import tidea.review.email.vo.EmailVo;
 import tidea.review.login.service.LoginService;
-import tidea.review.receipt.vo.ReceiptVo;
 import tidea.utils.EncryptUtil;
 import tidea.utils.FileUploadUtil;
 
@@ -278,15 +276,14 @@ public class RegistController {
 		vo.setUSER_ID(user_id);
 		
 		Map<String, Object> UserInfo = authService.selectUserInfoDetail(vo);
-		
+		System.out.println("************ UserInfo : " + UserInfo);
 		model.addAttribute("UserInfo", UserInfo);
 		
-		
 		//첨부파일관련
-		
 		biznofileVo.setUser_id(user_id);
 		
 		List<Map<String, Object>> fileInfo = authService.selectBizNoFile(biznofileVo);
+		System.out.println("************ fileInfo : " + fileInfo);
 		model.addAttribute("fileInfo",fileInfo);
 		
 		return "/regist/updateUserInfo.tiles";

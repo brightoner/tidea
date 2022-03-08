@@ -59,24 +59,24 @@
 		 
 		 
 		 //불러온 파일 삭제(입력되어있던 첨부파일 삭제)
-// 		 $("#delete").on("click", function(){
+		 $("#delete").on("click", function(){
 			 
-// 			//파일 삭제 클릭시 첨부파일에서 삭제하는 ajax		<== 잠시주석
-// 			$.ajax({
-// 				url : '/regist/fileDel.do',
-// 				data : {FILE_NO:no_value},   //전송파라미터
-// 				type : 'POST',
-// 				dataType : 'json',
-// 				success : function() {
-// 					return true;
-// 				},
-// 				error : function() { // Ajax 전송 에러 발생시 실행
-// 					alert('오류가 발생했습니다.\n관리자에게 문의 바랍니다.','e');
-// 				}
-// 			});
+			//파일 삭제 클릭시 첨부파일에서 삭제하는 ajax		<== 잠시주석
+			$.ajax({
+				url : '/regist/fileDel.do',
+				data : {FILE_NO:no_value},   //전송파라미터
+				type : 'POST',
+				dataType : 'json',
+				success : function() {
+					return true;
+				},
+				error : function() { // Ajax 전송 에러 발생시 실행
+					alert('오류가 발생했습니다.\n관리자에게 문의 바랍니다.','e');
+				}
+			});
 			 
-// 			 $(this).parent().remove();
-// 		 });
+			 $(this).parent().remove();
+		 });
 		
 	});
 	
@@ -262,6 +262,7 @@
 <!-- 							<div class="right"> -->
 <!-- 								<input type="button" id="addFile" value="추가" onclick="attach.add()"> -->
 <!-- 								<input type="button" id="delFile" value="삭제" onclick="attach.del()"> -->
+<!-- 								<p class="note">* 첨부서류는 pdf, jpg, jpeg 파일만 가능합니다.</p> -->
 <!-- 								<label class="attachlb">  -->
 <%-- 									<a href="../biz_no/${fileInfo.FILE_CHNG_NM}" name="FILEINFO_NAME" id="FILEINFO_NAME" download="${fileInfo.FILE_NM}" target="_blank"> --%>
 <%-- 										<input type="text" name="FILE_NM" id="FILE_NM" value="${fileInfo.FILE_NM}"> --%>

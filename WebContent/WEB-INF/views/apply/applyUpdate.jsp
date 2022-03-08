@@ -19,7 +19,7 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<link rel="stylesheet" href="/resources/demos/style.css">
+<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -113,6 +113,35 @@
 	}
 	
 	
+	
+	// 파일다운로드 이벤트
+	function file_down(){
+		 
+		var id_check = $(this).attr("id");
+		console.log(id_check);
+		var id_check2 = id_check.substring(6);		// 인덱스 주소만 substring
+		console.log(id_check2);
+		var aplct_value = $("#APLCT_NO"+id_check2).val();
+		console.log(aplct_value);
+		
+		$.ajax({
+			url : '/apply/fileDown.do',
+			data : {APLCT_NO:aplct_value},   //전송파라미터
+			type : 'POST',
+			dataType : 'json',
+			success : function() {
+				return true;
+			},
+			error : function() { // Ajax 전송 에러 발생시 실행
+				alert('오류가 발생했습니다.\n관리자에게 문의 바랍니다.','e');
+			}
+		});
+	}
+	
+	
+	
+	
+	
 	//JQUERY달력 (datepicker)
 	$(document).ready(function () {
 	    $.datepicker.setDefaults($.datepicker.regional['ko']); 
@@ -185,7 +214,6 @@
 		 
 	});
 	
-	
 </script>
 
 <title>티디아 우선심사 시스템</title>
@@ -199,7 +227,7 @@
 	sf = new SimpleDateFormat("yyyy-MM-dd");
 	today = sf.format(now);
 %>
-	<form name="form" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+	<form name="form" method="post" enctype="multipart/form-data" accept-charset="UTF-8"  class="user_mode">
 		<!-- KEY 컴포넌트가 없는 경우 hidden 생성 -->
 		<input type="hidden" name="KEY" />
 		
@@ -218,84 +246,68 @@
 		</div>
 		
 		<div class="box-blue-line clear relative">
-			<!-- 상단버튼 영역 -->
-			<div id="buttonDivBox" class="button_box">
-				<button type="button" id="saveBtn" onclick="javascript:fn_save();return false;"><span></span>저장</button><!-- 저장버튼 -->
-				<button type="button" id="delBtn" onclick="javascript:fn_delete();return false;"><span></span><c:out value="${ssITEM7 }" />삭제</button><!-- 삭제버튼 -->
-				<button type="button" id="goListBtn" onclick="javascript:fn_goList();return false;"><span></span>목록</button><!-- 목록	 -->
-			</div>
-			<!-- 상단버튼 영역 END -->
-			
-			<!-- 조회조건 영역 -->
-			<div id="searchDivBox" style="padding: 7px 10px; margin: 28px;">
- 				<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span>
-			</div>
-			<!-- 조회조건영역 END -->
-			
-			<!-- 그리드 영역 -->
-			<div id="grid"></div>
-			<!-- 그리드 영역 END -->
-
 			<!-- 입력 및 상세영역 -->
-			<div id="inputNdetailDivBox" class="inputNdetail">
-				<p class="title"><span>상세 정보</span></p>
+			<div id="inputNdetailDivBox" class="inputNdetail narrow">
+				<p class="title"><span>우선심사 신청</span><span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span>
+				</p>
 				<div class="inputNdetail_box">
-					<!-- 1라인 -->
 					<div class="row clear">
 						<div id="inputNdetail_1_1" class="col clear">
-							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>발명의 명칭</p>
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>우선심사 분야</p>
 							<div class="right">
-								<input type="text" id="INVT_NM" name="INVT_NM" value="${apply.INVT_NM}" maxlength="30" style="ime-mode:active">
+								<input type="radio" id="review_field" title="특허" name="review_field" value="1" <c:if test="${apply.REVIEW_FIELD eq '1'}">checked</c:if>><label for="review_field">특허</label>
+								<input type="radio" id="review_field" title="실용신안" name="review_field" value="2" <c:if test="${apply.REVIEW_FIELD eq '2'}">checked</c:if>><label for="review_field">실용신안</label>
+							</div>
+						</div>
+						<div id="inputNdetail_1_2" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>기술 분야</p>
+							<div class="right">
+								<input type="radio" id="tech_field" title="전기/전자" name="tech_field" value="1" <c:if test="${apply.TECH_FIELD eq '1'}">checked</c:if>><label for="tech_field">기계</label>
+								<input type="radio" id="tech_field" title="전기/전자" name="tech_field" value="2" <c:if test="${apply.TECH_FIELD eq '2'}">checked</c:if>><label for="tech_field">전기/전자</label>
+								<input type="radio" id="tech_field" title="전기/전자" name="tech_field" value="3" <c:if test="${apply.TECH_FIELD eq '3'}">checked</c:if>><label for="tech_field">화학/바이오</label>
 							</div>
 						</div>						
 					</div>
 					
-					<!-- 2라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_1_1" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>발명의 명칭</p>
+							<div class="right">
+								<input type="text" id="INVT_NM" name="INVT_NM" value="${apply.INVT_NM}">
+							</div>
+						</div>						
+					</div>
+					
 					<div class="row clear">
 						<div id="inputNdetail_2_1" class="col clear">
-							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원 번호</p>
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원번호</p>
 							<div class="right">
 								<input type="text" id="APLCT_NO" name="APLCT_NO" value="${apply.APLCT_NO}" maxlength="30" style="ime-mode:active">
 							</div>
 						</div>
-						
 						<div id="inputNdetail_2_2" class="col clear">
-							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원 일</p>
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원일</p>
 							<div class="right">
-								<input type="text" id="APLCT_DT" name="APLCT_DT" value="${apply.APLCT_DT}" maxlength="30" style="ime-mode:active">
-							</div>
-							
-						</div>
-					</div>
-					
-					
-					<!-- 3라인 -->
-					<div class="row clear">
-						<div id="inputNdetail_3_1" class="col clear">
-							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원 인</p>
-							<div class="right">
-								<input type="text" id="APLCT_NM" name="APLCT_NM" value="${apply.APLCT_NM}" maxlength="30" style="ime-mode:active">
+								<input type="text" id="APLCT_DT" name="APLCT_DT" value="${apply.APLCT_DT}" placeholder="YYYY-MM-DD">
 							</div>
 						</div>
 					</div>
 					
-					<!-- 4라인 -->
 					<div class="row clear">
-						<div id="inputNdetail_4_1" class="col clear">
-							<p class="left">신청 내용</p>
+						<div id="inputNdetail_2_3" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원인</p>
 							<div class="right">
-								<textarea id="MEMO" name="MEMO" cols="50" rows="20">${apply.MEMO}</textarea>
+								<input type="text" id="APLCT_NM" name="APLCT_NM" maxlength="30" style="ime-mode:active" value="${apply.APLCT_NM}">
 							</div>
 						</div>
 					</div>
-					
-					<!-- 5라인 - 이용자 첨부파일-->
 					<div class="row clear">
-						<div id="inputNdetail_5_1" class="col clear file"> 
-							<p class="left">이용자 첨부파일</p>
+						<div id="inputNdetail_2_4" class="col clear file"> 
+							<p class="left">이용자 첨부서류</p>
 							<div class="right">
 								<input type="button" id="addFile" value="추가" onclick="attach.add()">
 								<input type="button" id="delFile" value="삭제" onclick="attach.del()">
+								<p class="note">* 첨부서류는 pdf, HLT, HLZ 파일만 가능합니다.</p>
 								<c:forEach items="${fileInfo}" var="fileInfo" begin="0" end="${fileInfo.size()}" step="1" varStatus="status">
 									<label class="attachlb"> 
 										<a href="../files/${fileInfo.FILE_CHNG_NM}" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo.FILE_NM}" target="_blank">
@@ -309,22 +321,58 @@
 									</label>
 									<br>
 								</c:forEach>
-								
 							</div>
 						</div>
 					</div>
-				</div>
-				
-				
-				<div class="inputNdetail_box">
-				<!-- 6라인 - 관리자 첨부파일 -->
+
+					<div class="row clear">
+						<div id="inputNdetail_4_1" class="col clear">
+							<p class="left">요청 사항</p>
+							<div class="right">
+								<textarea id="MEMO" name="MEMO" cols="50" rows="20" placeholder="신청 건에 관한 참고 사항 및 결제 사항 등에 대해 남겨주시면, 확인 후 진행하도록 하겠습니다.">${apply.MEMO}</textarea>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row clear">
+						<div id="inputNdetail_4_1" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>결제 방식</p>
+							<div class="right" >
+								<input type='radio' name='pay_method' value='1' <c:if test="${apply.PAY_METHOD eq '1'}">checked</c:if>/>카드결제
+								<input type='radio' name='pay_method' value='2' <c:if test="${apply.PAY_METHOD eq '2'}">checked</c:if>/>무통장입금
+								<input type='radio' name='pay_method' value='3' <c:if test="${apply.PAY_METHOD eq '3'}">checked</c:if>/>계좌이체
+							</div>
+						</div>
+					</div>
+					
+					<div class="row clear">
+						<div id="inputNdetail_5_1" class="col clear">
+							<p class="left">증빙 서류</p>
+							<div class="right">
+								<input type='radio' name='tax_invoice' value='Y' <c:if test="${apply.TAX_INVOICE eq 'Y'}">checked</c:if>/>전자세금계산서 발행
+								<input type='radio' name='cash_receipt' value='Y' <c:if test="${apply.CASH_RECEIPT eq 'Y'}">checked</c:if>/>현금영수증 발행
+							</div>
+						</div>						
+					</div>
+					
+					<div class="row clear">
+						<div id="inputNdetail_2_2" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>결제 금액</p>
+							<div class="right" >
+								<input type='text' id="price" name="price" value="${apply.PRICE}" readonly="readonly">
+							</div>
+						</div>
+					</div>
+					
+					
 					<div class="row clear">
 						<div id="inputNdetail_6_1" class="col clear file"> 
-							<p class="left">조사원 첨부파일</p>
+							<p class="left"> 납품파일</p>
 							<div class="right">
 								<c:forEach items="${fileInfo_2}" var="fileInfo_2" begin="0" end="${fileInfo_2.size()}" step="1" varStatus="status">
 									<label class="attachlb"> 
-										<a href="../files/${fileInfo_2.FILE_CHNG_NM}" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo_2.FILE_NM}" target="_blank">
+<%-- 										<a href="../files/${fileInfo_2.FILE_CHNG_NM}" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo_2.FILE_NM}" target="_blank"> --%>
+										<a href="../files/${fileInfo_2.FILE_CHNG_NM}" onclick="file_down();" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo_2.FILE_NM}" target="_blank">
 											<input type="text" name="FILE_NM" id="FILE_NM${status.index}" value="${fileInfo_2.FILE_NM}">
 											<input type="hidden" name="FILE_CHNG_NM" id="FILE_CHNG_NM" value="${attachFileVo.file_chng_nm}">
 											<input type="hidden" name="APPLY_NO" id="APPLY_NO${status.index}" value="${fileInfo_2.APPLY_NO}">
@@ -333,13 +381,35 @@
 									</label>
 									<br>
 								</c:forEach>
-								
 							</div>
 						</div>
 					</div>
+					
+					<div class="row clear">
+						<div id="inputNdetail_2_2" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>다운로드 일자</p>
+							<div class="right">
+								<input type="text" id="APLCT_DT" name="APLCT_DT" value="${apply.FILE_DOWN_DT}" placeholder="YYYY-MM-DD">
+							</div>
+						</div>
+					</div>
+					
+					
 				</div>
+				<p class="note">견적서 먼저 요청하시는 경우, 무통장입금 선택 후 진행하시기 바랍니다.<br/>
+개인이 전자세금계산서 발행을 원하시는 경우, 신청 후 전화(042-934-2021) 또는 이메일(tidea@tidea.co.kr) 연락 부탁드립니다.</p>
 			</div>
+			<!-- 입력 및 상세영역 END -->
+
+			<!-- 상단버튼 영역 -->
+			<div id="buttonDivBox" class="button_box">
+				<button type="button" class="differ" id="delBtn" onclick="javascript:fn_delete();return false;"><span></span><c:out value="${ssITEM7 }" />삭제</button><!-- 삭제버튼 -->
+				<button type="button" id="goListBtn" onclick="javascript:fn_goList();return false;"><span></span>목록</button><!-- 목록	 -->
+				<button type="button" id="saveBtn" onclick="javascript:fn_save();return false;"><span></span>저장</button><!-- 저장버튼 -->
+			</div>
+			<!-- 상단버튼 영역 END -->
 		</div>
 	</form>
+	
 </body>
 </html>

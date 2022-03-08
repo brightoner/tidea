@@ -26,6 +26,14 @@ public interface LoginDao {
 	 */
 	public String useAtCheck(AuthVo authVo) throws Exception;
 	
+	/**
+	 * 우선심사등록시 연간회원, 일반회원구분 - 결제금액을 구분하기 위해
+	 * @param AuthVo
+	 * @return
+	 * @throws Exception
+	 */
+	public String chkAnnualUser(AuthVo AuthVo) throws Exception;
+	
 	
 	/**
 	 * 로그인 실패시 로그인 실패 카운트 증가

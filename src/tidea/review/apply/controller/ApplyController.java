@@ -33,6 +33,7 @@ import tidea.review.auth.vo.AuthVo;
 import tidea.review.common.service.CommonShService;
 import tidea.review.email.service.EmailService;
 import tidea.review.email.vo.EmailVo;
+import tidea.review.login.service.LoginService;
 import tidea.utils.FileUploadUtil;
 
 @Controller
@@ -50,6 +51,9 @@ public class ApplyController {
 	
 	@Resource(name = "emailService")
 	private EmailService emailService;
+	
+	@Resource(name = "loginService")
+	private LoginService loginService;
 	
 
 	/**
@@ -96,12 +100,31 @@ public class ApplyController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/apply/applyReg.do")
-	public String applyReg(HttpServletRequest request, Model model, ApplyVo applyVo, AttachFileVo attachFileVo) throws Exception{
+	public String applyReg(HttpServletRequest request, Model model, ApplyVo applyVo, AttachFileVo attachFileVo, AuthVo authVo) throws Exception{
 		
 		applyService.applyInfoList(request, model, applyVo);
+		
+		// 연간회원, 일반회원 확인
+		@SuppressWarnings("unchecked")
+		Map<String, Object> ssLoginInfo = (Map<String, Object>) request.getSession().getAttribute("SS_LOGIN_INFO");
+		String user_id = ssLoginInfo == null ? "" : String.valueOf(ssLoginInfo.get("USER_ID"));
+		authVo.setUSER_ID(user_id);
+		
+		String  result = loginService.chkAnnualUser(authVo);
+		
+		String price = "";
+		if(result == "Y" || result.equals("Y")) {
+			price = "300,000";
+		}else {
+			price = "450,000";
+		}
+		model.addAttribute("price",price );
 
+		
+		// 심사정보
 		Map<String, Object> apply = applyService.selectApplyDetail(applyVo);
 		model.addAttribute("apply", apply);
+		System.out.println("********** apply : " + apply);
 		
 		return "/apply/applyReg.tiles";
 	}
@@ -149,6 +172,7 @@ public class ApplyController {
 		public String insertApply(@RequestParam("uploadFile") List<MultipartFile> uploadFile
 				, MultipartHttpServletRequest request, String type, Model model, ApplyVo applyVo, AttachFileVo attachFileVo, AuthVo authVo, EmailVo emailVo) throws Exception {
 		
+		// 우선심사신청관련
 		@SuppressWarnings("unchecked")
 		Map<String, Object> ssLoginInfo = (Map<String, Object>) request.getSession().getAttribute("SS_LOGIN_INFO");
 		String user_id = ssLoginInfo == null ? "" : String.valueOf(ssLoginInfo.get("USER_ID"));
@@ -170,10 +194,32 @@ public class ApplyController {
 		String memo = request.getParameter("MEMO");
 		applyVo.setMemo(memo);
 		
+		String review_field = request.getParameter("review_field");
+		applyVo.setReview_field(review_field);
+		
+		String tech_field = request.getParameter("tech_field");
+		applyVo.setTech_field(tech_field);
+		
+		String tax_invoice = request.getParameter("tax_invoice");
+		applyVo.setTax_invoice(tax_invoice);
+		
+		String cash_receipt = request.getParameter("cash_receipt");
+		applyVo.setCash_receipt(cash_receipt);
+		
 		String user_nm = authService.getName(authVo);		// 신청자 이름
-		authVo.setUSER_ID(user_id);							// 메일 전송시 사용
+//		authVo.setUSER_ID(user_id);							// 메일 전송시 사용
 		
 		applyService.insertApply(applyVo);
+		
+		
+		//결제관련
+		String price = request.getParameter("price");
+		applyVo.setPrice(price);
+		
+		String pay_method = request.getParameter("pay_method");
+		applyVo.setPay_method(pay_method);
+		
+		applyService.insertPayment(applyVo);
 		
 		
 		model.addAttribute("USER_NM", user_nm);
@@ -216,9 +262,12 @@ public class ApplyController {
 		
 		//***** 신청완료 메일 발송 	<-- 주의!! 결제화면이있을경우 여기서 메일 보내면 안됨 (결제화면이 없는경우 메일 살릴것) 
 		// 메일 발송용 제목, 내용
-		String mail = authService.getRectEmail(authVo);	// 접수자 메일주소 
 	
 		Map<String, Object> tideaEmailInfo = emailService.getTideaEmail(emailVo);	// 기관메일정보를 DB에서 불러옴
+//		String mail = authService.getRectEmail(authVo);				// 접수자 메일주소 (접수자가 등록한 메일주소)
+		String mail = (String) tideaEmailInfo.get("EMAIL_ADDR");	// 접수자 메일주소 (기관메일)
+		System.out.println("********* mail : " + mail);
+		
 		String apply_title = (String) tideaEmailInfo.get("APPLY_TITLE");			// 신청완료 메일 제목 - 티디아접수자에게 가는 메일 , tidea_email 테이블에서 불러옴		
 		String apply_content = (String) tideaEmailInfo.get("APPLY_CONTENT");		// 신청완료 메일 내용 - 티디아접수자에게 가는 메일 , tidea_email 테이블에서 불러옴	
 		
@@ -231,15 +280,16 @@ public class ApplyController {
 		
 		//***** 신청완료 메일 발송 끝
 		
-//		String paramUrl = "?searchYn=Y";
-//		// 신규등록 후 조회화면 1페이지로  설정
-//		paramUrl += "&curPage=" + 1;
+		String paramUrl = "?searchYn=Y";
+		// 신규등록 후 조회화면 1페이지로  설정
+		paramUrl += "&curPage=" + 1;
 //		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
-//		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO";
-//		System.out.println("********** paramUrl : " + paramUrl);
+		paramUrl += "&cols=" + "APPLY_NO,RECEIPT_DT,APLCT_NO,INVT_NM,STATUS,PAY_METHOD,FILE,FILE_DOWN_DT";
+		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO";
+		System.out.println("********** paramUrl : " + paramUrl);
 	
-//		return "redirect:/apply/applyMng.do" + paramUrl;	// 결제창이 없는경우 리스트화면으로 이동
-		return "/payment/payment.tiles";					// 결제창이 있는결우 결제화면으로 이동 
+		return "redirect:/apply/applyMng.do" + paramUrl;	// 결제창이 없는경우 리스트화면으로 이동
+//		return "/payment/payment.tiles";					// 결제창이 있는결우 결제화면으로 이동 
 	}
 	
 	//
@@ -251,34 +301,34 @@ public class ApplyController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/regist/payment.do")
-	public String payment(HttpServletRequest request, Model model, ApplyVo applyVo ) throws Exception{
-		
-		@SuppressWarnings("unchecked")
-		Map<String, Object> ssLoginInfo = (Map<String, Object>) request.getSession().getAttribute("SS_LOGIN_INFO");
-		String user_id = ssLoginInfo == null ? "" : String.valueOf(ssLoginInfo.get("USER_ID"));
-		applyVo.setUser_id(user_id);
-		
-		String aplct_no = request.getParameter("APLCT_NO");
-		applyVo.setAplct_no(aplct_no);
-		
-		String price = request.getParameter("price");
-		applyVo.setPrice(price);
-		
-		String pay_method = request.getParameter("pay_method");
-		applyVo.setPay_method(pay_method);
-		
-		applyService.insertPayment(applyVo);
-		applyService.updateStatus(applyVo);
-		
-		String paramUrl = "?searchYn=Y";
-		// 신규등록 후 조회화면 1페이지로  설정
-		paramUrl += "&curPage=" + 1;
-		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
-		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO";
-	
-		return "redirect:/apply/applyMng.do" + paramUrl;	
-	}
+//	@RequestMapping(value = "/regist/payment.do")
+//	public String payment(HttpServletRequest request, Model model, ApplyVo applyVo ) throws Exception{
+//		
+//		@SuppressWarnings("unchecked")
+//		Map<String, Object> ssLoginInfo = (Map<String, Object>) request.getSession().getAttribute("SS_LOGIN_INFO");
+//		String user_id = ssLoginInfo == null ? "" : String.valueOf(ssLoginInfo.get("USER_ID"));
+//		applyVo.setUser_id(user_id);
+//		
+//		String aplct_no = request.getParameter("APLCT_NO");
+//		applyVo.setAplct_no(aplct_no);
+//		
+//		String price = request.getParameter("price");
+//		applyVo.setPrice(price);
+//		
+//		String pay_method = request.getParameter("pay_method");
+//		applyVo.setPay_method(pay_method);
+//		
+//		applyService.insertPayment(applyVo);
+//		applyService.updateStatus(applyVo);
+//		
+//		String paramUrl = "?searchYn=Y";
+//		// 신규등록 후 조회화면 1페이지로  설정
+//		paramUrl += "&curPage=" + 1;
+//		paramUrl += "&cols=" + "APPLY_NO,RECEIPT_DT,APLCT_NO,INVT_NM,STATUS,PAY_METHOD,FILE,FILE_DOWN_DT";
+//		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO";
+//	
+//		return "redirect:/apply/applyMng.do" + paramUrl;	
+//	}
 	
 	
 	/**
@@ -318,7 +368,8 @@ public class ApplyController {
 		String paramUrl = "?searchYn=Y";
 		// 신규등록 후 조회화면 1페이지로  설정
 		paramUrl += "&curPage=" + 1;
-		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
+//		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
+		paramUrl += "&cols=" + "APPLY_NO,RECEIPT_DT,APLCT_NO,INVT_NM,STATUS,PAY_METHOD,FILE,FILE_DOWN_DT";
 		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO";
 	
 		return "redirect:/apply/applyMng.do" + paramUrl;
@@ -404,7 +455,8 @@ public class ApplyController {
 		String paramUrl = "?searchYn=Y";
 		// 신규등록 후 조회화면 1페이지로  설정
 		paramUrl += "&curPage=" + 1;
-		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
+//		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
+		paramUrl += "&cols=" + "APPLY_NO,RECEIPT_DT,APLCT_NO,INVT_NM,STATUS,PAY_METHOD,FILE,FILE_DOWN_DT";
 		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO";
 	
 		return "redirect:/apply/applyMng.do" + paramUrl;
@@ -461,6 +513,7 @@ public class ApplyController {
 		
 		Map<String, Object> apply = applyService.selectApplyDetail(applyVo);
 		model.addAttribute("apply",apply);
+		System.out.println("************ apply : " + apply);
 		
 		//	첨부파일 관련
 		attachFileVo.setAplct_no(aplct_no);
@@ -471,9 +524,33 @@ public class ApplyController {
 		model.addAttribute("fileInfo",fileInfo);
 		model.addAttribute("fileInfo_2",fileInfo_2);
 		
-		
 		return "/apply/applyUpdate.tiles";
 	}
+	
+	/**
+	 * 파일을 클릭시 파일다운로드 날짜 등록
+	 * @param request
+	 * @param model
+	 * @param applyVo
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/apply/fileDown.do")
+	public String fileDown(HttpServletRequest request, Model model, ApplyVo applyVo) throws Exception {
+		
+		@SuppressWarnings("unchecked")
+		Map<String, Object> ssLoginInfo = (Map<String, Object>) request.getSession().getAttribute("SS_LOGIN_INFO");
+		String user_id = ssLoginInfo == null ? "" : String.valueOf(ssLoginInfo.get("USER_ID"));
+		applyVo.setUser_id(user_id);
+		
+		String aplct_no = request.getParameter("APLCT_NO");
+		applyVo.setAplct_no(aplct_no);
+		
+		applyService.updateDownDt(applyVo);
+		
+		return "jsonView";
+	}
+	
 	
 	
 	
@@ -495,17 +572,17 @@ public class ApplyController {
         Properties prop = new Properties();
         
      // gmail 사용시
-//        prop.put("mail.smtp.host", "smtp.gmail.com"); 
-//        prop.put("mail.smtp.port", 465); 
-//        prop.put("mail.smtp.auth", "true"); 
-//        prop.put("mail.smtp.ssl.enable", "true"); 
-//        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        prop.put("mail.smtp.host", "smtp.gmail.com"); 
+        prop.put("mail.smtp.port", 465); 
+        prop.put("mail.smtp.auth", "true"); 
+        prop.put("mail.smtp.ssl.enable", "true"); 
+        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         
      // daum 메일  사용시
-        prop.put("mail.smtp.host", "smtp.daum.net");	
-        prop.put("mail.smtp.port", "465");
-        prop.put("mail.smtp.ssl.enable", "true");
-        prop.put("mail.smtp.auth", "true");
+//        prop.put("mail.smtp.host", "smtp.daum.net");	
+//        prop.put("mail.smtp.port", "465");
+//        prop.put("mail.smtp.ssl.enable", "true");
+//        prop.put("mail.smtp.auth", "true");
         
 		// 카페24 메일 사용시
 //		prop.put("mail.smtp.host", "smtp.cafe24.com");	

@@ -13,7 +13,7 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<link rel="stylesheet" href="/resources/demos/style.css">
+<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -22,6 +22,17 @@
 	input::placeholder {
 	  color: #66666673;
 	  font-style: italic;
+	}
+	
+	.inputNdetail.narrow .checkbox {
+	margin: 0 5px;
+	}
+	.inputNdetail.narrow textarea {
+	height: 200px;
+	}
+	
+	#applyType2 {
+	margin-left: 10px;
 	}
 </style>
 
@@ -134,11 +145,20 @@
 		});
 	}
 	
-	
+	// 신용카드결제 선택시 alert
 	$(document).on("click", "input[name=pay_method]", function(){
 		var pay_kind =$('[name="pay_method"]:checked').val();
 		if(pay_kind == "1"){
 			alert("카드결제준 준비중입니다. 다른 결제수단을 선택해 주세요!");
+			return false;
+		}
+	});
+	
+	// 화학/바이오 클릭시 alert
+	$(document).on("click", "input[name=tech_field]", function(){
+		var pay_kind =$('[name="tech_field"]:checked').val();
+		if(pay_kind == "3"){
+			alert("화학/바이오 분야는 서비스 준비중입니다!");
 			return false;
 		}
 	});
@@ -207,7 +227,7 @@
 	sf = new SimpleDateFormat("yyyy-MM-dd");
 	today = sf.format(now);
 %>
-	<form name="form" method="post" enctype="multipart/form-data">
+	<form name="form" method="post" enctype="multipart/form-data" class="apply user_mode">
 		
 		<!-- 컴포넌트 사용을 위한 include jsp -->
 		<jsp:include flush="false" page="../common/commonComponent.jsp"></jsp:include>
@@ -222,97 +242,70 @@
 			</div>
 		</div>
 		
-		<div class="box-blue-line clear relative">
-			<!-- 상단버튼 영역 -->
-			<div id="buttonDivBox" class="button_box">
-				<button type="reset" id="clearBtn"><span></span>초기화</button>
-				<button type="button" id="saveBtn" onclick="javascript:fn_save();return false;"><span></span>저장</button><!-- 저장버튼 -->
-				<button type="button" id="goListBtn" onclick="javascript:fn_goList();return false;"><span></span>목록</button><!-- 목록 -->
-			</div>
-			<!-- 상단버튼 영역 END -->
-			
-			<!-- 조회조건 영역 -->
-			<div id="searchDivBox" style="padding: 7px 10px; margin: 28px;">
- 				<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span>
-			</div>
-			<!-- 조회조건영역 END -->
-			
-			<!-- 그리드 영역 -->
-			<div id="grid"></div>
-			<!-- 그리드 영역 END -->
-
+		<div class="box-blue-line clear relative">			
 			<!-- 입력 및 상세영역 -->
-			<div id="inputNdetailDivBox" class="inputNdetail">
-				<p class="title"><span>신규 등록 정보</span></p>
+			<div id="inputNdetailDivBox" class="inputNdetail narrow">
+				<p class="title"><span>우선심사 신청</span><span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span>
+				</p>
 				<div class="inputNdetail_box">
-					<!-- 1라인 -->
 					<div class="row clear">
 						<div id="inputNdetail_1_1" class="col clear">
 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>우선심사 분야</p>
-							<div class="right" >
-								<input type='radio' name='review_field' value='1' />특허
-								<input type='radio' name='review_field' value='2' />실용신안
+							<div class="right">
+								<input type="radio" id="review_field" title="특허" name="review_field" value="1" checked><label for="review_field">특허</label>
+								<input type="radio" id="review_field" title="실용신안" name="review_field" value="2"><label for="review_field">실용신안</label>
 							</div>
 						</div>
-					</div>
-				</div>
-				
-				<div class="inputNdetail_box">
-					<!-- 2라인 -->
-					<div class="row clear">
-						<div id="inputNdetail_2_1" class="col clear">
+						<div id="inputNdetail_1_2" class="col clear">
 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>기술 분야</p>
-							<div class="right" >
-								<input type='radio' name='tech_field' value='1' />전기/전자
+							<div class="right">
+								<input type="radio" id="tech_field" title="전기/전자" name="tech_field" value="1" checked><label for="tech_field">기계</label>
+								<input type="radio" id="tech_field" title="전기/전자" name="tech_field" value="2"><label for="tech_field">전기/전자</label>
+								<input type="radio" id="tech_field" title="전기/전자" name="tech_field" value="3"><label for="tech_field">화학/바이오</label>
 							</div>
-						</div>
+						</div>						
 					</div>
-				</div>	
 					
-				<div class="inputNdetail_box">
-					<!-- 3라인 -->
 					<div class="row clear">
-						<div id="inputNdetail_3_1" class="col clear">
+						<div id="inputNdetail_1_1" class="col clear">
 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>발명의 명칭</p>
 							<div class="right">
 								<input type="text" id="INVT_NM" name="INVT_NM" value="${apply.INVT_NM}">
 							</div>
 						</div>						
-					</div>
-					<!-- 4라인 -->
+					</div>			
+
 					<div class="row clear">
-						<div id="inputNdetail_4_1" class="col clear">
+						<div id="inputNdetail_2_1" class="col clear">
 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원번호</p>
 							<div class="right">
 								<input type="text" id="APLCT_NO" name="APLCT_NO" maxlength="30" style="ime-mode:active">
 							</div>
 						</div>
-					</div>
-					<!-- 5라인 -->
-					<div class="row clear">
-						<div id="inputNdetail_5_1" class="col clear">
+						<div id="inputNdetail_2_2" class="col clear">
 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원일</p>
 							<div class="right">
 								<input type="text" id="APLCT_DT" name="APLCT_DT" value="${apply.APLCT_DT}" placeholder="YYYY-MM-DD">
 							</div>
 						</div>
 					</div>
-					<!-- 6라인 -->
+					
 					<div class="row clear">
-						<div id="inputNdetail_6_1" class="col clear">
+						<div id="inputNdetail_2_3" class="col clear">
 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>출원인</p>
 							<div class="right">
 								<input type="text" id="APLCT_NM" name="APLCT_NM" maxlength="30" style="ime-mode:active" value="${apply.APLCT_NM}">
 							</div>
 						</div>
 					</div>
-					<!-- 7라인 -->
+					
 					<div class="row clear">
-						<div id="inputNdetail_7_1" class="col clear file"> 
-							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>첨부파일</p>
+						<div id="inputNdetail_2_4" class="col clear file"> 
+							<p class="left">첨부서류</p>
 							<div class="right">
 								<input type="button" id="addFile" value="추가">
 								<input type="button" id="delFile" value="삭제">
+								<p class="note">* 첨부서류는 pdf, HLT, HLZ 파일만 가능합니다.</p>
 								<c:forEach items="${fileInfo}" var="attachFileVo">
 									<label class="attachlb">${attachFileVo.file_nm} 
 										<input type="text" name="FILE_NM" id="FILE_NM" value="${attachFileVo.file_nm}">
@@ -326,51 +319,59 @@
 							</div>
 						</div>
 					</div>
-				</div>	
-				
-				<div class="inputNdetail_box">
-					<!-- 8라인 -->
+					
 					<div class="row clear">
-						<div id="inputNdetail_8_1" class="col clear">
-							<p class="left">신청내용</p>
+						<div id="inputNdetail_4_1" class="col clear">
+							<p class="left">요청 사항</p>
 							<div class="right">
-								<textarea id="MEMO" name="MEMO" cols="50" rows="20">${apply.MEMO}</textarea>
+								<textarea id="MEMO" name="MEMO" cols="50" rows="20" placeholder="신청 건에 관한 참고 사항 및 결제 사항 등에 대해 남겨주시면, 확인 후 진행하도록 하겠습니다.">${apply.MEMO}</textarea>
 							</div>
 						</div>
 					</div>
-				</div>	
 					
-				<div class="inputNdetail_box">	
-					<!-- 9라인 -->
 					<div class="row clear">
-						<div id="inputNdetail_9_1" class="col clear">
-							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>결제방식</p>
+						<div id="inputNdetail_4_1" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>결제 방식</p>
 							<div class="right" >
 								<input type='radio' name='pay_method' value='1' />카드결제
 								<input type='radio' name='pay_method' value='2' checked/>무통장입금
 								<input type='radio' name='pay_method' value='3' />계좌이체
 							</div>
 						</div>
-					</div>	
-				</div>	
+					</div>
 					
-				<div class="inputNdetail_box">	
-					<!-- 10라인 -->
 					<div class="row clear">
-						<div id="inputNdetail_10_1" class="col clear">
-							<p class="left">증빙서류</p>
+						<div id="inputNdetail_2_2" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>결제 금액</p>
 							<div class="right" >
-								<input type='checkbox' name='tax_invoice' value='Y' />전자세금계산서 발행
-							</div>
-							<div class="right" >
-								<input type='checkbox' name='cash_receipt' value='Y' />현금영수증 발행
+								<input type='text' id="price" name="price" value="${price}" readonly="readonly">
 							</div>
 						</div>
 					</div>
+					
+					<div class="row clear">
+						<div id="inputNdetail_5_1" class="col clear">
+							<p class="left">증빙 서류</p>
+							<div class="right">
+								<input type='checkbox' name='tax_invoice' value='Y'/>전자세금계산서 발행
+								<input type='checkbox' name='cash_receipt' value='Y'/>현금영수증 발행
+							</div>
+						</div>						
+					</div>
 				</div>
-						
-				</div>
+				<p class="note">견적서 먼저 요청하시는 경우, 무통장입금 선택 후 진행하시기 바랍니다.<br/>
+개인이 전자세금계산서 발행을 원하시는 경우, 신청 후 전화(042-934-2021) 또는 이메일(tidea@tidea.co.kr) 연락 부탁드립니다.</p>
+			</div>
 			<!-- 입력 및 상세영역 END -->
+			
+			<!-- 상단버튼 영역 -->
+			<div id="buttonDivBox" class="button_box">
+				<button type="reset" class="differ" id="clearBtn"><span></span>초기화</button>
+				<button type="button" id="saveBtn" onclick="javascript:fn_save();return false;"><span></span>신청</button>
+				<!-- <button type="button" id="goListBtn" onclick="javascript:fn_goList();return false;"><span></span>목록</button> -->
+			</div>
+			<!-- 상단버튼 영역 END -->
+			
 		</div>
 		<input type="hidden" id="APPLY_DT" name="APPLY_DT" value="<%=today%>">
 	</form>

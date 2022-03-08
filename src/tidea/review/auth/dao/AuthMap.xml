@@ -744,8 +744,7 @@
 	/* AuthMap.getRectEmail */
 		SELECT EMAIL 
 		FROM USER_TB 
-		WHERE USER_ID = 'ras10'
-<!-- 		WHERE AUTH_CD = 'AUTH0003'; -->
+		WHERE AUTH_CD = 'AUTH0003'
 	</select>
 	
 	

@@ -46,7 +46,15 @@
 		FROM USER_TB
 		WHERE USER_ID = #{USER_ID}
 	</select>
-		
+	
+	<!-- 우선심사등록시 연간회원, 일반회원구분 - 결제금액을 구분하기 위해 -->
+	<select id="chkAnnualUser" parameterType="authVo" resultType="string">
+	/* ApplyMap.chkAnnualUser */
+	SELECT ANNUAL_USER
+	FROM USER_TB
+	WHERE USER_ID = #{USER_ID}
+	</select>
+	
 	
 	<!-- 관리자 리턴 URL용 쿼리 -->
 	<select id="selectMngUrl" resultType="java.util.HashMap">

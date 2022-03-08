@@ -10,29 +10,6 @@ public class BiznofileVo {
 	private String gubun;			// 첨부파일구분(1:사업자등록증)
 	
 	
-	public BiznofileVo() {
-		
-	}
-
-
-	public BiznofileVo(int file_no, String user_id, String file_nm, String file_chng_nm, String file_path,
-			String gubun) {
-		super();
-		this.file_no = file_no;
-		this.user_id = user_id;
-		this.file_nm = file_nm;
-		this.file_chng_nm = file_chng_nm;
-		this.file_path = file_path;
-		this.gubun = gubun;
-	}
-
-
-	@Override
-	public String toString() {
-		return "BiznofileVo [file_no=" + file_no + ", user_id=" + user_id + ", file_nm=" + file_nm + ", file_chng_nm="
-				+ file_chng_nm + ", file_path=" + file_path + ", gubun=" + gubun + "]";
-	}
-
 
 	public int getFile_no() {
 		return file_no;

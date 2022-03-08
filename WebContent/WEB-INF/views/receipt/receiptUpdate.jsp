@@ -127,8 +127,8 @@
 			var attachlength = $(".attachlb").length;
 			var filelength = $(".uploadFile").length;
 			
-			if($(".uploadFile").length + attachlength > 19) {
-				alert("첨부파일은 20개까지입니다.");
+			if($(".uploadFile").length + attachlength > 1) {
+				alert("첨부파일은 1개까지입니다.");
 				return;
 			}
 			var newfile = $("<input/>", {"type" : "file", "class" : "uploadFile", "name" : "uploadFile", "accept" : ".zip,.7Z,.7z,.RAR,.rar,.ALZ,.alz"});
@@ -182,6 +182,7 @@
 	String today = sf.format(now);
 	sf = new SimpleDateFormat("yyyy-MM-dd");
 	today = sf.format(now);
+	System.out.println("********** today : " + today);
 %>
 
 	<form name="form" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
@@ -210,23 +211,47 @@
 			</div>
 			<!-- 상단버튼 영역 END -->
 			
-			<!-- 조회조건 영역 -->
-			<div id="searchDivBox" style="padding: 7px 10px; margin: 28px;">
- 				<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span>
-			</div>
-			<!-- 조회조건영역 END -->
-			
-			<!-- 그리드 영역 -->
-			<div id="grid"></div>
-			<!-- 그리드 영역 END -->
-
 			<!-- 입력 및 상세영역 -->
 			<div id="inputNdetailDivBox" class="inputNdetail">
-				<p class="title"><span>상세 정보</span></p>
+				<p class="title"><span>상세 정보</span><span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span></p>
 				<div class="inputNdetail_box">
 					<!-- 1라인 -->
 					<div class="row clear">
-						<div id="inputNdetail_1_1" class="col clear">
+						<div id="inputNdetail_1_2" class="col clear">
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>상태</p>
+							<p class="right">
+								<select id="STATUS" name="STATUS">
+									<option value="1" <c:if test="${receipt.STATUS eq '신청완료'}">selected</c:if>>신청완료</option>
+									<option value="2" <c:if test="${receipt.STATUS eq '접수완료'}">selected</c:if>>접수완료</option>
+									<option value="3" <c:if test="${receipt.STATUS eq '납품완료'}">selected</c:if>>납품완료</option>
+								</select>
+							</p>
+							<input type="hidden" name="STATUS">
+						</div>
+					</div>
+					
+					<!-- 2라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_2_1" class="col clear">
+							<p class="left">우선심사 분야</p>
+							<div class="right">
+								<input type="radio" id="review_field" title="특허" name="review_field" value="1" onclick="return(false);" <c:if test="${receipt.REVIEW_FIELD eq '1'}">checked</c:if>><label for="review_field">특허</label>
+								<input type="radio" id="review_field" title="실용신안" name="review_field" value="2" onclick="return(false);" <c:if test="${receipt.REVIEW_FIELD eq '2'}">checked</c:if>><label for="review_field">실용신안</label>
+							</div>
+						</div>						
+						<div id="inputNdetail_2_2" class="col clear">
+							<p class="left">기술 분야</p>
+							<div class="right">
+								<input type="radio" id="tech_field" title="전기/전자" name="tech_field" value="1" onclick="return(false);" <c:if test="${receipt.TECH_FIELD eq '1'}">checked</c:if>><label for="tech_field">기계</label>
+								<input type="radio" id="tech_field" title="전기/전자" name="tech_field" value="2" onclick="return(false);" <c:if test="${receipt.TECH_FIELD eq '2'}">checked</c:if>><label for="tech_field">전기/전자</label>
+								<input type="radio" id="tech_field" title="전기/전자" name="tech_field" value="3" onclick="return(false);" <c:if test="${receipt.TECH_FIELD eq '3'}">checked</c:if>><label for="tech_field">화학/바이오</label>
+							</div>
+						</div>						
+					</div>
+					
+					<!-- 3라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_3_1" class="col clear">
 							<p class="left">발명의 명칭</p>
 							<div class="right">
 								<input type="text" id="INVT_NM" name="INVT_NM" value="${receipt.INVT_NM}" maxlength="30" style="ime-mode:active" readonly="readonly">
@@ -234,17 +259,17 @@
 						</div>						
 					</div>
 					
-					<!-- 2라인 -->
+					<!-- 4라인 -->
 					<div class="row clear">
-						<div id="inputNdetail_2_1" class="col clear">
-							<p class="left">출원 번호</p>
+						<div id="inputNdetail_4_1" class="col clear">
+							<p class="left">출원번호</p>
 							<div class="right">
 								<input type="text" id="APLCT_NO" name="APLCT_NO" value="${receipt.APLCT_NO}" maxlength="30" style="ime-mode:active" readonly="readonly">
 							</div>
 						</div>
 						
-						<div id="inputNdetail_2_2" class="col clear">
-							<p class="left">출원 일</p>
+						<div id="inputNdetail_4_2" class="col clear">
+							<p class="left">출원일</p>
 							<div class="right">
 								<input type="text" id="APLCT_DT" name="APLCT_DT" value="${receipt.APLCT_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
 							</div>
@@ -252,40 +277,19 @@
 					</div>
 					
 					
-					<!-- 3라인 -->
+					<!-- 5라인 -->
 					<div class="row clear">
-						<div id="inputNdetail_3_1" class="col clear">
-							<p class="left">출원 인</p>
+						<div id="inputNdetail_5_1" class="col clear">
+							<p class="left">출원인</p>
 							<div class="right">
 								<input type="text" id="APLCT_NM" name="APLCT_NM" value="${receipt.APLCT_NM}" maxlength="30" style="ime-mode:active" readonly="readonly">
 							</div>
 						</div>
-						<div id="inputNdetail_3_2" class="col clear">
-							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>상태</p>
-							<select style="width:200px;" id="STATUS" name="STATUS">
-								<option value="1" <c:if test="${receipt.STATUS eq '결제대기'}">selected</c:if>>결제대기</option>
-								<option value="2" <c:if test="${receipt.STATUS eq '결제완료'}">selected</c:if>>결제완료</option>
-								<option value="3" <c:if test="${receipt.STATUS eq '접수완료'}">selected</c:if>>접수완료</option>
-								<option value="4" <c:if test="${receipt.STATUS eq '납품완료'}">selected</c:if>>납품완료</option>
-							</select>
-							<input type="hidden" name="STATUS">
-						</div>
-						
 					</div>
 					
-					<!-- 4라인 -->
+					<!-- 6라인 -->
 					<div class="row clear">
-						<div id="inputNdetail_4_1" class="col clear">
-							<p class="left">신청 내용</p>
-							<div class="right">
-								<textarea id="MEMO" name="MEMO" cols="50" rows="20" readonly="readonly">${receipt.MEMO}</textarea>
-							</div>
-						</div>
-					</div>
-					
-					<!-- 5라인 -->
-					<div class="row clear">
-						<div id="inputNdetail_5_1" class="col clear file"> 
+						<div id="inputNdetail_6_1" class="col clear file"> 
 							<p class="left">이용자 첨부파일</p>
 							<div class="right">
 								<c:forEach items="${fileInfo}" var="fileInfo" begin="0" end="${fileInfo.size()}" step="1" varStatus="status">
@@ -302,14 +306,57 @@
 							</div>
 						</div>
 					</div>
+					
+					<!-- 7라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_7_1" class="col clear">
+							<p class="left">요청 사항</p>
+							<div class="right">
+								<textarea id="MEMO" name="MEMO" cols="50" rows="20" readonly="readonly">${receipt.MEMO}</textarea>
+							</div>
+						</div>
+					</div>
 				</div>
-				<input type="hidden" id="USER_ID" name="USER_ID" value="${receipt.USER_ID}">
+				
+			</div>
+				
+			<div class="inputNdetail_box">
+				<!-- 8라인 -->
+				<div class="row clear">
+					<div id="inputNdetail_8_1" class="col clear">
+						<p class="left">결제 방식</p>
+						<div class="right">
+							<input type="radio" id="pay_method" title="신용카드" name="pay_method" value="1" onclick="return(false);" <c:if test="${receipt.PAY_METHOD eq '1'}">checked</c:if>><label for="pay_method">신용카드</label>
+							<input type="radio" id="pay_method" title="계좌이체" name="pay_method" value="2" onclick="return(false);" <c:if test="${receipt.PAY_METHOD eq '2'}">checked</c:if>><label for="pay_method">계좌이체</label>
+							<input type="radio" id="pay_method" title="무통장입금" name="pay_method" value="3" onclick="return(false);" <c:if test="${receipt.PAY_METHOD eq '3'}">checked</c:if>><label for="pay_method">무통장입금</label>
+						</div>
+				    </div>
+				</div>
+				<!-- 9라인 -->
+				<div class="row clear">
+					<div id="inputNdetail_9_1" class="col clear">
+						<p class="left">결제 금액</p>
+						<div class="right">
+							<input type="text" id="PRICE" name="PRICE" value="${receipt.PRICE}" maxlength="30" style="ime-mode:active" readonly="readonly">
+						</div>
+					</div>
+				</div>
+				<!-- 10라인 -->
+				<div class="row clear">
+					<div id="inputNdetail_10_1" class="col clear">
+						<p class="left">증빙 서류</p>
+						<div class="right">
+							<input type="checkbox" name='tax_invoice' value='Y' onclick="return(false);" <c:if test="${receipt.TAX_INVOICE eq 'Y'}">checked</c:if>>전자세금계산서 발행
+							<input type='checkbox' name='cash_receipt' value='Y' onclick="return(false);" <c:if test="${receipt.CASH_RECEIPT eq 'Y'}">checked</c:if>>현금영수증 발행
+						</div>
+					</div>
+				</div>
 			</div>
 			
 			<div class="inputNdetail_box">
-				<!-- 6라인 -->
+				<!-- 11라인 -->
 				<div class="row clear">
-					<div id="inputNdetail_6_1" class="col clear file"> 
+					<div id="inputNdetail_11_1" class="col clear file"> 
 						<p class="left">조사원 첨부파일</p>
 						<div class="right">
 							<input type="button" id="addFile" value="추가" onclick="attach.add()">
@@ -329,32 +376,58 @@
 							</c:forEach>
 						</div>
 					</div>
-				</div>
-			</div>
-				
-			<div class="inputNdetail_box">
-				<!-- 7라인 -->
-				<div class="row clear">
-					<div id="inputNdetail_7_1" class="col clear">
-						<p class="left">결제가격</p>
+					<div id="inputNdetail_11_2" class="col clear">
+						<p class="left">다운로드 일자</p>
 						<div class="right">
-							<input type="text" id="PRICE" name="PRICE" value="${receipt.PRICE}" maxlength="30" style="ime-mode:active" readonly="readonly">
+							<input type="text" id="FILE_DOWN_DT" name="FILE_DOWN_DT" value="${receipt.FILE_DOWN_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
 						</div>
 					</div>
-					
 				</div>
 				
-				<!-- 8라인 -->
+				<!-- 12라인 -->
 				<div class="row clear">
-					<div id="inputNdetail_8_2" class="col clear">
-						<p class="left">결제일</p>
+					<div id="inputNdetail_12_1" class="col clear">
+						<p class="left">접수일</p>
 						<div class="right">
-							<input type="text" id="ORDER_DT" name="ORDER_DT" value="${receipt.ORDER_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
+							<c:choose>
+								<c:when test="${receipt.STATUS eq '신청완료'}">	<!-- 신청완료시에는 신청 날짜만 들어가고, 관리자가 접수상태로 변경을 할때 날짜가 접수날짜로 들어간다. -->
+									<div class="right">
+										<input type="text" id="RECEIPT_DT" name="RECEIPT_DT" value="<%=today%>" maxlength="30" style="ime-mode:active" readonly="readonly">
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="right">
+										<input type="text" id="RECEIPT_DT" name="RECEIPT_DT" value="${receipt.RECEIPT_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
+									</div>
+								</c:otherwise>
+							</c:choose>
 						</div>
-				    </div>
+					</div>
+					<div id="inputNdetail_12_1" class="col clear">
+						<p class="left">납품일</p>
+						<div class="right">
+<%-- 							<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="${receipt.SUPPLY_DT}" maxlength="30" style="ime-mode:active" readonly="readonly"> --%>
+							<c:choose>
+								<c:when test="${receipt.STATUS eq '접수완료'}">	<!-- 납품일은 납품완료 상태일때만 들어간다. -->
+									<div class="right">
+										<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="<%=today%>" maxlength="30" style="ime-mode:active" readonly="readonly">
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="right">
+										<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="${receipt.SUPPLY_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
+									</div>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
 				</div>
+				
 			</div>
+			
+			
 		</div>
+		<input type="hidden" id="USER_ID" name="USER_ID" value="${receipt.USER_ID}">
 	</form>
 </body>
 </html>

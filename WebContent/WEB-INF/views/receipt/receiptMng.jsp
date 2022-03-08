@@ -48,9 +48,11 @@
 	}
 	
 	// 그리드 설정
-	var cols = ['APPLY_NO', 'APLCT_NO', 'USER_ID', 'APPLY_DT', 'INVT_NM', 'ESTIMATE', 'PAY_METHOD', 'PRICE', 'STATUS']; //예) var cols = ['COL1', 'COL2', 'COL3'];
-	var colsNm = ['신청번호', '출원번호', '유저아이디', '신청일', '발명의명칭', '견적서', '결제방식', '결제금액', '진행상태']; //예) var colsNm = ['컬럼한글명1', '컬럼한글명2', '컬럼한글명3'];
-	var key = ['APPLY_NO', 'APLCT_NO', 'USER_ID','INVT_NM','STATUS']; //예) var key = ['SN', 'HAKBEON'];
+// 	var cols = ['APPLY_NO', 'APLCT_NO', 'USER_ID', 'APPLY_DT', 'INVT_NM', 'ESTIMATE', 'PAY_METHOD', 'PRICE', 'STATUS']; //예) var cols = ['COL1', 'COL2', 'COL3'];
+// 	var colsNm = ['신청번호', '출원번호', '유저아이디', '신청일', '발명의명칭', '견적서', '결제방식', '결제금액', '진행상태']; //예) var colsNm = ['컬럼한글명1', '컬럼한글명2', '컬럼한글명3'];
+	var cols = ['APPLY_NO', 'RECEIPT_DT', 'USER_ID', 'APLCT_NO', 'INVT_NM', 'PAY_METHOD', 'PRICE', 'STATUS', 'FILE_DOWN_DT']; //예) var cols = ['COL1', 'COL2', 'COL3'];
+	var colsNm = ['접수번호', '접수일', '유저아이디', '출원번호', '발명의명칭', '결제방식', '결제금액', '진행상태', '다운로드일자']; //예) var colsNm = ['컬럼한글명1', '컬럼한글명2', '컬럼한글명3'];
+	var key = ['APPLY_NO', 'APLCT_NO', 'USER_ID', 'INVT_NM','STATUS']; //예) var key = ['SN', 'HAKBEON'];
 	function fn_gridCompoSetting(){
 		fn_compoGrid('M', 'grid', cols, colsNm, key);
 		fn_gridColgroupSetting('grid', ['5%', '10%', '10%', '10%', '*%', '10%', '10%', '10%','10%', '10%']); // colgroup 설정
@@ -108,8 +110,10 @@
 			var str_no = String(no);
 			var last_no = str_no.substr(str_no.length-1 ,1);
 			var APPLY_NO = $('#' + trId).find('input[name^=APPLY_NO]').val();
-	        var APLCT_NO = tdArr[1];
-	        var USER_ID = tdArr[2];
+// 	        var APLCT_NO = tdArr[1];
+	        var APLCT_NO = $('#' + trId).find('input[name^=APLCT_NO]').val();
+// 	        var USER_ID = tdArr[2];
+	        var USER_ID = $('#' + trId).find('input[name^=USER_ID]').val();
 			document.form.action = "/receipt/receiptDetail.do?APLCT_NO=" +  APLCT_NO + "&APPLY_NO=" + APPLY_NO+ "&USER_ID=" + USER_ID ;
        		document.form.submit();
 		});
@@ -157,10 +161,9 @@
 				<label>진행상태</label>
 				<select style="width:250px;" id="STATUS">
 					<option value="">전체</option>
-					<option value="1">결제대기</option>
-					<option value="2">결제완료</option>
-					<option value="3">접수완료</option>
-					<option value="4">납품완료</option>
+					<option value="1">신청완료</option>
+					<option value="2">접수완료</option>
+					<option value="3">납품완료</option>
 				</select>
 					
 			</div>

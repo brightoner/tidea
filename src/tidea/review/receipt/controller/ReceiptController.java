@@ -199,7 +199,8 @@ public class ReceiptController {
 		String paramUrl = "?searchYn=Y";
 		// 신규등록 후 조회화면 1페이지로  설정
 		paramUrl += "&curPage=" + 1;
-		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,USER_ID,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
+//		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,USER_ID,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
+		paramUrl += "&cols=" + "APPLY_NO,RECEIPT_DT,USER_ID,APLCT_NO,INVT_NM,PAY_METHOD,PRICE,STATUS,FILE_DOWN_DT";
 		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO,USER_ID,INVT_NM,STATUS";
 	
 		return "redirect:/receipt/receiptMng.do" + paramUrl;
@@ -233,7 +234,8 @@ public class ReceiptController {
 		String paramUrl = "?searchYn=Y";
 		// 신규등록 후 조회화면 1페이지로  설정
 		paramUrl += "&curPage=" + 1;
-		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,USER_ID,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
+//		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,USER_ID,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
+		paramUrl += "&cols=" + "APPLY_NO,RECEIPT_DT,USER_ID,APLCT_NO,INVT_NM,PAY_METHOD,PRICE,STATUS,FILE_DOWN_DT";
 		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO,USER_ID,INVT_NM,STATUS";
 	
 		return "redirect:/receipt/receiptMng.do" + paramUrl;
@@ -278,6 +280,12 @@ public class ReceiptController {
 		String status = request.getParameter("STATUS");
 		receiptVo.setStatus(status);
 		
+		String receipt_dt = request.getParameter("RECEIPT_DT");
+		receiptVo.setReceipt_dt(receipt_dt);
+		
+		String supply_dt = request.getParameter("SUPPLY_DT");
+		receiptVo.setSupply_dt(supply_dt);
+		
 		receiptService.updateReceipt(receiptVo);
 		
 		
@@ -315,7 +323,7 @@ public class ReceiptController {
 		
 	
 		//********* 메일전송 
-		if(status == "4" || status.equals("4")) {		// status가 7(보완완료)일때만 전송한다
+		if(status == "3" || status.equals("3")) {		// status가 7(보완완료)일때만 전송한다
 			
 			authVo.setUSER_ID(user_id);
 			String mail = authService.getEmail(authVo);			// 신청자(이용자) 메일주소
@@ -340,7 +348,8 @@ public class ReceiptController {
 		String paramUrl = "?searchYn=Y";
 		// 신규등록 후 조회화면 1페이지로  설정
 		paramUrl += "&curPage=" + 1;
-		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,USER_ID,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
+//		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,USER_ID,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
+		paramUrl += "&cols=" + "APPLY_NO,RECEIPT_DT,USER_ID,APLCT_NO,INVT_NM,PAY_METHOD,PRICE,STATUS,FILE_DOWN_DT";
 		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO,USER_ID,INVT_NM,STATUS";
 	
 		return "redirect:/receipt/receiptMng.do" + paramUrl;
@@ -395,6 +404,7 @@ public class ReceiptController {
 		receiptVo.setApply_no(apply_no);
 		
 		Map<String, Object> receipt = receiptService.selectReceiptDetail(receiptVo);
+		System.out.println("********* receipt : " + receipt);
 		model.addAttribute("receipt",receipt);
 		
 		//	첨부파일 관련
@@ -423,17 +433,17 @@ public class ReceiptController {
         Properties prop = new Properties();
         
 //        // gmail  사용시
-//        prop.put("mail.smtp.host", "smtp.gmail.com"); 
-//        prop.put("mail.smtp.port", 465); 
-//        prop.put("mail.smtp.auth", "true"); 
-//        prop.put("mail.smtp.ssl.enable", "true"); 
-//        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        prop.put("mail.smtp.host", "smtp.gmail.com"); 
+        prop.put("mail.smtp.port", 465); 
+        prop.put("mail.smtp.auth", "true"); 
+        prop.put("mail.smtp.ssl.enable", "true"); 
+        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         
         // daum 메일  사용시
-      prop.put("mail.smtp.host", "smtp.daum.net");	
-      prop.put("mail.smtp.port", "465");
-      prop.put("mail.smtp.ssl.enable", "true");
-      prop.put("mail.smtp.auth", "true");
+//      prop.put("mail.smtp.host", "smtp.daum.net");	
+//      prop.put("mail.smtp.port", "465");
+//      prop.put("mail.smtp.ssl.enable", "true");
+//      prop.put("mail.smtp.auth", "true");
         
 		// 카페24 메일 사용시
 //		prop.put("mail.smtp.host", "smtp.cafe24.com");	

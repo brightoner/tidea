@@ -310,11 +310,12 @@
 							<div class="right">
 								<input type="button" id="addFile" value="추가">
 								<input type="button" id="delFile" value="삭제">
+								<p class="note">* 첨부서류는 pdf, jpg, jpeg 파일만 가능합니다.</p>
 								<c:forEach items="${fileInfo}" var="attachFileVo">
 									<label class="attachlb">${attachFileVo.file_nm} 
 										<input type="text" name="FILE_NM" id="FILE_NM" value="${attachFileVo.file_nm}">
-										<input type="hidden" name="FILE_CHNG_NM" id="FILE_CHNG_NM" value="${attachFileVo.file_chng_nm}">
-										<input type="hidden" name="FILE_NO" id="FILE_NO">
+<%-- 										<input type="hidden" name="FILE_CHNG_NM" id="FILE_CHNG_NM" value="${attachFileVo.file_chng_nm}"> --%>
+<!-- 										<input type="hidden" name="FILE_NO" id="FILE_NO"> -->
 										<!-- 삭제버튼  -->
 										<a href="#this" name="delete" class="btn">삭제하기</a>
 									</label>

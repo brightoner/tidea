@@ -46,7 +46,8 @@
 		<include refid="pagingTop" />
 			SELECT A.APPLY_NO
 			      ,A.APLCT_NO
-			      ,A.APPLY_DT
+			      ,A.RECEIPT_DT
+			      ,A.FILE_DOWN_DT
 			      ,A.INVT_NM
 			      ,( case when (B.PAY_METHOD = '1') then '카드결제'
 			              when (B.PAY_METHOD = '2') then '무통장입금'
@@ -54,9 +55,8 @@
 			              else '미결제'
 			        end) as PAY_METHOD
 			      ,B.PRICE        
-			      ,( case when (A.STATUS = '1') then '결제대기'
-			              when (A.STATUS = '2') then '결제완료'
-			              when (A.STATUS = '3') then '접수완료'
+			      ,( case when (A.STATUS = '1') then '신청완료'
+			              when (A.STATUS = '2') then '접수완료'
 			                    else '납품완료'
 			        end)STATUS
 			      ,A.USER_ID
@@ -68,9 +68,6 @@
 			<if test="aplct_no != null and aplct_no !=''">
 				AND A.APLCT_NO = #{aplct_no}
 			</if>
-<!-- 			<if test="apply_no != null and apply_no !=''"> -->
-<!-- 				AND A.APPLY_NO = #{apply_no} -->
-<!-- 			</if> -->
 			<if test="invt_nm != null and invt_nm !=''">
 				AND A.INVT_NM LIKE CONCAT('%',#{invt_nm},'%')
 			</if>
@@ -89,20 +86,24 @@
 		     , A.APLCT_NO
 		     , A.APLCT_DT
 		     , A.APLCT_NM
+		     , A.REVIEW_FIELD
+		     , A.TECH_FIELD
+		     , A.TAX_INVOICE
+		     , A.CASH_RECEIPT
 		     , A.MEMO
-		     ,( case when (A.STATUS = '1') then '결제대기'
-		             when (A.STATUS = '2') then '결제완료'
-		             when (A.STATUS = '3') then '접수완료'
+		     ,( case when (A.STATUS = '1') then '신청완료'
+		             when (A.STATUS = '2') then '접수완료'
 		                    else '납품완료'
 		        end)STATUS
 		    , A.USER_ID
+		    , A.RECEIPT_DT
+		    , A.SUPPLY_DT
 		    , B.ORDER_CD
 		    , B.USER_ID
 		    , B.APLCT_NO
 		    , B.PRICE
 		    , B.ORDER_DT
 		    , B.PAY_METHOD
-		    , B.ACCOUNT_NO
 		FROM RV_APPLY_TB A
 		LEFT JOIN RV_PAY_TB B
 		ON A.USER_ID=B.USER_ID
@@ -152,7 +153,7 @@
 		   ,#{aplct_dt}
 		   ,#{aplct_nm}
 		   ,#{memo}
-		   ,NOW()
+		   ,#{apply_dt}
 		   ,#{user_id}
 		   ,#{status}
 	)
@@ -167,8 +168,15 @@
 		  , APLCT_DT	= #{aplct_dt}
 		  , APLCT_NM	= #{aplct_nm}
 		  , MEMO		= #{memo}
-		  , APPLY_DT	= NOW()
 		  , STATUS		= #{status}
+<!-- 		  , RECEIPT_DT	= #{receipt_dt} -->
+<!-- 		  , SUPPLY_DT	= #{supply_dt} -->
+	<if test="receipt_dt != null and receipt_dt !=''">
+		, RECEIPT_DT = #{receipt_dt}
+	</if>
+	<if test="supply_dt != null and supply_dt !=''">
+		, SUPPLY_DT = #{supply_dt}
+	</if>
 		WHERE APLCT_NO	= #{aplct_no}
 		AND   USER_ID	= #{user_id}
 	</update>

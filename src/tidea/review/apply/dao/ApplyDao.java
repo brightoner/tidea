@@ -68,6 +68,14 @@ public interface ApplyDao {
 	
 	
 	/**
+	 * 보완 파일클릭 시 다운로드 시간 등록 - 이용자
+	 * @param applyVo
+	 * @throws Exception
+	 */
+	public void updateDownDt(ApplyVo applyVo) throws Exception;
+	
+	
+	/**
 	 * 우선심사신청 삭제 -이용자
 	 * @param applyVo
 	 * @throws Exception

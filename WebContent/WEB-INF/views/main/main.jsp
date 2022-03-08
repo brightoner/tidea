@@ -35,7 +35,7 @@
 	<div class="main_header boxshadow">
 		<div class="main_logo">
 <!-- 			<a href=""><img src="/resources/images/ras_logo.png"></a> -->
-			<a href=""><img src="/resources/images/tidea_logo.png"></a>
+			<a href=""><img src="/resources/images/tidea_logo.png" alt="티디아 로고 이미지"></a>
 <!-- 			<p><b>충남도립대학교 <span>학생이력 시스템</span>에 오신것을 환영합니다.</b></p> -->
 		</div>
 	</div>

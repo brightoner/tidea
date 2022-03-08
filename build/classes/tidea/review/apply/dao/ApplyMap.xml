@@ -45,7 +45,7 @@
 		<include refid="pagingTop" />
 		SELECT A.APPLY_NO
 		      ,A.APLCT_NO
-		      ,A.APPLY_DT
+		      ,A.RECEIPT_DT
 		      ,A.INVT_NM
 		      ,( case when (B.PAY_METHOD = '1') then '카드결제'
 		              when (B.PAY_METHOD = '2') then '무통장입금'
@@ -53,9 +53,8 @@
 		              else '미결제'
 		        end) as PAY_METHOD
 		      ,B.PRICE        
-		      ,( case when (A.STATUS = '1') then '결제대기'
-		              when (A.STATUS = '2') then '결제완료'
-		              when (A.STATUS = '3') then '접수완료'
+		      ,( case when (A.STATUS = '1') then '신청완료'
+		              when (A.STATUS = '2') then '접수완료'
 		                    else '납품완료'
 		        end)STATUS
 		      ,A.USER_ID
@@ -82,14 +81,31 @@
 	<!-- 우선심사 상세보기 - 이용자 -->
 	<select id="selectApplyDetail" parameterType="applyVo" resultType="java.util.HashMap">
 		/* ApplyMap.selectApplyDetail */
-			SELECT INVT_NM
-			     , APLCT_NO
-			     , APLCT_DT
-			     , APLCT_NM
-			     , MEMO
-			FROM RV_APPLY_TB
-			WHERE APLCT_NO = #{aplct_no}
-			AND USER_ID = #{user_id}
+		SELECT A.REVIEW_FIELD
+			  ,A.TECH_FIELD
+		      ,A.TAX_INVOICE
+		      ,A.CASH_RECEIPT
+		      ,A.FILE_DOWN_DT
+			  ,A.INVT_NM
+			  ,A.APLCT_NO
+			  ,A.APLCT_DT
+			  ,A.APLCT_NM
+			  ,A.MEMO
+			  ,( case when (A.STATUS = '1') then '신청완료'
+							when (A.STATUS = '2') then '접수완료'
+								else '납품완료'
+					end)STATUS
+			  ,A.USER_ID
+		      ,B.ORDER_CD
+			  ,B.APLCT_NO
+			  ,B.PRICE
+			  ,B.PAY_METHOD
+		FROM RV_APPLY_TB A
+		LEFT JOIN RV_PAY_TB B
+		ON A.USER_ID=B.USER_ID
+		AND A.APLCT_NO=B.APLCT_NO
+		WHERE A.APLCT_NO = #{aplct_no}
+		AND   A.USER_ID	= #{user_id}
 	</select>
 	
 	<!-- 우선심사 등록 시 insert 또는 update 구분 쿼리 -->
@@ -125,6 +141,10 @@
 		    ,APPLY_DT
 		    ,USER_ID
 		    ,STATUS
+		    ,REVIEW_FIELD
+		    ,TECH_FIELD
+		    ,TAX_INVOICE
+		    ,CASH_RECEIPT
 		) VALUES (
 <!-- 		    (SELECT (MAX(APPLY_NO) + 1) FROM RV_APPLY_TB b) -->
 		     (SELECT IFNULL ((MAX(APPLY_NO) + 1), 1) FROM RV_APPLY_TB b)
@@ -136,6 +156,11 @@
 		   ,NOW()
 		   ,#{user_id}
 		   ,'1'
+		   ,#{review_field}
+		   ,#{tech_field}
+		   ,#{tax_invoice}
+		   ,#{cash_receipt}
+		   
 	)
 	</insert>
 	
@@ -149,9 +174,23 @@
 		  , APLCT_NM	= #{aplct_nm}
 		  , MEMO		= #{memo}
 		  , APPLY_DT	= NOW()
+		  , REVIEW_FIELD=#{review_field}
+		  , TECH_FIELD	= #{tech_field}
+		  , TAX_INVOICE	= #{tax_invoice}
+		  , CASH_RECEIPT= #{cash_receipt}
 		WHERE APLCT_NO	= #{aplct_no}
 		AND   USER_ID	= #{user_id}
 	</update>
+	
+	<!-- 보완 파일클릭 시 다운로드 시간 등록 - 이용자-->
+	<update id="updateDownDt" parameterType="applyVo">
+		/*ApplyMap.updateDownDt*/
+		UPDATE RV_APPLY_TB
+		SET FILE_DOWN_DT		= NOW()
+		WHERE APLCT_NO	= #{aplct_no}
+		AND   USER_ID	= #{user_id}
+	</update>
+
 
 	<!-- 우선심사 등록 삭제 - 이용자 -->
 	<delete id="deleteApply" parameterType="applyVo">
