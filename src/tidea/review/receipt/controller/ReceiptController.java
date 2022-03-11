@@ -400,7 +400,7 @@ public class ReceiptController {
 		String aplct_no = request.getParameter("APLCT_NO");
 		receiptVo.setAplct_no(aplct_no);
 		
-		int apply_no = Integer.parseInt(request.getParameter("APPLY_NO"));
+		String apply_no = request.getParameter("APPLY_NO");
 		receiptVo.setApply_no(apply_no);
 		
 		Map<String, Object> receipt = receiptService.selectReceiptDetail(receiptVo);

@@ -136,9 +136,9 @@
 			<!-- 상단버튼 영역 END -->
 			
 			<!-- 조회조건 영역 -->
-			<div id="searchDivBox" style="padding: 7px 10px; margin: 28px;">
- 				<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span>
-			</div>
+<!-- 			<div id="searchDivBox" style="padding: 7px 10px; margin: 28px;"> -->
+<!--  				<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span> -->
+<!-- 			</div> -->
 			<!-- 조회조건영역 END -->
 			
 			<!-- 그리드 영역 -->
@@ -147,7 +147,7 @@
 
 			<!-- 티디아 이메일 계정 부분-->
 			<div id="inputNdetailDivBox" class="inputNdetail">
-				<p class="title"><span>이메일 정보 관리</span></p>
+				<p class="title"><span>이메일 정보 관리</span><span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span></p>
 				<div class="inputNdetail_box">
 					<div class="row clear">
 						<div id="inputNdetail_1_1" class="col clear">

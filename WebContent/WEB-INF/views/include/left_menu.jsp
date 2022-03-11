@@ -11,7 +11,7 @@
 </script>
 
 <div class="left_menu_title relative">
-	<img src="/resources/images/${SS_ACTIVE_TOP_MENU }.png">
+<%-- 	<img src="/resources/images/${SS_ACTIVE_TOP_MENU }.png"> --%>
 	<p class="absolute"><span id="activeTopNm">${SS_ACTIVE_TOP_MENU_NM }</span></p>
 </div>
 <div class="left_menu_list_wrap">

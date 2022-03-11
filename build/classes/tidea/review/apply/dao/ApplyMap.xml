@@ -46,6 +46,7 @@
 		SELECT A.APPLY_NO
 		      ,A.APLCT_NO
 		      ,A.RECEIPT_DT
+		      ,A.FILE_DOWN_DT
 		      ,A.INVT_NM
 		      ,( case when (B.PAY_METHOD = '1') then '카드결제'
 		              when (B.PAY_METHOD = '2') then '무통장입금'
@@ -91,6 +92,7 @@
 			  ,A.APLCT_DT
 			  ,A.APLCT_NM
 			  ,A.MEMO
+			  ,A.FILE_DOWN_DT
 			  ,( case when (A.STATUS = '1') then '신청완료'
 							when (A.STATUS = '2') then '접수완료'
 								else '납품완료'
@@ -146,8 +148,12 @@
 		    ,TAX_INVOICE
 		    ,CASH_RECEIPT
 		) VALUES (
-<!-- 		    (SELECT (MAX(APPLY_NO) + 1) FROM RV_APPLY_TB b) -->
-		     (SELECT IFNULL ((MAX(APPLY_NO) + 1), 1) FROM RV_APPLY_TB b)
+<!-- 		     (SELECT IFNULL ((MAX(APPLY_NO) + 1), 1) FROM RV_APPLY_TB b) -->
+			(SELECT IF(DATE_FORMAT(NOW(), '%Y') > SUBSTR(apply_no,4,4)										<!-- 마지막 apply_no의 년도 < 현재의 연도 -->
+					, CONCAT('TDA',DATE_FORMAT(NOW(), '%Y'),'_P',LPAD(1,3, 0))								<!-- 참 : TDA현재년도_P001 로 들어간다 -->
+					, CONCAT('TDA',DATE_FORMAT(NOW(), '%Y'),'_P',LPAD(RIGHT(MAX(apply_no),3) + 1, 3, 0))	<!-- 거짓 : 마지막 apply_no + 1 로 들어간다 -->
+			)
+			FROM rv_apply_tb b)
 		   ,#{invt_nm}
 		   ,#{aplct_no}
 		   ,#{aplct_dt}

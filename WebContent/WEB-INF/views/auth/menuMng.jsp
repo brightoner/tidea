@@ -440,7 +440,8 @@
 			
 			<!-- 버튼 -->
 			<div align="center">
-				<button type="button" class="submit" style="width: 70px; margin-top:20px;" onclick="javascript:fn_saveConfirm();">저장</button>
+<!-- 				<button type="button" class="submit" style="width: 70px; margin-top:20px;" onclick="javascript:fn_saveConfirm();">저장</button> -->
+				<button type="button" class="submit" onclick="javascript:fn_saveConfirm();">저장</button>
 			</div>
 		</div>
 	</div>

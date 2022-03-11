@@ -185,7 +185,7 @@
 	System.out.println("********** today : " + today);
 %>
 
-	<form name="form" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+	<form name="form" method="post" enctype="multipart/form-data" accept-charset="UTF-8" class="user_mode">
 		<!-- KEY 컴포넌트가 없는 경우 hidden 생성 -->
 		<input type="hidden" name="KEY" />
 		
@@ -204,12 +204,6 @@
 		</div>
 		
 		<div class="box-blue-line clear relative">
-			<!-- 상단버튼 영역 -->
-			<div id="buttonDivBox" class="button_box">
-				<button type="button" id="saveBtn" onclick="javascript:fn_save();return false;"><span></span>저장</button><!-- 저장버튼 -->
-				<button type="button" id="goListBtn" onclick="javascript:fn_goList();return false;"><span></span>목록</button><!-- 목록	 -->
-			</div>
-			<!-- 상단버튼 영역 END -->
 			
 			<!-- 입력 및 상세영역 -->
 			<div id="inputNdetailDivBox" class="inputNdetail">
@@ -318,114 +312,121 @@
 					</div>
 				</div>
 				
-			</div>
-				
-			<div class="inputNdetail_box">
-				<!-- 8라인 -->
-				<div class="row clear">
-					<div id="inputNdetail_8_1" class="col clear">
-						<p class="left">결제 방식</p>
-						<div class="right">
-							<input type="radio" id="pay_method" title="신용카드" name="pay_method" value="1" onclick="return(false);" <c:if test="${receipt.PAY_METHOD eq '1'}">checked</c:if>><label for="pay_method">신용카드</label>
-							<input type="radio" id="pay_method" title="계좌이체" name="pay_method" value="2" onclick="return(false);" <c:if test="${receipt.PAY_METHOD eq '2'}">checked</c:if>><label for="pay_method">계좌이체</label>
-							<input type="radio" id="pay_method" title="무통장입금" name="pay_method" value="3" onclick="return(false);" <c:if test="${receipt.PAY_METHOD eq '3'}">checked</c:if>><label for="pay_method">무통장입금</label>
-						</div>
-				    </div>
-				</div>
-				<!-- 9라인 -->
-				<div class="row clear">
-					<div id="inputNdetail_9_1" class="col clear">
-						<p class="left">결제 금액</p>
-						<div class="right">
-							<input type="text" id="PRICE" name="PRICE" value="${receipt.PRICE}" maxlength="30" style="ime-mode:active" readonly="readonly">
-						</div>
-					</div>
-				</div>
-				<!-- 10라인 -->
-				<div class="row clear">
-					<div id="inputNdetail_10_1" class="col clear">
-						<p class="left">증빙 서류</p>
-						<div class="right">
-							<input type="checkbox" name='tax_invoice' value='Y' onclick="return(false);" <c:if test="${receipt.TAX_INVOICE eq 'Y'}">checked</c:if>>전자세금계산서 발행
-							<input type='checkbox' name='cash_receipt' value='Y' onclick="return(false);" <c:if test="${receipt.CASH_RECEIPT eq 'Y'}">checked</c:if>>현금영수증 발행
-						</div>
-					</div>
-				</div>
-			</div>
 			
-			<div class="inputNdetail_box">
-				<!-- 11라인 -->
-				<div class="row clear">
-					<div id="inputNdetail_11_1" class="col clear file"> 
-						<p class="left">조사원 첨부파일</p>
-						<div class="right">
-							<input type="button" id="addFile" value="추가" onclick="attach.add()">
-							<input type="button" id="delFile" value="삭제" onclick="attach.del()">
-							<c:forEach items="${fileInfo_2}" var="fileInfo_2" begin="0" end="${fileInfo_2.size()}" step="1" varStatus="status">
-								<label class="attachlb"> 
-									<a href="../files/${fileInfo_2.FILE_CHNG_NM}" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo_2.FILE_NM}" target="_blank">
-										<input type="text" name="FILE_NM" id="FILE_NM${status.index}" value="${fileInfo_2.FILE_NM}">
-										<input type="hidden" name="FILE_CHNG_NM" id="FILE_CHNG_NM" value="${attachFileVo.file_chng_nm}">
-										<input type="hidden" name="APPLY_NO" id="APPLY_NO${status.index}" value="${fileInfo_2.APPLY_NO}">
-										<input type="hidden" name="APLCT_NO" id="APLCT_NO${status.index}" value="${fileInfo_2.APLCT_NO}">
-									</a>
-									<!-- 삭제버튼  -->
-									<a href="#this" id="delete${status.index}" name="delete" class="btn">삭제하기</a>
-								</label>
-								<br>
-							</c:forEach>
+				
+				<div class="inputNdetail_box">
+					<!-- 8라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_8_1" class="col clear">
+							<p class="left">결제 방식</p>
+							<div class="right">
+								<input type="radio" id="pay_method" title="신용카드" name="pay_method" value="1" onclick="return(false);" <c:if test="${receipt.PAY_METHOD eq '1'}">checked</c:if>><label for="pay_method">신용카드</label>
+								<input type="radio" id="pay_method" title="계좌이체" name="pay_method" value="2" onclick="return(false);" <c:if test="${receipt.PAY_METHOD eq '2'}">checked</c:if>><label for="pay_method">계좌이체</label>
+								<input type="radio" id="pay_method" title="무통장입금" name="pay_method" value="3" onclick="return(false);" <c:if test="${receipt.PAY_METHOD eq '3'}">checked</c:if>><label for="pay_method">무통장입금</label>
+							</div>
+					    </div>
+					</div>
+					<!-- 9라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_9_1" class="col clear">
+							<p class="left">결제 금액</p>
+							<div class="right">
+								<input type="text" id="PRICE" name="PRICE" value="${receipt.PRICE}" maxlength="30" style="ime-mode:active" readonly="readonly">
+							</div>
 						</div>
 					</div>
-					<div id="inputNdetail_11_2" class="col clear">
-						<p class="left">다운로드 일자</p>
-						<div class="right">
-							<input type="text" id="FILE_DOWN_DT" name="FILE_DOWN_DT" value="${receipt.FILE_DOWN_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
+					<!-- 10라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_10_1" class="col clear">
+							<p class="left">증빙 서류</p>
+							<div class="right">
+								<input type="checkbox" name='tax_invoice' value='Y' onclick="return(false);" <c:if test="${receipt.TAX_INVOICE eq 'Y'}">checked</c:if>>전자세금계산서 발행
+								<input type='checkbox' name='cash_receipt' value='Y' onclick="return(false);" <c:if test="${receipt.CASH_RECEIPT eq 'Y'}">checked</c:if>>현금영수증 발행
+							</div>
 						</div>
 					</div>
 				</div>
 				
-				<!-- 12라인 -->
-				<div class="row clear">
-					<div id="inputNdetail_12_1" class="col clear">
-						<p class="left">접수일</p>
-						<div class="right">
-							<c:choose>
-								<c:when test="${receipt.STATUS eq '신청완료'}">	<!-- 신청완료시에는 신청 날짜만 들어가고, 관리자가 접수상태로 변경을 할때 날짜가 접수날짜로 들어간다. -->
-									<div class="right">
-										<input type="text" id="RECEIPT_DT" name="RECEIPT_DT" value="<%=today%>" maxlength="30" style="ime-mode:active" readonly="readonly">
-									</div>
-								</c:when>
-								<c:otherwise>
-									<div class="right">
-										<input type="text" id="RECEIPT_DT" name="RECEIPT_DT" value="${receipt.RECEIPT_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
-									</div>
-								</c:otherwise>
-							</c:choose>
+				<div class="inputNdetail_box">
+					<!-- 11라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_11_1" class="col clear file"> 
+							<p class="left">조사원 첨부파일</p>
+							<div class="right">
+								<input type="button" id="addFile" value="추가" onclick="attach.add()">
+								<input type="button" id="delFile" value="삭제" onclick="attach.del()">
+								<c:forEach items="${fileInfo_2}" var="fileInfo_2" begin="0" end="${fileInfo_2.size()}" step="1" varStatus="status">
+									<label class="attachlb"> 
+										<a href="../files/${fileInfo_2.FILE_CHNG_NM}" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo_2.FILE_NM}" target="_blank">
+											<input type="text" name="FILE_NM" id="FILE_NM${status.index}" value="${fileInfo_2.FILE_NM}">
+											<input type="hidden" name="FILE_CHNG_NM" id="FILE_CHNG_NM" value="${attachFileVo.file_chng_nm}">
+											<input type="hidden" name="APPLY_NO" id="APPLY_NO${status.index}" value="${fileInfo_2.APPLY_NO}">
+											<input type="hidden" name="APLCT_NO" id="APLCT_NO${status.index}" value="${fileInfo_2.APLCT_NO}">
+										</a>
+										<!-- 삭제버튼  -->
+										<a href="#this" id="delete${status.index}" name="delete" class="btn">삭제하기</a>
+									</label>
+									<br>
+								</c:forEach>
+							</div>
+						</div>
+						<div id="inputNdetail_11_2" class="col clear">
+							<p class="left">다운로드 일자</p>
+							<div class="right">
+								<input type="text" id="FILE_DOWN_DT" name="FILE_DOWN_DT" value="${receipt.FILE_DOWN_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
+							</div>
 						</div>
 					</div>
-					<div id="inputNdetail_12_1" class="col clear">
-						<p class="left">납품일</p>
-						<div class="right">
-<%-- 							<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="${receipt.SUPPLY_DT}" maxlength="30" style="ime-mode:active" readonly="readonly"> --%>
-							<c:choose>
-								<c:when test="${receipt.STATUS eq '접수완료'}">	<!-- 납품일은 납품완료 상태일때만 들어간다. -->
-									<div class="right">
-										<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="<%=today%>" maxlength="30" style="ime-mode:active" readonly="readonly">
-									</div>
-								</c:when>
-								<c:otherwise>
-									<div class="right">
-										<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="${receipt.SUPPLY_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
-									</div>
-								</c:otherwise>
-							</c:choose>
+					
+					<!-- 12라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_12_1" class="col clear">
+							<p class="left">접수일</p>
+							<div class="right">
+								<c:choose>
+									<c:when test="${receipt.STATUS eq '신청완료'}">	<!-- 신청완료시에는 신청 날짜만 들어가고, 관리자가 접수상태로 변경을 할때 날짜가 접수날짜로 들어간다. -->
+										<div class="right">
+											<input type="text" id="RECEIPT_DT" name="RECEIPT_DT" value="<%=today%>" maxlength="30" style="ime-mode:active" readonly="readonly">
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="right">
+											<input type="text" id="RECEIPT_DT" name="RECEIPT_DT" value="${receipt.RECEIPT_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
+										</div>
+									</c:otherwise>
+								</c:choose>
+							</div>
+						</div>
+						<div id="inputNdetail_12_1" class="col clear">
+							<p class="left">납품일</p>
+							<div class="right">
+	<%-- 							<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="${receipt.SUPPLY_DT}" maxlength="30" style="ime-mode:active" readonly="readonly"> --%>
+								<c:choose>
+									<c:when test="${receipt.STATUS eq '접수완료'}">	<!-- 납품일은 납품완료 상태일때만 들어간다. -->
+										<div class="right">
+											<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="<%=today%>" maxlength="30" style="ime-mode:active" readonly="readonly">
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="right">
+											<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="${receipt.SUPPLY_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
+										</div>
+									</c:otherwise>
+								</c:choose>
+							</div>
 						</div>
 					</div>
 				</div>
 				
 			</div>
+			<!-- 입력 및 상세영역 END -->
 			
-			
+			<!-- 상단버튼 영역 -->
+			<div id="buttonDivBox" class="button_box">
+				<button type="button" id="saveBtn" onclick="javascript:fn_save();return false;"><span></span>저장</button><!-- 저장버튼 -->
+				<button type="button" id="goListBtn" onclick="javascript:fn_goList();return false;"><span></span>목록</button><!-- 목록	 -->
+			</div>
+			<!-- 상단버튼 영역 END -->
 		</div>
 		<input type="hidden" id="USER_ID" name="USER_ID" value="${receipt.USER_ID}">
 	</form>

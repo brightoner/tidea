@@ -11,6 +11,9 @@
 <link rel="stylesheet" type="text/css" href="/resources/fontawesome/css/all.css">
 <link rel="shortcut icon"    href="/resources/images/favicon.ico">
 <link rel="icon"    href="/resources/images/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Lato:wght@300&display=swap" rel="stylesheet">
 <script src="/js/jquery-1.10.2.js"></script>
 <script src="/js/common.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -107,21 +110,19 @@
 }
 
 
-</script>
-<title>티디아 우선심사 시스템</title>
-<style>
-	html{
-		background:#213152;
-	}
-</style>
-
-</head>
-<body class="login_page">
-	<div class="login_header boxshadow">
-		<div class="login_logo">
-<!-- 			<a href=""><img src="/resources/images/ras_logo.png"></a> -->
-			<a href=""><img src="/resources/images/tidea_logo.png"></a>
-			<p><b>티디아 <span>우선심사시스템</span>에 오신것을 환영합니다.</b></p>
+	</script>
+	<title>티디아 우선심사 시스템</title>
+	</head>
+	<body class="login_page relative">
+	<div class="gnb">
+	<h1 class="logo">
+	<a href="#"><img src="/resources/images/tidea_logo.png" alt="티디아 로고 이미지"></a>
+	</h1>
+	</div>
+	<div class="login_header">
+	<div class="animated animatedFadeInUp fadeInUp">
+	<h2>로그인</h2>
+	<p>티디아 우선심사 시스템에 오신 것을 환영합니다.</p>
 		</div>
 		
 	</div>
@@ -150,7 +151,7 @@
 				</font>
 			</p>
 			<p class="copy">
-				<font color="white">copyrights 2021 TIDEA . All rights reserved. </font>
+				<font color="white">copyrights 2022 TIDEA . All rights reserved. </font>
 			</p>
 		</div>
 	</div>

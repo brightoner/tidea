@@ -508,7 +508,7 @@ public class ApplyController {
 		String aplct_no = request.getParameter("APLCT_NO");
 		applyVo.setAplct_no(aplct_no);
 		
-		int apply_no =Integer.parseInt(request.getParameter("APPLY_NO"));
+		String apply_no =request.getParameter("APPLY_NO");
 		applyVo.setApply_no(apply_no);
 		
 		Map<String, Object> apply = applyService.selectApplyDetail(applyVo);
@@ -546,9 +546,12 @@ public class ApplyController {
 		String aplct_no = request.getParameter("APLCT_NO");
 		applyVo.setAplct_no(aplct_no);
 		
+		System.out.println("**********************************************************************");
+		
 		applyService.updateDownDt(applyVo);
 		
-		return "jsonView";
+//		return "jsonView";
+		return "/apply/applyUpdate.tiles";
 	}
 	
 	

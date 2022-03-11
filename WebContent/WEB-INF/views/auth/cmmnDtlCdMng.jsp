@@ -345,7 +345,7 @@
 			
 			<!-- 조회조건 영역 -->
 			<div id="searchDivBox" class="search_box relative">
-				<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span>
+<!-- 				<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span> -->
 				<div class="row clear">
 					<div id="search_1_1"></div>
 				</div>
@@ -357,6 +357,8 @@
 			<!-- 그리드 영역 END -->
 
 			<c:if test="${totalCnt > 0 }">
+				<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span>
+				
 				<div class="button_box">
 					<button type="button" id="newRowBtn" onclick="javascript:fn_add();return false;"><span></span>행추가</button><!-- 신규버튼 function 구현 필요 없음 -->
 					<button type="button" id="delRowBtn" onclick="javascript:fn_delete();return false;"><span></span>행삭제</button><!-- 삭제버튼 -->

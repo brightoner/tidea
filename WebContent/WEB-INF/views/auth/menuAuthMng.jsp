@@ -255,8 +255,8 @@
 			<!-- 상단버튼 영역 END -->
 			
 			<!-- 조회조건 영역 -->
+			<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span>
 			<div id="searchDivBox" class="search_box relative">
-				<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span>
 				<div class="row clear">
 					<div id="search_1_1"></div>
 					<div id="search_1_2"></div>

@@ -98,6 +98,7 @@
 		    , A.USER_ID
 		    , A.RECEIPT_DT
 		    , A.SUPPLY_DT
+		    , A.FILE_DOWN_DT
 		    , B.ORDER_CD
 		    , B.USER_ID
 		    , B.APLCT_NO

@@ -117,25 +117,33 @@
 	// 파일다운로드 이벤트
 	function file_down(){
 		 
-		var id_check = $(this).attr("id");
-		console.log(id_check);
-		var id_check2 = id_check.substring(6);		// 인덱스 주소만 substring
-		console.log(id_check2);
-		var aplct_value = $("#APLCT_NO"+id_check2).val();
-		console.log(aplct_value);
+// 		var id_check = $(this).attr("id");
+// 		console.log(id_check);
+// 		var id_check2 = id_check.substring(6);		// 인덱스 주소만 substring
+// 		console.log(id_check2);
+// 		var aplct_value = $("#APLCT_NO"+id_check2).val();
+// 		console.log(aplct_value);
 		
-		$.ajax({
-			url : '/apply/fileDown.do',
-			data : {APLCT_NO:aplct_value},   //전송파라미터
-			type : 'POST',
-			dataType : 'json',
-			success : function() {
-				return true;
-			},
-			error : function() { // Ajax 전송 에러 발생시 실행
-				alert('오류가 발생했습니다.\n관리자에게 문의 바랍니다.','e');
-			}
-		});
+// 		$.ajax({
+// 			url : '/apply/fileDown.do',
+// 			data : {APLCT_NO:aplct_value},   //전송파라미터
+// 			type : 'POST',
+// 			dataType : 'json',
+// 			success : function() {
+				
+// 				var down_dt = ${down_dt};
+// 				return true;
+// 			},
+// 			error : function() { // Ajax 전송 에러 발생시 실행
+// 				alert('오류가 발생했습니다.\n관리자에게 문의 바랍니다.','e');
+// 			}
+// 		});
+
+
+		// 이렇게하면 날짜 저장됨 but 파일다운 안됨
+// 		form.action = "/apply/fileDown.do"
+// 		goSubmit(form);
+		
 	}
 	
 	
@@ -371,8 +379,9 @@
 							<div class="right">
 								<c:forEach items="${fileInfo_2}" var="fileInfo_2" begin="0" end="${fileInfo_2.size()}" step="1" varStatus="status">
 									<label class="attachlb"> 
-<%-- 										<a href="../files/${fileInfo_2.FILE_CHNG_NM}" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo_2.FILE_NM}" target="_blank"> --%>
-										<a href="../files/${fileInfo_2.FILE_CHNG_NM}" onclick="file_down();" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo_2.FILE_NM}" target="_blank">
+										<a href="../files/${fileInfo_2.FILE_CHNG_NM}" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo_2.FILE_NM}" target="_blank">
+<%-- 										<a href="../files/${fileInfo_2.FILE_CHNG_NM}" onclick="file_down();" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo_2.FILE_NM}" target="_blank"> --%>
+<%-- 										<a href="#" onclick="file_down();" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}"> --%>
 											<input type="text" name="FILE_NM" id="FILE_NM${status.index}" value="${fileInfo_2.FILE_NM}">
 											<input type="hidden" name="FILE_CHNG_NM" id="FILE_CHNG_NM" value="${attachFileVo.file_chng_nm}">
 											<input type="hidden" name="APPLY_NO" id="APPLY_NO${status.index}" value="${fileInfo_2.APPLY_NO}">
@@ -389,7 +398,7 @@
 						<div id="inputNdetail_2_2" class="col clear">
 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>다운로드 일자</p>
 							<div class="right">
-								<input type="text" id="APLCT_DT" name="APLCT_DT" value="${apply.FILE_DOWN_DT}" placeholder="YYYY-MM-DD">
+								<input type="text" id="FILE_DOWN_DT" name="FILE_DOWN_DT" value="${apply.FILE_DOWN_DT}">
 							</div>
 						</div>
 					</div>

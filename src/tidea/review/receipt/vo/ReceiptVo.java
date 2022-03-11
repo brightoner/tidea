@@ -5,7 +5,7 @@ import tidea.review.common.vo.CommonVo;
 public class ReceiptVo extends CommonVo{
 	
 	//심사신청정보
-		private int apply_no;		// 신청번호
+		private String apply_no;		// 신청번호
 		private String invt_nm;		// 발명의 명칭
 		private String aplct_no;	// 출원번호
 		private String aplct_dt;	// 출원일자
@@ -43,11 +43,12 @@ public class ReceiptVo extends CommonVo{
 			this.invt_nm = invt_nm;
 		}
 
-		public int getApply_no() {
+
+		public String getApply_no() {
 			return apply_no;
 		}
 
-		public void setApply_no(int apply_no) {
+		public void setApply_no(String apply_no) {
 			this.apply_no = apply_no;
 		}
 

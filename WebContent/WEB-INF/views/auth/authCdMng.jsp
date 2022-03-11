@@ -153,7 +153,7 @@
 			
 			<!-- 조회조건 영역 -->
 			<div id="searchDivBox" class="search_box relative">
-				<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span>
+<!-- 				<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span> -->
 				<div class="row clear">
 					<div id="search_1_1"></div>
 					<div id="search_1_2"></div>
@@ -168,16 +168,18 @@
 
 			<!-- 입력 및 상세영역 -->
 			<div id="inputNdetailDivBox" class="inputNdetail">
-				<p class="title"><span id="modeSpan"></span></p>
+			<p class="title"><span id="modeSpan"></span><span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span></p>
+
 				<div class="inputNdetail_box">
 					<!-- 1라인 -->
 					<div class="row clear">
 						<div id="inputNdetail_1_1"></div>
 						<div id="inputNdetail_1_2"></div>
-						<div id="inputNdetail_1_3"></div>
+<!-- 						<div id="inputNdetail_1_3"></div> -->
 					</div>
 					<!-- 2라인 -->
 					<div class="row clear">
+						<div id="inputNdetail_1_3"></div>
 						<div id="inputNdetail_2_1"></div>
 					</div>
 				</div>

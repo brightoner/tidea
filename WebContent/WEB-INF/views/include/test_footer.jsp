@@ -8,7 +8,7 @@
 </head>
 <body>
 <!-- 	<div class="foot_text"> -->
-	<div class="footer login_footer">
+	<div class="footer">
 		<p>
 			<font color="white">
 				상호명 : (주)티디아   |   대표 : 이상호   |   사업자등록번호 : 877-81-02483<br>
@@ -16,7 +16,7 @@
 			</font>
 		</p>
 		<p class="copy">
-			<font color="white">copyrights 2021 TIDEA . All rights reserved.</font>
+			<font color="white">copyrights 2022 TIDEA . All rights reserved.</font>
 		</p>
 	</div>
 </body>

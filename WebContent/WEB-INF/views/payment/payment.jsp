@@ -94,7 +94,8 @@
 			<!-- 상단버튼 영역 END -->
 			
 			<!-- 조회조건 영역 -->
-			<div id="searchDivBox" style="padding: 7px 10px; margin: 28px;">
+<!-- 			<div id="searchDivBox" style="padding: 7px 10px; margin: 28px;"> -->
+			<div id="searchDivBox">
  				<span class="required_input absolute"><span class="required"></span>항목은 필수 입력 항목입니다.</span>
 			</div>
 			<!-- 조회조건영역 END -->
