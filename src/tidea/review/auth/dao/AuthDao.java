@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
-import tidea.review.apply.vo.AttachFileVo;
 import tidea.review.auth.vo.AuthVo;
 import tidea.review.auth.vo.BiznofileVo;
 
@@ -91,6 +90,13 @@ public List<AuthVo> selectMenuList(AuthVo authVo) throws Exception;
 	 * @throws Exception
 	 */
 	public void updatePw(AuthVo vo) throws Exception;
+	
+	/**
+	 * 사용자가 회원정보 삭제 - 탈퇴
+	 * @param authVo
+	 * @throws Exception
+	 */
+	public void deleteUserInfo(AuthVo authVo) throws Exception;
 	
 	
 	public void deleteUsrMng(AuthVo vo) throws Exception;

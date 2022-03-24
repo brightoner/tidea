@@ -22,9 +22,7 @@
 	// 할인사유 라디오 버튼 클릭시 총액 계산
 // 	$(document).on("click","input[name=discnt_rs]",function(){
 // 	    var discount=$('[name="discnt_rs"]:checked').val();
-// 		console.log("discount : " + discount);
 // 	    var no_dis = 660000;
-// 	    console.log("no_dis : " + no_dis);
 // 	    var dis_0 = 1;
 // 		var dis_2 = 0.1;
 // 		var dis_3 = 0.15;

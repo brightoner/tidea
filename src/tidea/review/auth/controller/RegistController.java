@@ -140,10 +140,8 @@ public class RegistController {
 			biznofileVo.setFile_chng_nm(file_chng_nm);
 			
 			String path = fileUploadUtil.fileUpload1(request, uploadFile, type);
-			System.out.println("*********** path : " + path);
 			
 			String file_path = path;	
-			System.out.println("*********** file_path : " + file_path);
 			
 			biznofileVo.setFile_path(file_path);
 		
@@ -176,6 +174,12 @@ public class RegistController {
 	@RequestMapping(value = "/regist/guide.do")
 	public String guide() {
 		return "/regist/guide.tiles";
+	}
+	
+	// 개인정보처리방침
+	@RequestMapping(value = "/regist/privacyPolicy.do")
+	public String privacyPolicy() {
+		return "/regist/privacyPolicy.tiles";
 	}
 	
 	
@@ -276,14 +280,12 @@ public class RegistController {
 		vo.setUSER_ID(user_id);
 		
 		Map<String, Object> UserInfo = authService.selectUserInfoDetail(vo);
-		System.out.println("************ UserInfo : " + UserInfo);
 		model.addAttribute("UserInfo", UserInfo);
 		
 		//첨부파일관련
 		biznofileVo.setUser_id(user_id);
 		
 		List<Map<String, Object>> fileInfo = authService.selectBizNoFile(biznofileVo);
-		System.out.println("************ fileInfo : " + fileInfo);
 		model.addAttribute("fileInfo",fileInfo);
 		
 		return "/regist/updateUserInfo.tiles";
@@ -348,10 +350,8 @@ public class RegistController {
 			biznofileVo.setFile_chng_nm(file_chng_nm);
 			
 			String path = fileUploadUtil.fileUpload1(request, uploadFile, type);
-			System.out.println("*********** path : " + path);
 			
 			String file_path = path;	
-			System.out.println("*********** file_path : " + file_path);
 			
 			biznofileVo.setFile_path(file_path);
 		
@@ -366,11 +366,12 @@ public class RegistController {
 	}
 	
 	
+
 	/**
-	 * 우선심사신청 수정화면에서 : 첨부파일 삭제버튼 클릭 --> 첨부파일 삭제
+	 * 회원정보 수정 화면에서 사업자등록증 파일 삭제
 	 * @param request
 	 * @param model
-	 * @param attachFileVo
+	 * @param biznofileVo
 	 * @return
 	 * @throws Exception
 	 */
@@ -382,6 +383,9 @@ public class RegistController {
 		Map<String, Object> ssLoginInfo = (Map<String, Object>) request.getSession().getAttribute("SS_LOGIN_INFO");
 		String user_id = ssLoginInfo == null ? "" : String.valueOf(ssLoginInfo.get("USER_ID"));
 		biznofileVo.setUser_id(user_id);
+		
+		String file_nm = request.getParameter("FILE_NM");
+		biznofileVo.setFile_nm(file_nm);
 		
 		authService.delBizNoFile(biznofileVo);
 		
@@ -456,7 +460,30 @@ public class RegistController {
 		return "/regist/updateUserInfo.tiles";
 	}
 	
+	/**
+	 * 사용자가 회원정보 삭제 - 탈퇴
+	 * @param request
+	 * @param model
+	 * @param authVo
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/regist/deleteUserInfo.do")	
+	public String deleteUserInfo(HttpServletRequest request, Model model, AuthVo authVo) throws Exception {
 		
+		// login session으로 user_id 받기 
+		@SuppressWarnings("unchecked")
+		Map<String, Object> ssLoginInfo = (Map<String, Object>) request.getSession().getAttribute("SS_LOGIN_INFO");
+		String user_id = ssLoginInfo == null ? "" : String.valueOf(ssLoginInfo.get("USER_ID"));
+		authVo.setUSER_ID(user_id);
+		
+		authService.deleteUserInfo(authVo);
+		
+		// 모든 세션 초기화
+		request.getSession().invalidate();
+		
+		return "/login/login";
+	}
 	
 	
 	
@@ -474,17 +501,17 @@ public class RegistController {
         Properties prop = new Properties();
         
         // gmail  사용시
-//        prop.put("mail.smtp.host", "smtp.gmail.com"); 
-//        prop.put("mail.smtp.port", 465); 
-//        prop.put("mail.smtp.auth", "true"); 
-//        prop.put("mail.smtp.ssl.enable", "true"); 
-//        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        prop.put("mail.smtp.host", "smtp.gmail.com"); 
+        prop.put("mail.smtp.port", 465); 
+        prop.put("mail.smtp.auth", "true"); 
+        prop.put("mail.smtp.ssl.enable", "true"); 
+        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         
         // daum 메일  사용시
-      prop.put("mail.smtp.host", "smtp.daum.net");	
-      prop.put("mail.smtp.port", "465");
-      prop.put("mail.smtp.ssl.enable", "true");
-      prop.put("mail.smtp.auth", "true");
+//      prop.put("mail.smtp.host", "smtp.daum.net");	
+//      prop.put("mail.smtp.port", "465");
+//      prop.put("mail.smtp.ssl.enable", "true");
+//      prop.put("mail.smtp.auth", "true");
         
      // 카페24 메일 사용시
 //     		prop.put("mail.smtp.host", "smtp.cafe24.com");	

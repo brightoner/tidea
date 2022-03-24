@@ -513,10 +513,12 @@
 				SELECT
 					 B.USER_ID
 					,B.USER_ID AS KEY1
-					,'****' AS USER_PWD
 					,B.USER_NM
 					,(SELECT AUTH_NM FROM AUTH_CD_MANAGE_TB WHERE AUTH_CD = B.AUTH_CD) AS AUTH_NM
  					,B.OFFICE_REG_NO 
+ 					,B.ANNUAL_USER
+ 					,B.ANNUAL_USER_START_DT
+					,'****' AS USER_PWD
 				FROM
 				  AUTH_CD_MANAGE_TB A, USER_TB B
 				WHERE
@@ -553,6 +555,7 @@
 			     , B.OFFICE_REG_NO
 			     , B.OFFICE_OWNER_NM
 			     , B.ANNUAL_USER
+			     , B.ANNUAL_USER_START_DT
 			FROM AUTH_CD_MANAGE_TB A, USER_TB B
 			WHERE A.AUTH_CD = B.AUTH_CD
 			AND B.USER_ID = #{USER_ID}
@@ -583,7 +586,6 @@
 			         ,LAST_LOGIN_DT
 			         ,PWD_CHANGE_DT
 			         ,AUTH_CD
-			         ,USE_AT
 			         ,OFFICE_NM
 			         ,OFFICE_OWNER_NM
 			         ,OFFICE_PHONE
@@ -603,7 +605,6 @@
 			        ,NOW()
 			        ,DATE_ADD(NOW(), INTERVAL 3 MONTH)
 			        ,#{AUTH_CD}
-			        ,"Y"
 			        ,#{OFFICE_NM}
 			        ,#{OFFICE_OWNER_NM}
 			        ,#{OFFICE_PHONE}
@@ -611,15 +612,16 @@
 			        ,0
 			        ,"Y"
 			        ,NOW()
-			        ,#{ANNUAL_USER}
+			        ,'N'
 			)
 	</select>
-	<!-- 관리자가 사용자의 사용여부, 권한 수정 -->
+	<!-- 관리자가 사용자의 사용여부, 권한, 연간회원, 연간회원등록날짜 수정 -->
 	<update id="updateUsrMng" parameterType="authVo">
 		/* AuthMap.updateUsrMng */
 			UPDATE USER_TB
 			SET     AUTH_CD = #{AUTH_CD}
-			       ,USE_AT = #{USE_AT}
+			       ,ANNUAL_USER = #{ANNUAL_USER}
+			       ,ANNUAL_USER_START_DT = #{ANNUAL_USER_START_DT}
 			WHERE USER_ID = #{USER_ID}  
 	</update>
 	
@@ -639,16 +641,28 @@
 	</update> 
 	
 	<!-- 사용자가 회원정보 수정 시 비밀번호 수정 - 이용자 -->
-	<select id="updatePw" parameterType="authVo">
+	<update id="updatePw" parameterType="authVo">
 	/* AuthMap.updatePw */
 		UPDATE USER_TB
 		SET USER_PWD = #{USER_PWD}
 		   ,PWD_CHANGE_DT = DATE_ADD(NOW(), INTERVAL 3 MONTH)
 		WHERE USER_ID = #{USER_ID}
-		
-	</select>
+	</update>
 	
-	<!-- 이용자 회원정보 수정화면 불러오기  -->
+	
+	
+	<!-- 사용자가 회원정보 삭제 - 탈퇴 -->
+	<delete id="deleteUserInfo" parameterType="authVo">
+	/* AuthMap.deleteUserInfo */	
+		DELETE FROM USER_TB
+		WHERE USER_ID = #{USER_ID}
+	</delete>
+	
+	
+	
+	
+	
+	<!-- 관리자가 이용자 회원정보 수정화면 불러오기  -->
 	<select id="selectUserInfoDetail" parameterType="authVo" resultType="java.util.HashMap">
 		/* AuthMap.selectUserInfoDetail */
 			SELECT USER_NM
@@ -659,6 +673,8 @@
 			     , OFFICE_OWNER_NM
 			     , OFFICE_PHONE
 			     , OFFICE_REG_NO
+			     , ANNUAL_USER
+			     , ANNUAL_USER_START_DT
 			FROM USER_TB 
 			WHERE USER_ID = #{USER_ID}
 	</select>
@@ -682,6 +698,8 @@
 		WHERE EMAIL = #{EMAIL}
 		AND USER_NM = #{USER_NM}
 	</select>
+
+
 	<!-- 아이디 찾기 조회 -->
 	<select id="findUser_Id_count" parameterType="authVo" resultType="int">
 		/* AuthMap.findUser_Id_count */

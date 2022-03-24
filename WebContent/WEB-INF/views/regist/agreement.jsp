@@ -21,12 +21,12 @@
 	function fn_regist(){
 		// 신규등록정보  체크여부 확인
 		if(!$('#agree1').is(':checked')){
-			alert('신규등록정보를 체크 하세요.');
+			alert('이용약관을 체크 하세요.');
 			return;
 		}
 		// 개인정보처리방침  체크여부 확인
 		if(!$('#agree2').is(':checked')){
-			alert('개인정보처리방침을 체크 하세요.');
+			alert('개인정보 수집 이용 동의서를 체크 하세요.');
 			return;
 		}
 		form.action = "/regist/regist.do";
@@ -34,6 +34,31 @@
 	}
 
 </script>
+
+
+<style type="text/css">
+	table, td, th {
+		border : 1px solid black;
+		border-collapse : collapse;
+		text-align: center;
+	}
+	table{
+		width: 100%;
+		height : auto;
+		background-color: white;
+	}
+	th{
+		width : 33.3%;
+		height: 40px;
+	}
+	td{
+		height: 60px;
+	}
+</style>
+
+
+
+
 <title>티디아 우선심사 시스템</title>
 </head>
 <body>
@@ -51,7 +76,7 @@
 		<div class="box-blue-line clear relative">
 			<!-- 입력 및 상세영역 -->
 			<div id="inputNdetailDivBox" class="inputNdetail narrow">
-				<p class="title"><span id="modeSpan">이용약관</span></p>
+				<p class="title"><span id="modeSpan_1">이용약관</span></p>
 				<div class="inputNdetail_box">
 					<div class="row clear">
 						<textarea id="terms1" name="terms1" readonly="" title="이용약관">
@@ -228,10 +253,10 @@
 				</div>
 			</div>
 			<div id="inputNdetailDivBox" class="inputNdetail narrow">
-				<p class="title"><span id="modeSpan">개인정보처리방침</span></p>
+				<p class="title"><span id="modeSpan_1">개인정보 수집 이용 동의서</span></p>
 				<div class="inputNdetail_box">
 					<div class="row clear">
-						<textarea id="terms2" name="terms2" readonly="" title="개인정보처리방침">
+<!-- 					<textarea id="terms2" name="terms2" readonly="" title="개인정보처리방침">
 [(주)티디아 우선심사 시스템]('www.pretidea.co.kr' 이하 '(주)티디아')는 「개인정보 보호법」 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리방침을 수립·공개합니다.
 ○ 이 개인정보처리방침은 2021년 12월 16일부터 적용됩니다.
 
@@ -344,7 +369,28 @@
 
 제13조(개인정보 처리방침 변경)
 ① 이 개인정보처리방침은 2021년 12월 16일부터 적용됩니다.
-						</textarea>
+						</textarea> -->
+						
+						
+						<table>
+							<tr>
+								<th>목적</th>
+								<th>항목</th>
+								<th>보유기간</th>
+							</tr>
+							<tr>
+								<td>이용자 식별 및 본인여부 확인을<br> 위한 수집</td>
+								<td>아이디, 비밀번호, 담당자 성함,<br> 담당자 휴대전화</td>
+								<td>회원탈퇴 시 까지</td>
+							</tr>
+							<tr>
+								<td>서비스 신청 및 서비스 이용을<br> 위한 수집</td>
+								<td>담당자 성함, 담당자 휴대전화,<br> 담당자 E-mail, 기업명, 사업자등록번호</td>
+								<td>회원탈퇴 시 까지</td>
+							</tr>
+						</table>
+						
+						
 						<p class="checkbox">
 						    <input type="checkbox" id="agree2" title="동의체크" name="agree2" value="1"><label for="agree2">(필수) 상기의 개인정보처리방침에 동의합니다.</label>
 						</p>

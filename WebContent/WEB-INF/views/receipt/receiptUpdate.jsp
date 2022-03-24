@@ -105,8 +105,24 @@
 	$(document).ready(function () {
 	    $.datepicker.setDefaults($.datepicker.regional['ko']); 
 	        
-	        // 공고일
-		$("#APLCT_DT").datepicker({
+	    // 접수일
+		$("#RECEIPT_DT").datepicker({
+			showOn:"button",
+			buttonImage:"../images/btn_date.png",
+			buttonImageOnly:true,
+			changeMonth: true, 
+			changeYear: true,
+			nextText: '다음 달',
+			prevText: '이전 달', 
+			dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
+			dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'], 
+			monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+			monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+			dateFormat: "yy-mm-dd",
+			maxDate: "+1Y",                       // 선택할수있는 최소날짜, ( 0 : 오늘 이후 날짜 선택 불가 // +1D:하루후, +1M:한달후, +1Y:일년후)
+		});
+	    // 납품일
+		$("#SUPPLY_DT").datepicker({
 			showOn:"button",
 			buttonImage:"../images/btn_date.png",
 			buttonImageOnly:true,
@@ -127,7 +143,7 @@
 			var attachlength = $(".attachlb").length;
 			var filelength = $(".uploadFile").length;
 			
-			if($(".uploadFile").length + attachlength > 1) {
+			if($(".uploadFile").length + attachlength > 2) {
 				alert("첨부파일은 1개까지입니다.");
 				return;
 			}
@@ -182,7 +198,6 @@
 	String today = sf.format(now);
 	sf = new SimpleDateFormat("yyyy-MM-dd");
 	today = sf.format(now);
-	System.out.println("********** today : " + today);
 %>
 
 	<form name="form" method="post" enctype="multipart/form-data" accept-charset="UTF-8" class="user_mode">
@@ -290,8 +305,8 @@
 									<label class="attachlb"> 
 										<a href="../files/${fileInfo.FILE_CHNG_NM}" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo.FILE_NM}" target="_blank">
 											<input type="text" name="FILE_NM" id="FILE_NM${status.index}" value="${fileInfo.FILE_NM}">
-											<input type="hidden" name="FILE_CHNG_NM" id="FILE_CHNG_NM" value="${attachFileVo.file_chng_nm}">
-											<input type="hidden" name="APPLY_NO" id="APPLY_NO${status.index}" value="${fileInfo.APPLY_NO}">
+<%-- 											<input type="hidden" name="FILE_CHNG_NM" id="FILE_CHNG_NM" value="${attachFileVo.file_chng_nm}"> --%>
+<%-- 											<input type="hidden" name="APPLY_NO" id="APPLY_NO${status.index}" value="${fileInfo.APPLY_NO}"> --%>
 											<input type="hidden" name="APLCT_NO" id="APLCT_NO${status.index}" value="${fileInfo.APLCT_NO}">
 										</a>
 									</label>
@@ -307,6 +322,23 @@
 							<p class="left">요청 사항</p>
 							<div class="right">
 								<textarea id="MEMO" name="MEMO" cols="50" rows="20" readonly="readonly">${receipt.MEMO}</textarea>
+							</div>
+						</div>
+					</div>
+					
+					<!-- 8라인 -->
+					<div class="row clear">
+						<div id="inputNdetail_7_1" class="col clear">
+							<p class="left">사업자등록증</p>
+							<div class="right">
+								<c:forEach items="${fileInfo_3}" var="fileInfo_3" begin="0" end="${fileInfo_3.size()}" step="1" varStatus="status">
+									<label class="attachlb"> 
+										<a href="../biz_no/${fileInfo_3.FILE_CHNG_NM}" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo_3.FILE_NM}" target="_blank">
+											<input type="text" name="FILE_NM" id="FILE_NM${status.index}" value="${fileInfo_3.FILE_NM}">
+										</a>
+									</label>
+									<br>
+								</c:forEach>
 							</div>
 						</div>
 					</div>
@@ -355,12 +387,13 @@
 							<div class="right">
 								<input type="button" id="addFile" value="추가" onclick="attach.add()">
 								<input type="button" id="delFile" value="삭제" onclick="attach.del()">
+								<p class="note">* 첨부서류는 zip, 7Z, RAR, ALZ 파일만 가능합니다.</p>
 								<c:forEach items="${fileInfo_2}" var="fileInfo_2" begin="0" end="${fileInfo_2.size()}" step="1" varStatus="status">
 									<label class="attachlb"> 
 										<a href="../files/${fileInfo_2.FILE_CHNG_NM}" name="FILEINFO_NAME" id="FILEINFO_NAME${status.index}" download="${fileInfo_2.FILE_NM}" target="_blank">
 											<input type="text" name="FILE_NM" id="FILE_NM${status.index}" value="${fileInfo_2.FILE_NM}">
-											<input type="hidden" name="FILE_CHNG_NM" id="FILE_CHNG_NM" value="${attachFileVo.file_chng_nm}">
-											<input type="hidden" name="APPLY_NO" id="APPLY_NO${status.index}" value="${fileInfo_2.APPLY_NO}">
+<%-- 											<input type="hidden" name="FILE_CHNG_NM" id="FILE_CHNG_NM" value="${attachFileVo.file_chng_nm}"> --%>
+<%-- 											<input type="hidden" name="APPLY_NO" id="APPLY_NO${status.index}" value="${fileInfo_2.APPLY_NO}"> --%>
 											<input type="hidden" name="APLCT_NO" id="APLCT_NO${status.index}" value="${fileInfo_2.APLCT_NO}">
 										</a>
 										<!-- 삭제버튼  -->
@@ -383,36 +416,37 @@
 						<div id="inputNdetail_12_1" class="col clear">
 							<p class="left">접수일</p>
 							<div class="right">
-								<c:choose>
-									<c:when test="${receipt.STATUS eq '신청완료'}">	<!-- 신청완료시에는 신청 날짜만 들어가고, 관리자가 접수상태로 변경을 할때 날짜가 접수날짜로 들어간다. -->
-										<div class="right">
-											<input type="text" id="RECEIPT_DT" name="RECEIPT_DT" value="<%=today%>" maxlength="30" style="ime-mode:active" readonly="readonly">
-										</div>
-									</c:when>
-									<c:otherwise>
-										<div class="right">
-											<input type="text" id="RECEIPT_DT" name="RECEIPT_DT" value="${receipt.RECEIPT_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
-										</div>
-									</c:otherwise>
-								</c:choose>
+								<input type="text" id="RECEIPT_DT" name="RECEIPT_DT" value="${receipt.RECEIPT_DT}" maxlength="30" style="ime-mode:active">
+<%-- 								<c:choose> --%>
+<%-- 									<c:when test="${receipt.STATUS eq '신청완료'}">	<!-- 신청완료시에는 신청 날짜만 들어가고, 관리자가 접수상태로 변경을 할때 날짜가 접수날짜로 들어간다. --> --%>
+<!-- 										<div class="right"> -->
+<%-- 											<input type="text" id="RECEIPT_DT" name="RECEIPT_DT" value="<%=today%>" maxlength="30" style="ime-mode:active" readonly="readonly"> --%>
+<!-- 										</div> -->
+<%-- 									</c:when> --%>
+<%-- 									<c:otherwise> --%>
+<!-- 										<div class="right"> -->
+<%-- 											<input type="text" id="RECEIPT_DT" name="RECEIPT_DT" value="${receipt.RECEIPT_DT}" maxlength="30" style="ime-mode:active" readonly="readonly"> --%>
+<!-- 										</div> -->
+<%-- 									</c:otherwise> --%>
+<%-- 								</c:choose> --%>
 							</div>
 						</div>
 						<div id="inputNdetail_12_1" class="col clear">
 							<p class="left">납품일</p>
 							<div class="right">
-	<%-- 							<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="${receipt.SUPPLY_DT}" maxlength="30" style="ime-mode:active" readonly="readonly"> --%>
-								<c:choose>
-									<c:when test="${receipt.STATUS eq '접수완료'}">	<!-- 납품일은 납품완료 상태일때만 들어간다. -->
-										<div class="right">
-											<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="<%=today%>" maxlength="30" style="ime-mode:active" readonly="readonly">
-										</div>
-									</c:when>
-									<c:otherwise>
-										<div class="right">
-											<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="${receipt.SUPPLY_DT}" maxlength="30" style="ime-mode:active" readonly="readonly">
-										</div>
-									</c:otherwise>
-								</c:choose>
+								<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="${receipt.SUPPLY_DT}" maxlength="30" style="ime-mode:active">
+<%-- 								<c:choose> --%>
+<%-- 									<c:when test="${receipt.STATUS eq '접수완료'}">	<!-- 납품일은 납품완료 상태일때만 들어간다. --> --%>
+<!-- 										<div class="right"> -->
+<%-- 											<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="<%=today%>" maxlength="30" style="ime-mode:active" readonly="readonly"> --%>
+<!-- 										</div> -->
+<%-- 									</c:when> --%>
+<%-- 									<c:otherwise> --%>
+<!-- 										<div class="right"> -->
+<%-- 											<input type="text" id="SUPPLY_DT" name="SUPPLY_DT" value="${receipt.SUPPLY_DT}" maxlength="30" style="ime-mode:active" readonly="readonly"> --%>
+<!-- 										</div> -->
+<%-- 									</c:otherwise> --%>
+<%-- 								</c:choose> --%>
 							</div>
 						</div>
 					</div>

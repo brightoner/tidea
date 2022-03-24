@@ -49,9 +49,9 @@
 				var auth = '${SS_LOGIN_INFO.AUTH_CD}';
 				var returnPage = '/login/goLogout.do';
 				// 통합정보시스템에서 넘어온 경우 로그아웃 시 통합정보시스템으로 이동
-				if(auth != 'AUTH0001'){
-					returnPage += '?returnPage=http://114.70.126.46:8080';
-				}
+// 				if(auth != 'AUTH0001'){
+// 					returnPage += '?returnPage=http://114.70.126.46:8080';
+// 				}
 				location.href = returnPage;
 			}
 		</script>

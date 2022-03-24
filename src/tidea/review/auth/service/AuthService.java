@@ -210,6 +210,13 @@ public interface AuthService {
 	public void updatePw(AuthVo vo) throws Exception;
 	
 	/**
+	 * 사용자가 회원정보 삭제 - 탈퇴
+	 * @param authVo
+	 * @throws Exception
+	 */
+	public void deleteUserInfo(AuthVo authVo) throws Exception;
+	
+	/**
 	 * 이용자 회원정보 수정화면 불러오기
 	 * @param vo
 	 * @return

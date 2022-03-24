@@ -21,8 +21,10 @@
 		$('#SEARCH_USR_NM').val('${param.SEARCH_USR_NM}');
 	});
 	// 그리드 설정
-	var colsNm = ['', 'ID', '이름','비밀번호', '권한']; //예) var colsNm = ['학년도', '학기',var colsNm = ['학년도', '학기', '성명', '학번', '시작일시'];
-	var cols = ['', 'USER_ID', 'USER_NM', 'USER_PWD', 'AUTH_NM']; //예) var cols = ['COL1', 'COL2', 'COL3', 'COL4', 'COL5'];
+// 	var colsNm = ['', 'ID', '이름','비밀번호', '권한', '연간회원']; //예) var colsNm = ['학년도', '학기',var colsNm = ['학년도', '학기', '성명', '학번', '시작일시'];
+	var colsNm = ['', 'ID', '이름', '권한', '연간회원', '연간회원등록날짜']; //예) var colsNm = ['학년도', '학기',var colsNm = ['학년도', '학기', '성명', '학번', '시작일시'];
+// 	var cols = ['', 'USER_ID', 'USER_NM', 'USER_PWD', 'AUTH_NM', 'ANNUAL_USER']; //예) var cols = ['COL1', 'COL2', 'COL3', 'COL4', 'COL5'];
+	var cols = ['', 'USER_ID', 'USER_NM', 'AUTH_NM', 'ANNUAL_USER', 'ANNUAL_USER_START_DT']; //예) var cols = ['COL1', 'COL2', 'COL3', 'COL4', 'COL5'];
 	var key = ['USER_ID']; //예) var key = ['SN', 'HAKBEON'];
 	
 	
@@ -35,19 +37,20 @@
 	function fn_gridCompoSetting(){
 		fn_compoGrid('M', 'grid', cols, colsNm, key);
 		fn_gridColgroupSetting('grid', ['*', '*', '*', '*']); // colgroup 설정
-		fn_gridAlignSetting('grid', ['center', 'center', 'center' ,'center' ,'center']); // 그리드 데이터 정렬 설정(종류:left, center, right)
+		fn_gridAlignSetting('grid', ['center', 'center', 'center', 'center', 'center', 'center']); // 그리드 데이터 정렬 설정(종류:left, center, right)
 	}
 	
 	// 입력 및 상세영역 설정
 	function fn_inputNdetailCompoSetting(){
 			fn_compoInputbox('M', 'I', 'inputNdetail_1_1', 'INSERT_USER_ID', 'INSERT_USER_ID', '', 'ID', '', '30');
 			fn_compoInputbox('M', 'I', 'inputNdetail_1_2', 'USER_NM', 'USER_NM', '', '이름', '', '30');
-			fn_compoSelIn_AUTH('M', 'I', 'inputNdetail_1_3', 'AUTH_CD', 'AUTH_CD', '', '권한', '', '30');
-			fn_compoInputbox('M', 'I', 'inputNdetail_2_1', 'INSER_USER_EMAIL', 'INSER_USER_EMAIL', '', '이메일', '', '30');
-			fn_compoInputbox('M', 'I', 'inputNdetail_2_2', 'MOBILE', 'MOBILE', '', '휴대전화', '', '30');
-			fn_compoInputbox('M', 'I', 'inputNdetail_2_3', 'OFFICE_NM', 'OFFICE_NM', '', '기업명', '', '30');
-			fn_compoInputbox('M', 'I', 'inputNdetail_3_1', 'OFFICE_REG_NO', 'OFFICE_REG_NO', '', '사업자등록번호', '', '30');
-// 			fn_compoRadioYn('M', 'I', 'inputNdetail_3_2', 'USE_AT', 'USE_AT', '', '사용여부');
+			fn_compoSelIn_AUTH('M', 'I', 'inputNdetail_2_1', 'AUTH_CD', 'AUTH_CD', '', '권한', '', '30');
+			fn_compoInputbox('M', 'I', 'inputNdetail_2_2', 'INSER_USER_EMAIL', 'INSER_USER_EMAIL', '', '이메일', '', '30');
+			fn_compoInputbox('M', 'I', 'inputNdetail_3_1', 'MOBILE', 'MOBILE', '', '휴대전화', '', '30');
+			fn_compoInputbox('M', 'I', 'inputNdetail_3_2', 'OFFICE_NM', 'OFFICE_NM', '', '기업명', '', '30');
+			fn_compoRadioYn('M', 'I', 'inputNdetail_4_1', 'ANNUAL_USER', 'ANNUAL_USER', '', '연간회원');
+			fn_compoDateInputbox('M', 'I', 'inputNdetail_4_2', 'ANNUAL_USER_START_DT', 'ANNUAL_USER_START_DT', '', '연간회원등록날짜', '', '30');
+			fn_compoInputbox('M', 'I', 'inputNdetail_5_1', 'OFFICE_REG_NO', 'OFFICE_REG_NO', '', '사업자등록번호', '', '30');
 			
 			
 	}
@@ -147,7 +150,6 @@
 			dataType : 'json',
 			success : function(result) {
 				var d = result.detailMap;
-				console.log(d);
 				$('input[name=INSERT_USER_ID]').val(d.USER_ID);
 				$('input[name=USER_NM]').val(d.USER_NM);
 				$('#AUTH_CD').val(d.AUTH_CD);
@@ -156,13 +158,14 @@
 				$('input[name=MOBILE]').val(d.MOBILE);
 				$('input[name=OFFICE_NM]').val(d.OFFICE_NM);
 				$('input[name=OFFICE_REG_NO]').val(d.OFFICE_REG_NO);
-// 				if(d.USE_AT == 'Y'){
-// 					$('#USE_AT1').prop('checked', true);
-// 					$('#USE_AT2').prop('checked', false);
-// 				}else{
-// 					$('#USE_AT2').prop('checked', true);
-// 					$('#USE_AT1').prop('checked', false);
-// 				}
+				$('#ANNUAL_USER_START_DT').val(d.ANNUAL_USER_START_DT);
+				if(d.ANNUAL_USER == 'Y'){
+					$('#ANNUAL_USER1').prop('checked', true);
+					$('#ANNUAL_USER2').prop('checked', false);
+				}else{
+					$('#ANNUAL_USER2').prop('checked', true);
+					$('#ANNUAL_USER1').prop('checked', false);
+				}
 			},
 			error : function() { // Ajax 전송 에러 발생시 실행
 				alert('오류가 발생했습니다.\n관리자에게 문의 바랍니다.','e');
@@ -258,16 +261,23 @@
 					<div class="row clear">
 						<div id="inputNdetail_1_1"></div>
 						<div id="inputNdetail_1_2"></div>
-						<div id="inputNdetail_1_3"></div>
+						
 					</div>
 					<div class="row clear">
-						<div id="inputNdetail_2_1"></div>		
+						<div id="inputNdetail_2_1"></div>
 						<div id="inputNdetail_2_2"></div>
-						<div id="inputNdetail_2_3"></div>
+					</div>
+					<div class="row clear">		
+						<div id="inputNdetail_3_1"></div>
+						<div id="inputNdetail_3_2"></div>
 					</div>
 					<div class="row clear">
-						<div id="inputNdetail_3_1"></div>
-<!-- 						<div id="inputNdetail_3_2"></div> -->
+						<div id="inputNdetail_4_1"></div>
+						<div id="inputNdetail_4_2"></div>
+					</div>
+					<div class="row clear">
+						<div id="inputNdetail_5_1"></div>
+<!-- 						<div id="inputNdetail_5_2"></div> -->
 					</div>
 				</div>
 			</div>
@@ -429,7 +439,7 @@
 			$('#MOBILE').val('').attr('readonly', true);
 			$('#OFFICE_NM').val('').attr('readonly', true);
 			$('#OFFICE_REG_NO').val('').attr('readonly', true);
-			$('#inputNdetail_4_1 > p').prepend('<span class="required"></span>');
+// 			$('#inputNdetail_4_1 > p').prepend('<span class="required"></span>');
 		}
 	}
 	// 라디오박스 체크 고정

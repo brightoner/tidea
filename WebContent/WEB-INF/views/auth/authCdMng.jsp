@@ -50,7 +50,7 @@
 		fn_compoInputbox('M', 'I', 'inputNdetail_1_2', 'AUTH_NM', 'AUTH_NM', 'Y', '권한명');
 		fn_compoInputbox('M', 'I', 'inputNdetail_1_3', 'etc', 'etc', '', '비고');
 		
-		fn_compoRadioYn('M', 'I', 'inputNdetail_2_1', 'USE_AT', 'USE_AT', '', '사용여부');
+// 		fn_compoRadioYn('M', 'I', 'inputNdetail_2_1', 'USE_AT', 'USE_AT', '', '사용여부');
 	}
 	
 	// 조회 버튼
@@ -102,13 +102,13 @@
 				$('#AUTH_CD').val(d.AUTH_CD);
 				$('#AUTH_NM').val(d.AUTH_NM);
 				$('#etc').val(d.ETC);
-				if(d.USE_AT == 'Y'){
-					$('#USE_AT1').prop('checked', true);
-					$('#USE_AT2').prop('checked', false);
-				}else{
-					$('#USE_AT2').prop('checked', true);
-					$('#USE_AT1').prop('checked', false);
-				}
+// 				if(d.USE_AT == 'Y'){
+// 					$('#USE_AT1').prop('checked', true);
+// 					$('#USE_AT2').prop('checked', false);
+// 				}else{
+// 					$('#USE_AT2').prop('checked', true);
+// 					$('#USE_AT1').prop('checked', false);
+// 				}
 				
 				
 				
@@ -175,12 +175,11 @@
 					<div class="row clear">
 						<div id="inputNdetail_1_1"></div>
 						<div id="inputNdetail_1_2"></div>
-<!-- 						<div id="inputNdetail_1_3"></div> -->
 					</div>
 					<!-- 2라인 -->
 					<div class="row clear">
 						<div id="inputNdetail_1_3"></div>
-						<div id="inputNdetail_2_1"></div>
+<!-- 						<div id="inputNdetail_2_1"></div> -->
 					</div>
 				</div>
 			</div>

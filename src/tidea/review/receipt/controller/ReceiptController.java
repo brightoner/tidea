@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import tidea.review.apply.vo.AttachFileVo;
 import tidea.review.auth.service.AuthService;
 import tidea.review.auth.vo.AuthVo;
+import tidea.review.auth.vo.BiznofileVo;
 import tidea.review.common.service.CommonShService;
 import tidea.review.email.service.EmailService;
 import tidea.review.email.vo.EmailVo;
@@ -388,7 +389,7 @@ public class ReceiptController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/receipt/receiptDetail.do")
-	public String selectReceiptDetail(HttpServletRequest request, Model model, ReceiptVo receiptVo, AttachFileVo attachFileVo) throws Exception{
+	public String selectReceiptDetail(HttpServletRequest request, Model model, ReceiptVo receiptVo, AttachFileVo attachFileVo, BiznofileVo biznofileVo) throws Exception{
 		
 		// 중앙행정기관, 전담기관 콤보박스 부분
 		receiptService.receiptInfoList(request, model, receiptVo);
@@ -404,17 +405,19 @@ public class ReceiptController {
 		receiptVo.setApply_no(apply_no);
 		
 		Map<String, Object> receipt = receiptService.selectReceiptDetail(receiptVo);
-		System.out.println("********* receipt : " + receipt);
 		model.addAttribute("receipt",receipt);
 		
 		//	첨부파일 관련
 		attachFileVo.setAplct_no(aplct_no);
+		biznofileVo.setUser_id(user_id);
 		
 		
 		List<Map<String, Object>> fileInfo = receiptService.selectReceiptFileDetail(attachFileVo); 		// 이용자 첨부파일
 		List<Map<String, Object>> fileInfo_2 = receiptService.selectReceiptFileDetail_2(attachFileVo);	// 접수원 첨부파일
+		List<Map<String, Object>> fileInfo_3 = authService.selectBizNoFile(biznofileVo);				// 사업자등록증
 		model.addAttribute("fileInfo",fileInfo);
 		model.addAttribute("fileInfo_2",fileInfo_2);
+		model.addAttribute("fileInfo_3",fileInfo_3);
 		
 		return "/receipt/receiptUpdate.tiles";
 	}

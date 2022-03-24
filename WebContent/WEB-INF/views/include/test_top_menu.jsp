@@ -5,6 +5,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <script type="text/javascript">
 
+	// 메인메뉴 클릭시 하위메뉴 1번으로 이동
+	function fn_topMenuGoUrl_main(url, menuId, prstId){
+		
+		var menuId = prstId + "_1";		// 메인메뉴이기 때문에 서브메뉴 아이디를 불러오지 못한다. 그래서 서브메뉴 중 1번째 메뉴로 만들어 준다.
+		location.href = url + "?ACTIVE_TOP_MENU=" + prstId + "&ACTIVE_SUB_MENU=" + menuId;
+	}
+	
+	//서브메뉴 클릭시 화면이동
 	function fn_topMenuGoUrl(url, menuId, prstId){
 		location.href = url + "?ACTIVE_TOP_MENU=" + prstId + "&ACTIVE_SUB_MENU=" + menuId;
 	}
@@ -16,10 +24,10 @@
 		var returnPage = '/login/goLogout.do';
 		
 		// 통합정보시스템에서 넘어온 경우 로그아웃 시 통합정보시스템으로 이동
-		if(auth != 'AUTH0001'){
-			//returnPage += '?returnPage=http://192.168.1.15:8080';
-			returnPage += '?returnPage=http://114.70.126.46:8080';
-		}
+// 		if(auth != 'AUTH0001'){
+// 			//returnPage += '?returnPage=http://192.168.1.15:8080';
+// 			returnPage += '?returnPage=http://114.70.126.46:8080';
+// 		}
 		location.href = returnPage;
 	}
 	
@@ -39,14 +47,12 @@
 			<div class="menu_box clear">
 				<ul class="clear">
 					<c:forEach var="ssTopMenuList" items="${SS_TOP_MENU }">
-	<%-- 				<c:if test="${ssTopMenuList.MENU_ID eq SS_ACTIVE_TOP_MENU }"> --%>
-	<!-- 					<li class="active menu_btn"> -->
-	<%-- 				</c:if> --%>
-	<%-- 				<c:if test="${ssTopMenuList.MENU_ID ne SSH_ACTIVE_TOP_MENU }"> --%>
-	<!-- 					<li class="menu_btn"> -->
-	<%-- 				</c:if> --%>
 						<li class="menu_btn">
-							<a href="#" class="menu_btn transition" onclick=""><c:out value="${ssTopMenuList.MENU_NM }" /></a>
+						<!-- 원본 - 메인메뉴 클릭시 화면 이동X -->
+<%-- 							<a href="#" class="menu_btn transition" onclick=""><c:out value="${ssTopMenuList.MENU_NM }" /></a> --%>
+						<!-- 수정 - 메인메뉴 클릭시 서브메뉴 1번으로 이동 -->
+							<a href="#" class="menu_btn transition" onclick="javascript:fn_topMenuGoUrl_main('${ssTopMenuList.MENU_URL }', '${ssSubMenuList.MENU_ID }', '${ssTopMenuList.MENU_ID }','${ssTopMenuList.MENU_NM }');""><c:out value="${ssTopMenuList.MENU_NM }" /></a>
+							
 							<ul class="drop_ul">
 								<c:forEach var="ssSubMenuList" items="${SS_ALL_MENU }">
 									<c:if test="${ssTopMenuList.MENU_ID eq ssSubMenuList.MENU_PRTS_ID }">

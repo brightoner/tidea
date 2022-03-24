@@ -36,12 +36,8 @@ public class ApplyServiceImpl implements ApplyService{
 		//현재페이지 유지
 		String tempPage = request.getParameter("curPage");
 		
-		System.out.println("************** tempPage : " + tempPage);
-		
 		if(!(tempPage == null || tempPage == "")){
 			curPage = Integer.parseInt(tempPage);
-			
-			System.out.println("************** curPage : " + curPage);
 		}
 		
 		List<Map<String, Object>> gridList = new ArrayList<Map<String, Object>>();

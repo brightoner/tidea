@@ -79,7 +79,7 @@ public class AuthVo extends CommonVo {
 	private String LOGIN_AT;			// 로그인가능여부 (가능:Y 불가능:N)
 	private String LOGIN_TRY_DT;		// 로그인시도 시간
 	private String ANNUAL_USER;			// 연간회원
-	
+	private String ANNUAL_USER_START_DT;// 연간회원등록날짜 
 	
 	/** 관리자 검색조건 */
 	private String SEARCH_USR_ID;			   // 아이디 검색
@@ -510,6 +510,16 @@ public class AuthVo extends CommonVo {
 	}
 
 
+	public String getANNUAL_USER_START_DT() {
+		return ANNUAL_USER_START_DT;
+	}
+
+
+	public void setANNUAL_USER_START_DT(String aNNUAL_USER_START_DT) {
+		ANNUAL_USER_START_DT = aNNUAL_USER_START_DT;
+	}
+
+	
 	
 	
 	

@@ -423,7 +423,6 @@ public class AuthController {
 	@RequestMapping("/auth/usrMngDetail.do")
 	public String usrMngDetail(HttpServletRequest request, Model model, AuthVo vo) throws Exception {
 		Map<String, Object> detailMap = authService.usrMngDetail(vo);
-		System.out.println("*********** detailMap : " + detailMap);
 		
 		model.addAttribute("detailMap", detailMap);
 		return "jsonView";
@@ -491,11 +490,17 @@ public class AuthController {
 		String AUTH_CD = request.getParameter("AUTH_CD");
 		vo.setAUTH_CD(AUTH_CD);
 		
-		String USE_AT = request.getParameter("USE_AT");
-		vo.setUSE_AT(USE_AT);
+//		String USE_AT = request.getParameter("USE_AT");
+//		vo.setUSE_AT(USE_AT);
 		
 		String OFFICE_REG_NO = request.getParameter("OFFICE_REG_NO");
 		vo.setOFFICE_REG_NO(OFFICE_REG_NO);
+		
+		String ANNUAL_USER = request.getParameter("ANNUAL_USER");
+		vo.setANNUAL_USER(ANNUAL_USER);
+		
+		String ANNUAL_USER_START_DT = request.getParameter("ANNUAL_USER_START_DT");
+		vo.setANNUAL_USER_START_DT(ANNUAL_USER_START_DT);
 		
 		authService.saveUsrMng(request, model, vo);
 		

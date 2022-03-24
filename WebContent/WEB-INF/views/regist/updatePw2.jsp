@@ -19,7 +19,6 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -101,7 +100,7 @@
 <title>티디아 우선심사 시스템</title>
 </head>
 <body>
-	<form name="form" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+	<form name="form" method="post" enctype="multipart/form-data" accept-charset="UTF-8" class="user_mode">
 		<!-- KEY 컴포넌트가 없는 경우 hidden 생성 -->
 		<input type="hidden" name="KEY" />
 		
@@ -115,30 +114,15 @@
 <%-- 			<c:out value="회원정보 수정" /> --%>
 			<div class="navi absolute">
 				<span><a href=""><img width="15" class="home_icon" src="/resources/images/home.png"></a></span>>
-				<span><a href=""><c:out value="${SS_ACTIVE_TOP_MENU_NM }" /></a></span> > 
-				<span><a href=""><c:out value="${SS_ACTIVE_SUB_MENU_NM }" /></a></span>
+<%-- 				<span><a href=""><c:out value="${SS_ACTIVE_TOP_MENU_NM }" /></a></span> >  --%>
+<%-- 				<span><a href=""><c:out value="${SS_ACTIVE_SUB_MENU_NM }" /></a></span> --%>
+				<span><a href=""><c:out value="비밀번호 변경" /></a></span> 
 			</div>
 		</div>
 		
 		<div class="box-blue-line clear relative">
-			<!-- 상단버튼 영역 -->
-			<div id="buttonDivBox" class="button_box">
-				<button type="button" id="saveBtn" onclick="javascript:fn_save();return false;"><span></span>저장</button><!-- 저장버튼 -->
-				<button type="button" id="goListBtn" onclick="javascript:fn_goList();return false;"><span></span>다음에 변경하기</button><!-- 목록	 -->
-			</div>
-			<!-- 상단버튼 영역 END -->
-			
-			<!-- 조회조건 영역 -->
-			<div id="searchDivBox" style="padding: 7px 10px; margin: 28px;">
-			</div>
-			<!-- 조회조건영역 END -->
-			
-			<!-- 그리드 영역 -->
-			<div id="grid"></div>
-			<!-- 그리드 영역 END -->
-
 			<!-- 입력 및 상세영역 -->
-			<div id="inputNdetailDivBox" class="inputNdetail">
+			<div id="inputNdetailDivBox" class="inputNdetail narrow">
 				<p class="title"><span>비밀번호 수정</span></p>
 				<div class="inputNdetail_box">
 					
@@ -151,15 +135,21 @@
 						</div>
 						
 						<div id="inputNdetail_1_2" class="col clear">
-							<p class="left">><span style="color:#C00000;"><strong>*</strong></span>비밀번호확인</p>
+							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>비밀번호확인</p>
 							<div class="right">
 								<input type="password" id="USER_PWD_CFM" name="USER_PWD_CFM" value="" maxlength="30" style="ime-mode:active">
 							</div>
 						</div>
 					</div>
-					
 				</div>
 			</div>
+			
+			<!-- 상단버튼 영역 -->
+			<div id="buttonDivBox" class="button_box">
+				<button type="button" id="saveBtn" onclick="javascript:fn_save();return false;"><span></span>저장</button><!-- 저장버튼 -->
+				<button type="button" id="goListBtn" onclick="javascript:fn_goList();return false;"><span></span>다음에 변경하기</button><!-- 목록	 -->
+			</div>
+			<!-- 상단버튼 영역 END -->
 		</div>
 	</form>
 </body>

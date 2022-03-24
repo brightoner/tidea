@@ -1192,6 +1192,8 @@ function fn_compoSelIn_AUTH(mpGubun, searchInputGb, divId, tagId, tagName, requi
 		
 	}
 }
+
+
 //31.특이사항(testarea) 컴포넌트
 function fn_compoTextaPartclrCn(mpGubun, searchInputGb, divId, tagId, tagName, requiredYn, label){
 	
@@ -1221,7 +1223,6 @@ function fn_compoTextaPartclrCn(mpGubun, searchInputGb, divId, tagId, tagName, r
 function fn_TextaLeng_chk(event){
   var val = event.value;
   var maxLang = 1000;
-  console.log(val.length);
   
   if( val.length > maxLang){  
 	  alert('최대 ' +maxLang+ '자 까지 입력할 수 있습니다.');
@@ -1513,8 +1514,6 @@ function getCmmnCdListToList(code , ASSET_SEBU_CD){
 		success : function(result) {
 			var list = result.list;
 			 for(var i = 0; i < list.length; i++){
-				 console.log('list[i].DTLCODE : ' + list[i].DTLCODE);
-				 console.log('ASSET_SEBU_CD : ' + ASSET_SEBU_CD);
 				 if(list[i].DTLCODE == ASSET_SEBU_CD){
 					str += '<option value="' + list[i].DTLCODE + '" selected>'+ list[i].DTLCODE_NM +'</option>';
 				 }else{
@@ -1530,7 +1529,6 @@ function getCmmnCdListToList(code , ASSET_SEBU_CD){
 			
 		}
 	});
-	console.log('str : ' + str);
 	return str;
 	
 }
@@ -1907,7 +1905,6 @@ function goExcelDownLoad(url, colsNm, cols){
 	    async 	: false,
 	    success : function(result) {
 	    	alert(result.SUCESS);
-	    	console.log(result);
 	    },
 	    error : function(result) { // Ajax 전송 에러 발생시 실행
 	    	if(result.status==200){
@@ -1916,7 +1913,6 @@ function goExcelDownLoad(url, colsNm, cols){
    		     }else if(result.status==300){
    		     alert("엑셀 데이터 저장에 실패하였습니다.");
    		    };
-	    		console.log(result);
 	    },
 	    complete : function(result) { // success, error 실행 후 최종적으로 실행
 	    }
@@ -2699,9 +2695,7 @@ function fn_compoExcelUp(mpGubun, searchInputGb, divId, tagId, tagName, required
 }
 //첨부된 파일 다운로드
 function fileDownLoad(fullpath){
-	console.log('fullpath : ' + fullpath);
 	var full_url = fullpath;
-	console.log('full_url : ' + full_url);
 	var path = full_url.substr(0,full_url.lastIndexOf("/"));
 	var file_name = full_url.substr(full_url.lastIndexOf("/")+1);					
 	var url = '/download.do?path='+ path + '&fileName=' + file_name;					
@@ -2740,7 +2734,6 @@ function fileDeleteBF(){
 	var result = confirm('정말로 파일을 삭제 하시겠습니까?\n삭제된 파일은 복구 할수 없습니다.');
 	if(result){
 	var formData = new FormData($("form[name=form]")[0]);
-		console.log(formData);
 		$.ajax({
 	        type : 'POST',
 	        url : '/fileDeleteBF.do',
@@ -2766,7 +2759,6 @@ function fileDeleteAF(){
 	var result = confirm('정말로 파일을 삭제 하시겠습니까?\n삭제된 파일은 복구 할수 없습니다.');
 	if(result){
 	var formData = new FormData($("form[name=form]")[0]);
-	console.log(formData);
 		$.ajax({
 	        type : 'POST',
 	        url : '/fileDeleteAF.do',
@@ -2792,7 +2784,6 @@ function fileDeleteDGRI(){
 	var result = confirm('정말로 파일을 삭제 하시겠습니까?\n삭제된 파일은 복구 할수 없습니다.');
 	if(result){
 	var formData = new FormData($("form[name=form]")[0]);
-	console.log(formData);
 		$.ajax({
 	        type : 'POST',
 	        url : '/fileDeleteDGRI.do',
@@ -2834,7 +2825,6 @@ function fileDeleteDirect(){
 //파일을 삭제할 것인지 묻지않고 바로 삭제
 function fileDeleteDirectBF(){
 	var formData = new FormData($("form[name=form]")[0]);
-	console.log(formData);
 		$.ajax({
 	        type : 'POST',
 	        url : '/fileDeleteBF.do',

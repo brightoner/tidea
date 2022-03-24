@@ -71,8 +71,6 @@ public class FileUploadUtil {
 		            }
 		        }
 	        	
-	        	System.out.println();
-	        	
 	        }// for문
 	        
 	        return path;
@@ -212,8 +210,6 @@ public String fileUpload1(HttpServletRequest request, List<MultipartFile> upload
 		                e.printStackTrace();
 		            }
 		        }
-	        	
-	        	System.out.println();
 	        	
 	        }// for문
 	        

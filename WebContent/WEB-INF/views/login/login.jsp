@@ -25,17 +25,18 @@
 		}
 		if(errorCode == 'ID_ERROR'){
 			alert('아이디가 존재하지 않습니다.');
-		}else if(errorCode == 'PW_ERROR'){
-			alert('비밀번호 5회 실패로 10분후 로그인이 가능합니다.');
-		}
-// 		else if(errorCode = "pwdCnt_ERROR"){
+// 		}else if(errorCode = 'pwCnt_ERROR'){
 // 			alert('비밀번호 5회 실패로 10분후 로그인이 가능합니다.');
-// 		}
-		else if(errorCode == 'SS_ERROR'){
+		}else if(errorCode == 'PW_ERROR'){
+			alert('비밀번호가 일치하지 않습니다.');
+		}else if(errorCode == 'SS_ERROR'){
 			alert('세션이 종료되었습니다.');
 		}else if(errorCode == 'CONFIRM_ERROR'){
 			alert('미승인상태입니다.');
 		}
+		
+		
+		
 	});
 	function fn_login(){
 		var loginId = $('#USER_ID').val();
@@ -51,30 +52,6 @@
 			return;
 		}
 		
-		//*********** 사용여부 확인 ajax필요 ex) 사용여부가 N 이면 alert 띄우기 **********************
-// 		$.ajax({
-// 			url : '/login/useAtCheck.do',
-// 			data : {USER_ID:loginId, USER_PWD:loginPw},   //전송파라미터
-// 			type : 'POST',
-// 			dataType : 'json',
-// 			success : function(result) {
-// 				var d = result.useAtCheck;
-// 				console.log(d);
-// 				if(d == "OK"){
-// 					return true;
-// 				}else{
-// 					alert("회원가입승인 대기중 입니다..");
-// 					return false;
-// 				}
-// 			},
-// 			error : function() { // Ajax 전송 에러 발생시 실행
-// 				alert('오류가 발생했습니다.\n관리자에게 문의 바랍니다.','e');
-// 			},
-// 			complete : function(result) { // success, error 실행 후 최종적으로 실행
-				
-// 			}
-// 		});
-		//*******************************************************************************
 		
 		$('#form').attr('action', '/login/goLogin.do');
 		$('#form').submit();

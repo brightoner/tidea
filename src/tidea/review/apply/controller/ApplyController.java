@@ -124,7 +124,6 @@ public class ApplyController {
 		// 심사정보
 		Map<String, Object> apply = applyService.selectApplyDetail(applyVo);
 		model.addAttribute("apply", apply);
-		System.out.println("********** apply : " + apply);
 		
 		return "/apply/applyReg.tiles";
 	}
@@ -266,7 +265,6 @@ public class ApplyController {
 		Map<String, Object> tideaEmailInfo = emailService.getTideaEmail(emailVo);	// 기관메일정보를 DB에서 불러옴
 //		String mail = authService.getRectEmail(authVo);				// 접수자 메일주소 (접수자가 등록한 메일주소)
 		String mail = (String) tideaEmailInfo.get("EMAIL_ADDR");	// 접수자 메일주소 (기관메일)
-		System.out.println("********* mail : " + mail);
 		
 		String apply_title = (String) tideaEmailInfo.get("APPLY_TITLE");			// 신청완료 메일 제목 - 티디아접수자에게 가는 메일 , tidea_email 테이블에서 불러옴		
 		String apply_content = (String) tideaEmailInfo.get("APPLY_CONTENT");		// 신청완료 메일 내용 - 티디아접수자에게 가는 메일 , tidea_email 테이블에서 불러옴	
@@ -286,7 +284,6 @@ public class ApplyController {
 //		paramUrl += "&cols=" + "APPLY_NO,APLCT_NO,APPLY_DT,INVT_NM,ESTIMATE,PAY_METHOD,PRICE,STATUS";
 		paramUrl += "&cols=" + "APPLY_NO,RECEIPT_DT,APLCT_NO,INVT_NM,STATUS,PAY_METHOD,FILE,FILE_DOWN_DT";
 		paramUrl += "&keys=" + "APPLY_NO,APLCT_NO";
-		System.out.println("********** paramUrl : " + paramUrl);
 	
 		return "redirect:/apply/applyMng.do" + paramUrl;	// 결제창이 없는경우 리스트화면으로 이동
 //		return "/payment/payment.tiles";					// 결제창이 있는결우 결제화면으로 이동 
@@ -513,7 +510,6 @@ public class ApplyController {
 		
 		Map<String, Object> apply = applyService.selectApplyDetail(applyVo);
 		model.addAttribute("apply",apply);
-		System.out.println("************ apply : " + apply);
 		
 		//	첨부파일 관련
 		attachFileVo.setAplct_no(aplct_no);
@@ -536,7 +532,7 @@ public class ApplyController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/apply/fileDown.do")
-	public String fileDown(HttpServletRequest request, Model model, ApplyVo applyVo) throws Exception {
+	public String fileDown(HttpServletRequest request, Model model, ApplyVo applyVo, AttachFileVo attachFileVo) throws Exception {
 		
 		@SuppressWarnings("unchecked")
 		Map<String, Object> ssLoginInfo = (Map<String, Object>) request.getSession().getAttribute("SS_LOGIN_INFO");
@@ -546,12 +542,10 @@ public class ApplyController {
 		String aplct_no = request.getParameter("APLCT_NO");
 		applyVo.setAplct_no(aplct_no);
 		
-		System.out.println("**********************************************************************");
-		
+		// 파일다운로드 날짜 입력
 		applyService.updateDownDt(applyVo);
 		
-//		return "jsonView";
-		return "/apply/applyUpdate.tiles";
+		return "jsonView";
 	}
 	
 	

@@ -31,6 +31,7 @@
 			var attachlength = $(".attachlb").length;
 			var filelength = $(".uploadFile").length;
 			if($(".uploadFile").length + attachlength > 0) {	// 사업자 등록증 1개만 받는다
+				alert("첨부파일은 1개만 등록 가능합니다.");
 				return;
 			}
 			var newfile = $("<input/>", {"type" : "file", "class" : "uploadFile", "name" : "uploadFile", "accept" : ".pdf,.jpg,.jpeg"});
@@ -74,7 +75,6 @@
 			dataType : 'json',
 			success : function(result) {
 				var d = result.duplIdCheck;
-				console.log(d);
 				if(d == "OK"){
 					alert("사용가능한 아이디 입니다.");
 // 					return true;
@@ -244,7 +244,7 @@
 						<div id="inputNdetail_2_2" class="col clear">
 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>비밀번호 확인</p>
 							<div class="right">
-								<input type="password" id="USER_PWD_CFM" name="USER_PWD_CFM" value="" maxlength="30"> 
+								<input type="password" id="USER_PWD_CFM" name="USER_PWD_CFM" value="" maxlength="30" placeholder="영문, 숫자, 특수문자를 조합한 9~20자리"> 
 							</div>
 						</div>
 					</div>
@@ -262,23 +262,23 @@
 							</div>
 						</div>
 						<div id="inputNdetail_3_2" class="col clear">
-							<p class="left">담당자 유선전화</p>
-							<div class="right">
-								<input type="text" id="OFFICE_PHONE" name="OFFICE_PHONE" value="" maxlength="30" style="ime-mode:active" placeholder="000-000-0000"> 
-							</div>
-						</div>
-					</div>
-					<div class="row clear">
-						<div id="inputNdetail_4_1" class="col clear">
 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>담당자 E-mail</p>
 							<div class="right">
 								<input type="text" id="INSER_USER_EMAIL" name="INSER_USER_EMAIL" value="" maxlength="30" style="ime-mode:active" placeholder="알림 메일, 견적서, 세금계산서를 수신하기 위한 E-mail 주소"> 
 							</div>
 						</div>
-						<div id="inputNdetail_4_2" class="col clear">
+					</div>
+					<div class="row clear">
+						<div id="inputNdetail_4_1" class="col clear">
 							<p class="left"><span style="color:#C00000;"><strong>*</strong></span>담당자 휴대전화</p>
 							<div class="right">
 								<input type="text" id="MOBILE" name="MOBILE" value="" maxlength="30" style="ime-mode:active" placeholder="000-0000-0000"> 
+							</div>
+						</div>
+						<div id="inputNdetail_4_2" class="col clear">
+							<p class="left">담당자 유선전화</p>
+							<div class="right">
+								<input type="text" id="OFFICE_PHONE" name="OFFICE_PHONE" value="" maxlength="30" style="ime-mode:active" placeholder="000-000-0000"> 
 							</div>
 						</div>
 					</div>

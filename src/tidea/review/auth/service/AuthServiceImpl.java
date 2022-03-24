@@ -290,6 +290,17 @@ public class AuthServiceImpl implements AuthService {
 	
 	
 	/**
+	 * 사용자가 회원정보 삭제 - 탈퇴
+	 * @param authVo
+	 * @throws Exception
+	 */
+	@Override
+	public void deleteUserInfo(AuthVo authVo) throws Exception {
+		authDao.deleteUserInfo(authVo);
+	}
+	
+	
+	/**
 	 * 이용자 회원정보 수정화면 불러오기
 	 * @param vo
 	 * @return
@@ -675,6 +686,8 @@ public class AuthServiceImpl implements AuthService {
 	public void delBizNoFile(BiznofileVo biznofileVo) throws Exception {
 		authDao.delBizNoFile(biznofileVo);
 	}
+
+	
 
 //*********************************************************************************
 	

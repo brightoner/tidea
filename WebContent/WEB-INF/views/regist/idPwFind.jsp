@@ -55,7 +55,6 @@
 			success : function(result) {
 				var d = result.idFind;
 				var e = result.USER_ID;
-				console.log(d);
 				if(d == "OK"){
 					alert("아이디는 " + e + " 입니다.");
 				}else{
@@ -91,7 +90,6 @@
 			dataType : 'json',
 			success : function(result) {
 				var d = result.pwFind;
-				console.log(d);
 				if(d == "OK"){
 					alert("임시 비밀번호를  " + email_val +"로 전송 했습니다.");
 				}else{

@@ -22,5 +22,6 @@
 		<typeAlias alias="attachFileVo" type="tidea.review.apply.vo.AttachFileVo"/>
 		<typeAlias alias="emailVo" type="tidea.review.email.vo.EmailVo"/>
 		<typeAlias alias="biznofileVo" type="tidea.review.auth.vo.BiznofileVo"/>
+		<typeAlias alias="loginVo" type="tidea.review.login.vo.LoginVo"/>
 	</typeAliases>
 </configuration>

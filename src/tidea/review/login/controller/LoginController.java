@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import tidea.review.auth.service.AuthService;
 import tidea.review.auth.vo.AuthVo;
 import tidea.review.login.service.LoginService;
+import tidea.review.login.vo.LoginVo;
+import tidea.utils.EgovHttpSessionBindingListener;
+import tidea.utils.IpAddressUtil;
 
 @Controller
 public class LoginController {
@@ -31,7 +34,7 @@ public class LoginController {
 	
 	@RequestMapping(value="/admin/superAdmin.do")
 	public String superAdmin(HttpServletRequest request,Model model) throws Exception{
-		//request.getSession().invalidate();
+		request.getSession().invalidate();
 		return "redirect:/login/login.do";
 			
 	}
@@ -100,17 +103,15 @@ public class LoginController {
 	 * @작성일   : 2019. 1. 29.
 	 * @작성자   : YTK
 	 * @변경이력  :
-	 * 
-	 * 
-	 * 
 	 */
 	@RequestMapping(value="/login/goLogin.do")
-	public String goLogin(HttpServletRequest request, Model model, AuthVo authVo) throws Exception {
+	public String goLogin(HttpServletRequest request, Model model, AuthVo authVo, LoginVo loginVo) throws Exception {
 		
 		String id = request.getParameter("id") == null ? "" : request.getParameter("id");
 		if(!StringUtils.equalsIgnoreCase("", id)){
 			byte[] decryptByte = Base64.decodeBase64(id.getBytes());
 			String decryptId = new String(decryptByte);
+			
 			request.setAttribute("USER_ID", decryptId);
 			request.setAttribute("USER_PWD", "X");
 		}
@@ -122,7 +123,8 @@ public class LoginController {
 			System.out.println("============ 사 용 자 =============");
 			System.out.println(StringUtils.equals("MNGLOGIN_OK", loginErrorCode));
 			System.out.println(StringUtils.equals("MNGLOGIN_OK", loginErrorCode));
-			return "redirect:/sample/samplemain.do";*/
+			return "redirect:/sample/samplemain.do";
+		*/
 		
 		if(loginErrorCode.equals("LOGIN_OK")){
 			System.out.println("============ 사 용 자 =============");
@@ -133,16 +135,31 @@ public class LoginController {
 			Date now = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			String today = sdf.format(now);
-			System.out.println("######### today : " + today);
 			// pwd_change_dt 불러오기
 			String pw_change_dt = authService.chkPwChangeDt(authVo);
-			System.out.println("######### pw_change_dt : " + pw_change_dt);
 			
 			if(pw_change_dt.compareTo(today) < 0) {		// today가 커서 변경 메시지를 보내야함
-				System.out.println("today가 클때");
 				return "redirect:/regist/updatePw2.do";
 			}
 			//*********************************************
+			
+			
+			//********** 다중로그인 방지 ***********************
+			EgovHttpSessionBindingListener listener = new EgovHttpSessionBindingListener();
+			request.getSession().setAttribute(authVo.getUSER_ID(), listener);	
+			//*********************************************
+			
+			
+			//************* 로그인 접속 로그관련 ************
+			@SuppressWarnings("unchecked")
+			Map<String, Object> ssLoginInfo = (Map<String, Object>) request.getSession().getAttribute("SS_LOGIN_INFO");
+			String user_id = ssLoginInfo == null ? "" : String.valueOf(ssLoginInfo.get("USER_ID"));
+			loginVo.setUSER_ID(user_id);
+			String user_ip = IpAddressUtil.getIpAddress(request);
+			loginVo.setUSER_IP(user_ip);
+			
+			loginService.insertLoginLog(loginVo);
+			//****************************************
 			
 			return "redirect:/sample/samplemain.do";
 			
@@ -172,36 +189,6 @@ public class LoginController {
 		return "/login/login";
 	}
 	
-
-	/**
-	 * 로그인 처리시 사용여부 확인 ajax
-	 * @param request
-	 * @param response
-	 * @param model
-	 * @param authVo
-	 * @return
-	 * @throws Exception
-	 */
-//	@RequestMapping(value = "/login/useAtCheck.do")
-//	public String useAtCheck(HttpServletRequest request,  HttpServletResponse response, Model model, AuthVo authVo) throws Exception {
-//		
-//		String user_id = request.getParameter("USER_ID");
-//		authVo.setUSER_ID(user_id);
-//		String user_pwd = request.getParameter("USER_PWD");
-//		authVo.setUSER_PWD(user_pwd);
-//		
-//		String  result = loginService.useAtCheck(authVo);
-//		
-//		if(result == "Y" || result.equals("Y")){
-//			model.addAttribute("useAtCheck", "OK");
-//			return "jsonView";
-//		}else {
-//			model.addAttribute("useAtCheck", "Error");
-//			return "jsonView";
-//		}
-//	}
-	
-	
 	
 	/**
 	 * <pre>
@@ -215,8 +202,7 @@ public class LoginController {
 	@RequestMapping(value="/login/goLogout.do")
 	public String goLogout(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		
-		
-		// 모든 세션 초기화
+		// 모든 세션 초기화 - 다중로그인 방지를 위해서는 로그아웃시 세션 초기화를 해야한다
 		request.getSession().invalidate();
 		
 			return "/login/login";

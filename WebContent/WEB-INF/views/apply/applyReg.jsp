@@ -116,7 +116,6 @@
 			dataType : 'json',
 			success : function(result) {
 				var d = result.duplCheck;
-				console.log(d);
 				if(d == "OK"){
 // 					return true;
 					

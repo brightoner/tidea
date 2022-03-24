@@ -74,7 +74,6 @@ public class EmailController {
 		
 		emailService.updateTideaEmail(emailVo);
 		
-//		return "redirect:/email/email.do";
 		return "redirect:/login/login.do";
 	}
 	

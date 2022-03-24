@@ -52,7 +52,6 @@
 // 			dataType : 'json',
 // 			success : function(result) {
 // 				var d = result.useAtCheck;
-// 				console.log(d);
 // 				if(d == "OK"){
 // 					return true;
 // 				}else{
